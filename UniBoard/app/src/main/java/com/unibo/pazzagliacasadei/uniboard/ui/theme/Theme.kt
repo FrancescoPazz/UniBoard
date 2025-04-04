@@ -1,4 +1,4 @@
-package com.example.parkapp.ui.theme
+package com.unibo.pazzagliacasadei.uniboard.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -34,7 +34,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun ParkAppTheme(
+fun UniBoardTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

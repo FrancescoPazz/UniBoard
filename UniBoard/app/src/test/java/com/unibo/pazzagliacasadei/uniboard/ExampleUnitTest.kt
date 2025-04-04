@@ -1,4 +1,4 @@
-package com.example.parkapp
+package com.unibo.pazzagliacasadei.uniboard
 
 import org.junit.Test
 

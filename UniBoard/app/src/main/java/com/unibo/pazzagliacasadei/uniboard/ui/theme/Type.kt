@@ -1,4 +1,4 @@
-package com.example.parkapp.ui.theme
+package com.unibo.pazzagliacasadei.uniboard.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

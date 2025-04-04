@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ParkApp"
+rootProject.name = "UniBoard"
 include(":app")
- 

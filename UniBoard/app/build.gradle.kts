@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.parkapp"
-    compileSdk = 34
+    namespace = "com.unibo.pazzagliacasadei.uniboard"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.parkapp"
+        applicationId = "com.unibo.pazzagliacasadei.uniboard"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
