@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UniBoard</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Accedi</string>
+    <string name="signup">Registrati</string>
+    <string name="back">Indietro</string>
+    <string name="logout">Disconnettiti</string>
+</resources>
