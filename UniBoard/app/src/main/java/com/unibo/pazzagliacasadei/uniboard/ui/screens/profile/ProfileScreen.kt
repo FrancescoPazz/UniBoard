@@ -17,9 +17,11 @@ import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 
 @Composable
-fun ProfileScreen(navController: NavHostController) {
+fun ProfileScreen(navController: NavHostController,
+                  authViewModel: AuthViewModel) {
     Scaffold(topBar = { TopBar(navController) }, content = { paddingValues ->
         Column(
             modifier = Modifier
@@ -35,6 +37,7 @@ fun ProfileScreen(navController: NavHostController) {
             )
             TextButton(
                 onClick = {
+                    authViewModel.logout()
                     navController.navigate(UniBoardRoute.Auth) {
                         popUpTo(UniBoardRoute.Auth) {
                             inclusive = true

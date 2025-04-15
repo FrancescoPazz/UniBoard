@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UniBoard</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Conferma password</string>
     <string name="login">Accedi</string>
     <string name="signup">Registrati</string>
     <string name="back">Indietro</string>
@@ -12,4 +15,6 @@
     <string name="or_text">oppure</string>
     <string name="login_with_google">Accedi con Google</string>
     <string name="terms_and_privacy">Accedendo, accetti i nostri Termini di servizio e Privacy Policy</string>
+    <string name="need_to_signup">Non hai un account? Registrati</string>
+    <string name="already_have_account">Hai già un account? Accedi</string>
 </resources>

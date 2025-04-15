@@ -36,7 +36,7 @@ fun UniBoardNavGraph(
             HomeScreen(navController)
         }
         composable<UniBoardRoute.Profile> {
-            ProfileScreen(navController)
+            ProfileScreen(navController, authViewModel)
         }
     }
 }

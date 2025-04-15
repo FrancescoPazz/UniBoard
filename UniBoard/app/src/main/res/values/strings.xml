@@ -11,4 +11,9 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="login_with_google">Sign in with Google</string>
     <string name="terms_and_privacy">By accessing, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="already_have_account">Do you already have an account? Log in</string>
+    <string name="need_to_signup">Don\'t have an account? Sign up</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="confirm_password">Confirm password</string>
 </resources>

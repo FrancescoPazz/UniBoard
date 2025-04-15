@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.runtime.livedata)
 
 
     testImplementation(libs.junit)
