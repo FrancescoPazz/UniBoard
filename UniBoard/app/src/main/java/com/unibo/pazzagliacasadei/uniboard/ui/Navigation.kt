@@ -13,8 +13,10 @@ import org.koin.androidx.compose.koinViewModel
 sealed interface UniBoardRoute {
     @Serializable
     data object Auth : UniBoardRoute
+
     @Serializable
     data object Home : UniBoardRoute
+
     @Serializable
     data object Profile : UniBoardRoute
 }

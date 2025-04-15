@@ -21,9 +21,7 @@ import com.unibo.pazzagliacasadei.uniboard.R
 
 @Composable
 fun GoogleButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    text: String, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
@@ -31,8 +29,7 @@ fun GoogleButton(
         shape = RoundedCornerShape(CornerSize(8.dp)),
         border = null,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
+            containerColor = Color.White, contentColor = Color.Black
         )
     ) {
         Row(

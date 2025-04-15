@@ -13,10 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OutlinedAuthButton(
-    text: String,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    text: String, onClick: () -> Unit = {}, modifier: Modifier = Modifier, enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -25,8 +22,7 @@ fun OutlinedAuthButton(
         shape = RoundedCornerShape(CornerSize(8.dp)),
         border = BorderStroke(1.dp, Color.Black),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
+            containerColor = Color.White, contentColor = Color.Black
         ),
     ) {
         Text(text)

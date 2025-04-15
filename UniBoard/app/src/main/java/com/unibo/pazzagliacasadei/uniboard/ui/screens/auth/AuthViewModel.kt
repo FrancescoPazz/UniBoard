@@ -1,11 +1,8 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthViewModel : ViewModel() {

@@ -20,8 +20,9 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 
 @Composable
-fun ProfileScreen(navController: NavHostController,
-                  authViewModel: AuthViewModel) {
+fun ProfileScreen(
+    navController: NavHostController, authViewModel: AuthViewModel
+) {
     Scaffold(topBar = { TopBar(navController) }, content = { paddingValues ->
         Column(
             modifier = Modifier

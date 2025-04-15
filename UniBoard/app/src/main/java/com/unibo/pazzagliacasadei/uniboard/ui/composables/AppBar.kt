@@ -21,25 +21,22 @@ fun TopBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast(".")
 
-    CenterAlignedTopAppBar(
-        title = {
-            if (currentRoute != null) {
-                Text(
-                    currentRoute,
-                    color = MaterialTheme.colorScheme.onBackground,
+    CenterAlignedTopAppBar(title = {
+        if (currentRoute != null) {
+            Text(
+                currentRoute,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
+    }, navigationIcon = {
+        if (navController.previousBackStackEntry != null) {
+            IconButton(onClick = { navController.navigateUp() }) {
+                Icon(
+                    Icons.AutoMirrored.Outlined.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-        },
-        navigationIcon = {
-            if (navController.previousBackStackEntry != null) {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = stringResource(R.string.back),
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-            }
         }
-    )
+    })
 }

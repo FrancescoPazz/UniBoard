@@ -23,8 +23,7 @@ fun AuthButton(
         enabled = enabled,
         shape = RoundedCornerShape(CornerSize(8.dp)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black,
-            contentColor = Color.White
+            containerColor = Color.Black, contentColor = Color.White
         ),
     ) {
         Text(text)

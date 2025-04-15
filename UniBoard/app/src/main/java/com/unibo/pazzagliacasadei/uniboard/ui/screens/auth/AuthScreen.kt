@@ -41,8 +41,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.GoogleButton
 
 @Composable
 fun AuthScreen(
-    navController: NavHostController,
-    authViewModel: AuthViewModel
+    navController: NavHostController, authViewModel: AuthViewModel
 ) {
     val context = LocalContext.current
     val isLoginMode = remember { mutableStateOf(true) }
@@ -63,9 +62,15 @@ fun AuthScreen(
                     launchSingleTop = true
                 }
             }
+
             is AuthState.Error -> {
-                Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    (authState.value as AuthState.Error).message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+
             else -> Unit
         }
     }
@@ -97,38 +102,33 @@ fun AuthScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
             if (!isLoginMode.value) {
-                TextField(
-                    value = name.value,
+                TextField(value = name.value,
                     onValueChange = { name.value = it },
                     label = { Text(text = stringResource(id = R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                TextField(
-                    value = surname.value,
+                TextField(value = surname.value,
                     onValueChange = { surname.value = it },
                     label = { Text(text = stringResource(id = R.string.surname)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }
-            TextField(
-                value = email.value,
+            TextField(value = email.value,
                 onValueChange = { email.value = it },
                 label = { Text(text = stringResource(id = R.string.email)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(12.dp))
-            TextField(
-                value = password.value,
+            TextField(value = password.value,
                 onValueChange = { password.value = it },
                 label = { Text(text = stringResource(id = R.string.password)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(12.dp))
             if (!isLoginMode.value) {
-                TextField(
-                    value = confirmPassword.value,
+                TextField(value = confirmPassword.value,
                     onValueChange = { confirmPassword.value = it },
                     label = { Text(text = stringResource(id = R.string.confirm_password)) },
                     modifier = Modifier.fillMaxWidth()
@@ -136,13 +136,13 @@ fun AuthScreen(
                 Spacer(modifier = Modifier.height(12.dp))
             } else {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(
-                        checked = rememberMe.value,
-                        onCheckedChange = { rememberMe.value = it }
-                    )
+                    Checkbox(checked = rememberMe.value,
+                        onCheckedChange = { rememberMe.value = it })
                     Text(
                         text = stringResource(R.string.remember_me),
                         modifier = Modifier.padding(start = 8.dp)
@@ -152,17 +152,25 @@ fun AuthScreen(
             }
             AuthButton(
                 text = if (isLoginMode.value) stringResource(R.string.login)
-                else stringResource(R.string.signup),
-                onClick = {
+                else stringResource(R.string.signup), onClick = {
                     if (isLoginMode.value) {
                         authViewModel.login(email.value, password.value)
                         email.value = ""
                         password.value = ""
                     } else {
                         if (password.value != confirmPassword.value) {
-                            Toast.makeText(context, "Le password non corrispondono!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Le password non corrispondono!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         } else {
-                            authViewModel.signUp(email.value, password.value, name.value, surname.value)
+                            authViewModel.signUp(
+                                email.value,
+                                password.value,
+                                name.value,
+                                surname.value
+                            )
                             isLoginMode.value = true
                             email.value = ""
                             password.value = ""
@@ -171,8 +179,7 @@ fun AuthScreen(
                             surname.value = ""
                         }
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
+                }, modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
             if (isLoginMode.value) {
@@ -198,7 +205,9 @@ fun AuthScreen(
                     text = stringResource(R.string.terms_and_privacy),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray,
-                    modifier = Modifier.align(Alignment.Center).alpha(0.8f),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .alpha(0.8f),
                     textAlign = TextAlign.Center
                 )
             }
@@ -212,10 +221,8 @@ fun AuthScreen(
                 surname.value = ""
             }) {
                 Text(
-                    text = if (isLoginMode.value)
-                        stringResource(R.string.need_to_signup)
-                    else
-                        stringResource(R.string.already_have_account)
+                    text = if (isLoginMode.value) stringResource(R.string.need_to_signup)
+                    else stringResource(R.string.already_have_account)
                 )
             }
         }
