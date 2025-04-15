@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "960246085459",
+    "project_id": "uniboard-pazzagliacasadei",
+    "storage_bucket": "uniboard-pazzagliacasadei.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960246085459:android:bd00c5e6c7ecd105bb13a6",
+        "android_client_info": {
+          "package_name": "com.unibo.pazzagliacasadei.uniboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpgSD7vG11QUAQt9Xc851zAfpfeoqLq1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,4 +7,9 @@
     <string name="signup">Registrati</string>
     <string name="back">Indietro</string>
     <string name="logout">Disconnettiti</string>
+    <string name="remember_me">Ricordami</string>
+    <string name="forgot_password">Hai dimenticato la password?</string>
+    <string name="or_text">oppure</string>
+    <string name="login_with_google">Accedi con Google</string>
+    <string name="terms_and_privacy">Accedendo, accetti i nostri Termini di servizio e Privacy Policy</string>
 </resources>

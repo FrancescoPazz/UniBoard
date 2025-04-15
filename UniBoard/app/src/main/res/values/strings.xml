@@ -6,4 +6,9 @@
     <string name="signup">Sign Up</string>
     <string name="back">Back</string>
     <string name="logout">Logout</string>
+    <string name="remember_me">Remember me</string>
+    <string name="or_text">or</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login_with_google">Sign in with Google</string>
+    <string name="terms_and_privacy">By accessing, you agree to our Terms of Service and Privacy Policy</string>
 </resources>
