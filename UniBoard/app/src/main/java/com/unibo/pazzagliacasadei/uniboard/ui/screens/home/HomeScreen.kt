@@ -14,11 +14,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
+import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    Scaffold(topBar = { TopBar(navController) }, content = { paddingValues ->
+    Scaffold(topBar = { TopBar(navController) }, bottomBar = { BottomBar(navController) }, content = { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)

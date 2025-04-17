@@ -17,4 +17,11 @@
     <string name="terms_and_privacy">Accedendo, accetti i nostri Termini di servizio e Privacy Policy</string>
     <string name="need_to_signup">Non hai un account? Registrati</string>
     <string name="already_have_account">Hai già un account? Accedi</string>
+    <string name="my_announces">I miei annunci</string>
+    <string name="messages">Messaggi</string>
+    <string name="settings">Impostazioni</string>
+    <string name="edit_profile">Modifica profilo</string>
+    <string name="home">Home</string>
+    <string name="search">Cerca</string>
+    <string name="profile">Profile</string>
 </resources>
