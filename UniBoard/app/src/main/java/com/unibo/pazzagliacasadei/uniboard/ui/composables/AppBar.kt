@@ -2,6 +2,7 @@ package com.unibo.pazzagliacasadei.uniboard.ui.composables
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +23,8 @@ fun TopBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast(".")
 
-    CenterAlignedTopAppBar(title = {
+    CenterAlignedTopAppBar(
+        title = {
         if (currentRoute != null) {
             Text(
                 currentRoute,
@@ -37,6 +40,13 @@ fun TopBar(navController: NavController) {
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }
+        }
+    }, actions = {
+        IconButton(onClick = { navController.navigate(UniBoardRoute.Settings) }) {
+            Icon(
+                Icons.Filled.Settings, contentDescription = stringResource(R.string.settings),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
         }
     })
 }
