@@ -22,4 +22,12 @@
     <string name="lightMode">Light theme</string>
     <string name="darkMode">Dark theme</string>
     <string name="systemMode">System theme</string>
+    <!-- User settings page -->
+    <string name="my_announces">My announces</string>
+    <string name="messages">Messages</string>
+    <string name="user_settings">Settings</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
 </resources>

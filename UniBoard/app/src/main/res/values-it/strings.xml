@@ -23,4 +23,12 @@
     <string name="lightMode">Tema chiaro</string>
     <string name="darkMode">Tema scuro</string>
     <string name="systemMode">Tema di sistema</string>
+    <!-- User settings -->
+    <string name="my_announces">I miei annunci</string>
+    <string name="messages">Messaggi</string>
+    <string name="user_settings">Settings</string>
+    <string name="edit_profile">Modifica profilo</string>
+    <string name="home">Home</string>
+    <string name="search">Cerca</string>
+    <string name="profile">Profile</string>
 </resources>

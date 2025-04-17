@@ -65,9 +65,7 @@ fun AuthScreen(
 
             is AuthState.Error -> {
                 Toast.makeText(
-                    context,
-                    (authState.value as AuthState.Error).message,
-                    Toast.LENGTH_SHORT
+                    context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -141,7 +139,8 @@ fun AuthScreen(
                         .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(checked = rememberMe.value,
+                    Checkbox(
+                        checked = rememberMe.value,
                         onCheckedChange = { rememberMe.value = it })
                     Text(
                         text = stringResource(R.string.remember_me),
@@ -160,16 +159,11 @@ fun AuthScreen(
                     } else {
                         if (password.value != confirmPassword.value) {
                             Toast.makeText(
-                                context,
-                                "Le password non corrispondono!",
-                                Toast.LENGTH_SHORT
+                                context, "Le password non corrispondono!", Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             authViewModel.signUp(
-                                email.value,
-                                password.value,
-                                name.value,
-                                surname.value
+                                email.value, password.value, name.value, surname.value
                             )
                             isLoginMode.value = true
                             email.value = ""
