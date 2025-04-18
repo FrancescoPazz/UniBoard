@@ -7,6 +7,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -19,6 +20,9 @@ sealed interface UniBoardRoute {
 
     @Serializable
     data object Profile : UniBoardRoute
+
+    @Serializable
+    data object Settings: UniBoardRoute
 }
 
 @Composable
@@ -39,6 +43,9 @@ fun UniBoardNavGraph(
         }
         composable<UniBoardRoute.Profile> {
             ProfileScreen(navController, authViewModel)
+        }
+        composable<UniBoardRoute.Settings> {
+            SettingsScreen(navController)
         }
     }
 }

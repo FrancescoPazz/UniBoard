@@ -34,7 +34,8 @@ fun TopBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast(".")
 
-    CenterAlignedTopAppBar(title = {
+    CenterAlignedTopAppBar(
+        title = {
         if (currentRoute != null) {
             Text(
                 currentRoute,
@@ -50,6 +51,13 @@ fun TopBar(navController: NavController) {
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }
+        }
+    }, actions = {
+        IconButton(onClick = { navController.navigate(UniBoardRoute.Settings) }) {
+            Icon(
+                Icons.Filled.Settings, contentDescription = stringResource(R.string.settings),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
         }
     })
 }

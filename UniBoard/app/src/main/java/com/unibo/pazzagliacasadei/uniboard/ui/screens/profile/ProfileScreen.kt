@@ -37,7 +37,7 @@ fun ProfileScreen(
     val tabs = listOf(
         stringResource(R.string.my_announces),
         stringResource(R.string.messages),
-        stringResource(R.string.settings)
+        stringResource(R.string.user_settings)
     )
     var selectedTab by remember { mutableIntStateOf(0) }
 
