@@ -8,9 +8,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.settings.ColorModeSetter
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.SettingsParams
 
 @Composable
-fun SettingsScreen(navController: NavHostController) {
+fun SettingsScreen(navController: NavHostController, settingsParams: SettingsParams) {
     Scaffold(
         topBar = { TopBar(navController) },
         content = { padding ->
@@ -18,7 +19,7 @@ fun SettingsScreen(navController: NavHostController) {
             Modifier.padding(padding)
                 .padding(16.dp)
         ) {
-            ColorModeSetter()
+            ColorModeSetter(settingsParams)
         }
     })
 }

@@ -9,25 +9,34 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
 
 @Composable
-fun RadioRow(text: String, selectedOption: String, onOptionSelected: (String) -> Unit) {
+fun RadioRow(theme: Theme, selected: Boolean, onOptionSelected: (Theme) -> Unit) {
+    val themeName = when (theme) {
+        Theme.Light -> stringResource(R.string.lightMode)
+        Theme.Dark -> stringResource(R.string.darkMode)
+        Theme.System -> stringResource(R.string.systemMode)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .selectable(
-                onClick = { onOptionSelected(text) },
-                selected = (text == selectedOption),
+                onClick = { onOptionSelected(theme) },
+                selected = selected,
                 role = Role.RadioButton
             )
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text)
+        Text(themeName)
         RadioButton(
-            selected = (text == selectedOption),
+            selected = selected,
             onClick = null
         )
     }

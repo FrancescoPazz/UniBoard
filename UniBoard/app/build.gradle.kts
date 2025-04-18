@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.datastore.preferences)
 
 
     testImplementation(libs.junit)

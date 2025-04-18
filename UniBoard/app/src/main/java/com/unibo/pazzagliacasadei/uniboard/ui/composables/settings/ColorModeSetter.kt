@@ -1,7 +1,5 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.composables.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,35 +17,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.SettingsParams
 
 @Composable
-fun ColorModeSetter() {
-    val themeModes = listOf<String>(
-        stringResource(R.string.lightMode),
-        stringResource(R.string.darkMode),
-        stringResource(R.string.systemMode)
-    )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(themeModes[2]) }
+fun ColorModeSetter(settingsParams: SettingsParams) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
-        ),
-        elevation = CardDefaults.cardElevation(
+        ), elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
-        ),
-        modifier = Modifier.selectableGroup()
+        ), modifier = Modifier.selectableGroup()
     ) {
         Column {
             Text(
                 textAlign = TextAlign.Center,
                 text = stringResource(R.string.theme),
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 10.dp)
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
                     .fillMaxWidth()
-                )
-            themeModes.forEach { theme ->
-                RadioRow(theme, selectedOption, onOptionSelected)
+            )
+            Theme.entries.forEach { theme ->
+                RadioRow(theme, theme == settingsParams.themeState.theme, settingsParams.changeTheme)
             }
         }
     }
