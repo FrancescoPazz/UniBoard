@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthState
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -61,11 +62,4 @@ class AuthViewModel : ViewModel() {
         auth.signOut()
         _authState.value = AuthState.Unauthenticated
     }
-}
-
-sealed class AuthState {
-    data object Authenticated : AuthState()
-    data object Unauthenticated : AuthState()
-    data object Loading : AuthState()
-    data class Error(val message: String) : AuthState()
 }

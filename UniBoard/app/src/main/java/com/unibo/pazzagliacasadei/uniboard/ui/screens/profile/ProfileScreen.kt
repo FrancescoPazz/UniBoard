@@ -28,11 +28,11 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.MessagesTabCon
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.SettingsTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.ProfileParams
 
 @Composable
 fun ProfileScreen(
-    navController: NavHostController, authViewModel: AuthViewModel
+    navController: NavHostController, profileParams: ProfileParams
 ) {
     val tabs = listOf(
         stringResource(R.string.my_announces),
@@ -88,7 +88,7 @@ fun ProfileScreen(
                 0 -> AnnouncementsTabContent(announcements = sampleAnnouncements)
                 1 -> MessagesTabContent(messages = sampleMessages)
                 2 -> SettingsTabContent(onLogout = {
-                    authViewModel.logout()
+                    profileParams.logout()
                     navController.navigate(UniBoardRoute.Auth) {
                         popUpTo(UniBoardRoute.Auth) { inclusive = true }
                         launchSingleTop = true

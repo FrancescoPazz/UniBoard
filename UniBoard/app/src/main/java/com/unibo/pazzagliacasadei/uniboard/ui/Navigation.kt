@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthParams
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.contracts.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
@@ -39,8 +41,6 @@ fun UniBoardNavGraph(
     navController: NavHostController,
 ) {
     val authViewModel = koinViewModel<AuthViewModel>()
-    val authState = authViewModel.authState.observeAsState()
-
 
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
@@ -57,13 +57,25 @@ fun UniBoardNavGraph(
             startDestination = UniBoardRoute.Auth,
         ) {
             composable<UniBoardRoute.Auth> {
-                AuthScreen(navController, authViewModel)
+                val authParams = AuthParams(
+                    authState = authViewModel.authState,
+                    login = { email, password ->
+                        authViewModel.login(email, password)
+                    },
+                    signUp = { name, surname, email, password ->
+                        authViewModel.signUp(name, surname, email, password)
+                    },
+                )
+                AuthScreen(navController, authParams)
             }
             composable<UniBoardRoute.Home> {
                 HomeScreen(navController)
             }
             composable<UniBoardRoute.Profile> {
-                ProfileScreen(navController, authViewModel)
+                val profileParams = ProfileParams(
+                    logout = { authViewModel.logout() },
+                )
+                ProfileScreen(navController, profileParams)
             }
             composable<UniBoardRoute.Settings> {
                 val settingsParams = SettingsParams(

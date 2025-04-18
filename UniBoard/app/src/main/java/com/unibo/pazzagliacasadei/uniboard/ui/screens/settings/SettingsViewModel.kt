@@ -2,8 +2,6 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.SettingsRepository
 import kotlinx.coroutines.flow.SharingStarted

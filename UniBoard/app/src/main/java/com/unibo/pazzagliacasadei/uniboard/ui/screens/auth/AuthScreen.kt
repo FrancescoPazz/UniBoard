@@ -38,14 +38,16 @@ import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.AuthButton
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.GoogleButton
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthParams
+import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthState
 
 @Composable
 fun AuthScreen(
-    navController: NavHostController, authViewModel: AuthViewModel
+    navController: NavHostController, authParams: AuthParams
 ) {
     val context = LocalContext.current
     val isLoginMode = remember { mutableStateOf(true) }
-    val authState = authViewModel.authState.observeAsState()
+    val authState = authParams.authState.observeAsState()
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -152,7 +154,7 @@ fun AuthScreen(
                 text = if (isLoginMode.value) stringResource(R.string.login)
                 else stringResource(R.string.signup), onClick = {
                     if (isLoginMode.value) {
-                        authViewModel.login(email.value, password.value)
+                        authParams.login(email.value, password.value)
                         email.value = ""
                         password.value = ""
                     } else {
@@ -161,7 +163,7 @@ fun AuthScreen(
                                 context, "Le password non corrispondono!", Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            authViewModel.signUp(
+                            authParams.signUp(
                                 email.value, password.value, name.value, surname.value
                             )
                             isLoginMode.value = true
