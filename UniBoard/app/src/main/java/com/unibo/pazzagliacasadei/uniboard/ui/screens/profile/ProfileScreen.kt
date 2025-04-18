@@ -53,7 +53,9 @@ fun ProfileScreen(
         Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?"),
     )
 
-    Scaffold(topBar = { TopBar(navController) }, bottomBar = { BottomBar(navController) }) { paddingValues ->
+    Scaffold(
+        topBar = { TopBar(navController) },
+        bottomBar = { BottomBar(navController) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -76,8 +78,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            ProfileTabs(
-                tabs = tabs,
+            ProfileTabs(tabs = tabs,
                 selectedIndex = selectedTab,
                 onTabSelected = { selectedTab = it })
 

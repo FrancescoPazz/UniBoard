@@ -19,31 +19,34 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    Scaffold(topBar = { TopBar(navController) }, bottomBar = { BottomBar(navController) }, content = { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .padding(vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                "Ciaoo!",
-                style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center
-            )
-            TextButton(
-                onClick = { navController.navigate(UniBoardRoute.Profile) },
+    Scaffold(
+        topBar = { TopBar(navController) },
+        bottomBar = { BottomBar(navController) },
+        content = { paddingValues ->
+            Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(paddingValues)
                     .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Vai alla pagina di profilo",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    "Ciaoo!",
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
                 )
+                TextButton(
+                    onClick = { navController.navigate(UniBoardRoute.Profile) },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Vai alla pagina di profilo",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
-        }
-    })
+        })
 }

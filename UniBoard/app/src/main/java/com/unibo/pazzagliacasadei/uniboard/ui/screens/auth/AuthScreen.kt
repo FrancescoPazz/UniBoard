@@ -139,8 +139,7 @@ fun AuthScreen(
                         .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(
-                        checked = rememberMe.value,
+                    Checkbox(checked = rememberMe.value,
                         onCheckedChange = { rememberMe.value = it })
                     Text(
                         text = stringResource(R.string.remember_me),

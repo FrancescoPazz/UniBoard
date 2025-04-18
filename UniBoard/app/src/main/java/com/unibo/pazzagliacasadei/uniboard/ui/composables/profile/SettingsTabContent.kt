@@ -18,8 +18,7 @@ fun SettingsTabContent(onLogout: () -> Unit) {
     ) {
         TextButton(onClick = onLogout) {
             Text(
-                text = stringResource(R.string.logout),
-                style = MaterialTheme.typography.titleLarge
+                text = stringResource(R.string.logout), style = MaterialTheme.typography.titleLarge
             )
         }
     }

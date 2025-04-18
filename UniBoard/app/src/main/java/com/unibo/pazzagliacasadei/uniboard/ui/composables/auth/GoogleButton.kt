@@ -38,7 +38,7 @@ fun GoogleButton(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_google_logo),
-                contentDescription = null, // "Google Logo"
+                contentDescription = null,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
