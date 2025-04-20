@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,9 +24,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -55,6 +60,7 @@ fun AuthScreen(
     val name = remember { mutableStateOf("") }
     val surname = remember { mutableStateOf("") }
     val rememberMe = remember { mutableStateOf(false) }
+    var isResetMode by remember { mutableStateOf(false) }
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -101,124 +107,154 @@ fun AuthScreen(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(24.dp))
-            if (!isLoginMode.value) {
-                TextField(value = name.value,
-                    onValueChange = { name.value = it },
-                    label = { Text(text = stringResource(id = R.string.name)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                TextField(value = surname.value,
-                    onValueChange = { surname.value = it },
-                    label = { Text(text = stringResource(id = R.string.surname)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-            }
-            TextField(value = email.value,
-                onValueChange = { email.value = it },
-                label = { Text(text = stringResource(id = R.string.email)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            TextField(value = password.value,
-                onValueChange = { password.value = it },
-                label = { Text(text = stringResource(id = R.string.password)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            if (!isLoginMode.value) {
-                TextField(value = confirmPassword.value,
-                    onValueChange = { confirmPassword.value = it },
-                    label = { Text(text = stringResource(id = R.string.confirm_password)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-            } else {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(checked = rememberMe.value,
-                        onCheckedChange = { rememberMe.value = it })
-                    Text(
-                        text = stringResource(R.string.remember_me),
-                        modifier = Modifier.padding(start = 8.dp)
+            if(!isResetMode) {
+                if (!isLoginMode.value) {
+                    TextField(value = name.value,
+                        onValueChange = { name.value = it },
+                        label = { Text(text = stringResource(id = R.string.name)) },
+                        modifier = Modifier.fillMaxWidth()
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    TextField(value = surname.value,
+                        onValueChange = { surname.value = it },
+                        label = { Text(text = stringResource(id = R.string.surname)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
+                TextField(value = email.value,
+                    onValueChange = { email.value = it },
+                    label = { Text(text = stringResource(id = R.string.email)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Spacer(modifier = Modifier.height(12.dp))
-            }
-            AuthButton(
-                text = if (isLoginMode.value) stringResource(R.string.login)
-                else stringResource(R.string.signup), onClick = {
-                    if (isLoginMode.value) {
-                        authParams.login(email.value, password.value)
-                        email.value = ""
-                        password.value = ""
-                    } else {
-                        if (password.value != confirmPassword.value) {
-                            Toast.makeText(
-                                context, "Le password non corrispondono!", Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            authParams.signUp(
-                                email.value, password.value, name.value, surname.value
-                            )
-                            isLoginMode.value = true
+                TextField(value = password.value,
+                    onValueChange = { password.value = it },
+                    label = { Text(text = stringResource(id = R.string.password)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                if (!isLoginMode.value) {
+                    TextField(value = confirmPassword.value,
+                        onValueChange = { confirmPassword.value = it },
+                        label = { Text(text = stringResource(id = R.string.confirm_password)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(checked = rememberMe.value,
+                            onCheckedChange = { rememberMe.value = it })
+                        Text(
+                            text = stringResource(R.string.remember_me),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+                AuthButton(
+                    text = if (isLoginMode.value) stringResource(R.string.login)
+                    else stringResource(R.string.signup), onClick = {
+                        if (isLoginMode.value) {
+                            authParams.login(email.value, password.value)
                             email.value = ""
                             password.value = ""
-                            confirmPassword.value = ""
-                            name.value = ""
-                            surname.value = ""
+                        } else {
+                            if (password.value != confirmPassword.value) {
+                                Toast.makeText(
+                                    context, "Le password non corrispondono!", Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                authParams.signUp(
+                                    email.value, password.value, name.value, surname.value
+                                )
+                                isLoginMode.value = true
+                                email.value = ""
+                                password.value = ""
+                                confirmPassword.value = ""
+                                name.value = ""
+                                surname.value = ""
+                            }
                         }
+                    }, modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                if (isLoginMode.value) {
+                    TextButton(onClick = { isResetMode = true },) {
+                        Text(text = stringResource(R.string.forgot_password))
                     }
-                }, modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            if (isLoginMode.value) {
-                TextButton(onClick = { /* TODO */ }) {
-                    Text(text = stringResource(R.string.forgot_password))
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-            }
-            Text(
-                text = stringResource(R.string.or_text),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            GoogleButton(
-                text = stringResource(R.string.login_with_google),
-                onClick = { /* TODO */ },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = stringResource(R.string.terms_and_privacy),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .alpha(0.8f),
+                    text = stringResource(R.string.or_text),
+                    modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            TextButton(onClick = {
-                isLoginMode.value = !isLoginMode.value
-                email.value = ""
-                password.value = ""
-                confirmPassword.value = ""
-                name.value = ""
-                surname.value = ""
-            }) {
-                Text(
-                    text = if (isLoginMode.value) stringResource(R.string.need_to_signup)
-                    else stringResource(R.string.already_have_account)
+                Spacer(modifier = Modifier.height(12.dp))
+                GoogleButton(
+                    text = stringResource(R.string.login_with_google),
+                    onClick = { /* TODO */ },
+                    modifier = Modifier.fillMaxWidth()
                 )
+                Spacer(modifier = Modifier.height(24.dp))
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = stringResource(R.string.terms_and_privacy),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .alpha(0.8f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                TextButton(onClick = {
+                    isLoginMode.value = !isLoginMode.value
+                    email.value = ""
+                    password.value = ""
+                    confirmPassword.value = ""
+                    name.value = ""
+                    surname.value = ""
+                }) {
+                    Text(
+                        text = if (isLoginMode.value) stringResource(R.string.need_to_signup)
+                        else stringResource(R.string.already_have_account)
+                    )
+                }
+            } else {
+                Text(
+                    text = stringResource(R.string.reset_password_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.height(16.dp))
+                TextField(value = email.value,
+                    onValueChange = { email.value = it },
+                    label = { Text(text = stringResource(id = R.string.email)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(16.dp))
+                AuthButton(
+                    text = stringResource(R.string.send_reset_email),
+                    onClick = {
+                        authParams.resetPassword(email.value.trim())
+                    },
+                    enabled = email.value.isNotBlank() && authState.value != AuthState.Loading
+                )
+                Spacer(Modifier.height(8.dp))
+                TextButton(
+                    onClick = { isResetMode = false },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.tertiary
+                    )
+                ) {
+                    Text(stringResource(R.string.back_to_login))
+                }
             }
         }
     })

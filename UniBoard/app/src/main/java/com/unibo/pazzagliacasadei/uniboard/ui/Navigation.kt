@@ -65,6 +65,9 @@ fun UniBoardNavGraph(
                     signUp = { name, surname, email, password ->
                         authViewModel.signUp(name, surname, email, password)
                     },
+                    resetPassword = { email ->
+                        authViewModel.sendPasswordResetEmail(email)
+                    }
                 )
                 AuthScreen(navController, authParams)
             }

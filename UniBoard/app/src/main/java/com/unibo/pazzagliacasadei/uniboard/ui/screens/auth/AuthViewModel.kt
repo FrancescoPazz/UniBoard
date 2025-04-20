@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -61,5 +62,23 @@ class AuthViewModel : ViewModel() {
     fun logout() {
         auth.signOut()
         _authState.value = AuthState.Unauthenticated
+    }
+
+    fun sendPasswordResetEmail(email: String) {
+        if (email.isEmpty()) {
+            _authState.value = AuthState.Error("ERROR : Empty email")
+            return
+        }
+
+        _authState.value = AuthState.Loading
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                _authState.value = AuthState.Unauthenticated
+            } else {
+                _authState.value = AuthState.Error(
+                    task.exception?.message ?: "ERROR : Password reset failed"
+                )
+            }
+        }
     }
 }

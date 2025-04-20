@@ -17,6 +17,9 @@
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="send_reset_email">Send email</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="reset_password_title">Reset Password</string>
     <!-- Settings page -->
     <string name="theme">Theme</string>
     <string name="lightMode">Light theme</string>
