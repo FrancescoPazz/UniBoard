@@ -4,80 +4,116 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthState
+import androidx.lifecycle.viewModelScope
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.launch
 
-class AuthViewModel : ViewModel() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+class AuthViewModel(
+    private val authRepo: AuthRepository, private val userRepo: UserRepository
+) : ViewModel() {
 
-    private val _authState = MutableLiveData<AuthState>()
+    private val _authState = MutableLiveData<AuthState>(AuthState.Unauthenticated)
     val authState: LiveData<AuthState> = _authState
 
     init {
-        checkAuthStatus()
-    }
-
-    private fun checkAuthStatus() {
-        if (auth.currentUser != null) {
-            _authState.value = AuthState.Authenticated
-        } else {
-            _authState.value = AuthState.Unauthenticated
-        }
-    }
-
-    fun login(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            _authState.value = AuthState.Error("ERROR : Empty fields")
-            return
-        }
-
-        _authState.value = AuthState.Loading
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                _authState.value = AuthState.Authenticated
-            } else {
-                _authState.value = AuthState.Error(
-                    task.exception?.message ?: "ERROR : Login failed"
-                )
+        viewModelScope.launch {
+            authRepo.authState().collect { state ->
+                _authState.postValue(state)
+                if (state is AuthState.Authenticated) {
+                    userRepo.loadUserData()
+                }
             }
         }
     }
 
-    fun signUp(email: String, password: String, name: String, surname: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            _authState.value = AuthState.Error("ERROR : Empty fields")
-            return
-        }
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            authRepo.signIn(email, password).collect { resp ->
+                when (resp) {
+                    is AuthResponse.Success -> {
+                        userRepo.loadUserData()
+                        _authState.value = AuthState.Authenticated
+                    }
 
-        _authState.value = AuthState.Loading
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                _authState.value = AuthState.Error(
-                    task.exception?.message ?: "ERROR : Signup failed"
-                )
+                    is AuthResponse.Failure -> {
+                        _authState.value = AuthState.Error(resp.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun signUp(
+        email: String,
+        password: String,
+        username: String,
+        name: String?,
+        surname: String?,
+        tel: String?
+    ) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            authRepo.signUp(
+                email = email,
+                password = password,
+                name = name,
+                surname = surname,
+                username = username,
+                tel = tel
+            ).collect { resp ->
+                when (resp) {
+                    is AuthResponse.Success -> {
+                        _authState.value = AuthState.Unauthenticated
+                    }
+
+                    is AuthResponse.Failure -> {
+                        _authState.value = AuthState.Error(resp.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun loginGoogle(context: Context) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            authRepo.signInWithGoogle(context).collect { resp ->
+                when (resp) {
+                    is AuthResponse.Success -> {
+                        userRepo.loadUserData()
+                        _authState.value = AuthState.Authenticated
+                    }
+
+                    is AuthResponse.Failure -> {
+                        _authState.value = AuthState.Error(resp.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun sendPasswordReset(email: String) {
+        viewModelScope.launch {
+            val ok = authRepo.resetPassword(email).single()
+            if (ok is AuthResponse.Success) {
+                _authState.value = AuthState.Unauthenticated
+            } else if (ok is AuthResponse.Failure) {
+                _authState.value = AuthState.Error("Impossible to reset password")
             }
         }
     }
 
     fun logout() {
-        auth.signOut()
-        _authState.value = AuthState.Unauthenticated
-    }
-
-    fun sendPasswordResetEmail(email: String) {
-        if (email.isEmpty()) {
-            _authState.value = AuthState.Error("ERROR : Empty email")
-            return
-        }
-
-        _authState.value = AuthState.Loading
-        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+        viewModelScope.launch {
+            val ok = authRepo.signOut().single()
+            if (ok is AuthResponse.Success) {
+                userRepo.clearUserData()
                 _authState.value = AuthState.Unauthenticated
-            } else {
-                _authState.value = AuthState.Error(
-                    task.exception?.message ?: "ERROR : Password reset failed"
-                )
+            } else if (ok is AuthResponse.Failure) {
+                _authState.value = AuthState.Error("Logout error")
             }
         }
     }

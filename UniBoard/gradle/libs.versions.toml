@@ -16,7 +16,10 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.2.0"
 runtimeLivedata = "1.7.8"
 datastorePreferences = "1.1.4"
-
+bomVersion = "3.1.4"
+credentials = "1.5.0"
+googleid = "1.1.1"
+ktorClientOkhttp = "3.1.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +43,14 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
+realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt" }
+auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt" }
+bom-vversion = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bomVersion" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
 
 
 [plugins]

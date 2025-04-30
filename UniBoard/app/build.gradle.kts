@@ -55,10 +55,22 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.datastore.preferences)
 
+    // Supabase
+    implementation(platform(libs.bom.vversion))
+    implementation(libs.postgrest.kt)
+    implementation(libs.auth.kt)
+    implementation(libs.realtime.kt)
+
+    // Google Auth
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    // Ktor Client
+    implementation(libs.ktor.client.okhttp)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

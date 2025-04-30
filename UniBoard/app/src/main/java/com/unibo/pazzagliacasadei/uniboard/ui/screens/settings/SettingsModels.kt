@@ -1,7 +1,6 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.contracts
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.settings
 
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.ThemeState
 
 data class SettingsParams(
     val changeTheme: (Theme) -> Unit,

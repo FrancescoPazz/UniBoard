@@ -34,4 +34,6 @@
     <string name="home">Home</string>
     <string name="search">Cerca</string>
     <string name="profile">Profile</string>
+    <string name="username">Nome utente</string>
+    <string name="tel">Telefono</string>
 </resources>

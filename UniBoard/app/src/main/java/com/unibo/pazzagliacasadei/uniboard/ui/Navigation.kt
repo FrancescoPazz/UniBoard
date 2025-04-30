@@ -3,15 +3,14 @@ package com.unibo.pazzagliacasadei.uniboard.ui
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthParams
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.ProfileParams
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.SettingsParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
@@ -62,11 +61,16 @@ fun UniBoardNavGraph(
                     login = { email, password ->
                         authViewModel.login(email, password)
                     },
-                    signUp = { name, surname, email, password ->
-                        authViewModel.signUp(name, surname, email, password)
+                    signUp = { email, password, username, name, surname, tel ->
+                        authViewModel.signUp(email = email,
+                            password = password,
+                            name = name,
+                            surname = surname,
+                            username = username,
+                            tel = tel)
                     },
                     resetPassword = { email ->
-                        authViewModel.sendPasswordResetEmail(email)
+                        authViewModel.sendPasswordReset(email)
                     }
                 )
                 AuthScreen(navController, authParams)

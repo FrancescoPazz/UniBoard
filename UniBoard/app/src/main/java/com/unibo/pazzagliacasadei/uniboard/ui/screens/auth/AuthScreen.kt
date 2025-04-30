@@ -12,9 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -43,8 +44,6 @@ import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.AuthButton
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.GoogleButton
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthParams
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.AuthState
 
 @Composable
 fun AuthScreen(
@@ -57,8 +56,10 @@ fun AuthScreen(
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
+    val username = remember { mutableStateOf("") }
     val name = remember { mutableStateOf("") }
     val surname = remember { mutableStateOf("") }
+    val tel = remember { mutableStateOf("") }
     val rememberMe = remember { mutableStateOf(false) }
     var isResetMode by remember { mutableStateOf(false) }
 
@@ -107,8 +108,14 @@ fun AuthScreen(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(24.dp))
-            if(!isResetMode) {
+            if (!isResetMode) {
                 if (!isLoginMode.value) {
+                    TextField(value = username.value,
+                        onValueChange = { username.value = it },
+                        label = { Text(text = stringResource(id = R.string.username)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
                     TextField(value = name.value,
                         onValueChange = { name.value = it },
                         label = { Text(text = stringResource(id = R.string.name)) },
@@ -121,6 +128,14 @@ fun AuthScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(12.dp))
+                    TextField(
+                        value = tel.value,
+                        onValueChange = { tel.value = it.filter { char -> char.isDigit() } },
+                        label = { Text(text = stringResource(id = R.string.tel)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
                 TextField(value = email.value,
                     onValueChange = { email.value = it },
@@ -131,13 +146,18 @@ fun AuthScreen(
                 TextField(value = password.value,
                     onValueChange = { password.value = it },
                     label = { Text(text = stringResource(id = R.string.password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 if (!isLoginMode.value) {
-                    TextField(value = confirmPassword.value,
+                    TextField(
+                        value = confirmPassword.value,
                         onValueChange = { confirmPassword.value = it },
                         label = { Text(text = stringResource(id = R.string.confirm_password)) },
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -171,21 +191,28 @@ fun AuthScreen(
                                 ).show()
                             } else {
                                 authParams.signUp(
-                                    email.value, password.value, name.value, surname.value
+                                    email.value,
+                                    password.value,
+                                    username.value,
+                                    name.value,
+                                    surname.value,
+                                    tel.value
                                 )
                                 isLoginMode.value = true
                                 email.value = ""
                                 password.value = ""
                                 confirmPassword.value = ""
+                                username.value = ""
                                 name.value = ""
                                 surname.value = ""
+                                tel.value = ""
                             }
                         }
                     }, modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 if (isLoginMode.value) {
-                    TextButton(onClick = { isResetMode = true },) {
+                    TextButton(onClick = { isResetMode = true }) {
                         Text(text = stringResource(R.string.forgot_password))
                     }
                     Spacer(modifier = Modifier.height(12.dp))
@@ -240,16 +267,13 @@ fun AuthScreen(
                 )
                 Spacer(Modifier.height(16.dp))
                 AuthButton(
-                    text = stringResource(R.string.send_reset_email),
-                    onClick = {
+                    text = stringResource(R.string.send_reset_email), onClick = {
                         authParams.resetPassword(email.value.trim())
-                    },
-                    enabled = email.value.isNotBlank() && authState.value != AuthState.Loading
+                    }, enabled = email.value.isNotBlank() && authState.value != AuthState.Loading
                 )
                 Spacer(Modifier.height(8.dp))
                 TextButton(
-                    onClick = { isResetMode = false },
-                    colors = ButtonDefaults.textButtonColors(
+                    onClick = { isResetMode = false }, colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.tertiary
                     )
                 ) {

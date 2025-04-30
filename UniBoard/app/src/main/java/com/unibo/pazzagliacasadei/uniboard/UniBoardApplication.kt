@@ -11,7 +11,9 @@ class UniBoardApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@UniBoardApplication)
-            modules(modules)
+            modules(
+                supabaseModule, modules
+            )
         }
     }
 }

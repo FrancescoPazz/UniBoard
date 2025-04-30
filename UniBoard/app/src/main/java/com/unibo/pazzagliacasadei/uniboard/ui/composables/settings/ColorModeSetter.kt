@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.SettingsParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 
 @Composable
 fun ColorModeSetter(settingsParams: SettingsParams) {

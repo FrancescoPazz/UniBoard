@@ -28,7 +28,6 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.MessagesTabCon
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.SettingsTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.contracts.ProfileParams
 
 @Composable
 fun ProfileScreen(
