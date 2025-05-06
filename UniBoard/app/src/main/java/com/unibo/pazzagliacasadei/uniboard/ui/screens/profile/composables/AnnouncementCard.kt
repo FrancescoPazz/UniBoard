@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.composables.profile
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

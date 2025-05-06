@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.composables.profile
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow

@@ -72,6 +72,9 @@ dependencies {
     // Ktor Client
     implementation(libs.ktor.client.okhttp)
 
+    // Coil Async Image
+    implementation(libs.coil.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

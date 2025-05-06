@@ -42,8 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.AuthButton
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.auth.GoogleButton
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthButton
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.GoogleButton
 
 @Composable
 fun AuthScreen(

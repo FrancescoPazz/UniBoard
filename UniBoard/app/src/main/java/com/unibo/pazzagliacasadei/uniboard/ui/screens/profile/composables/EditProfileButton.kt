@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.composables.profile
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button

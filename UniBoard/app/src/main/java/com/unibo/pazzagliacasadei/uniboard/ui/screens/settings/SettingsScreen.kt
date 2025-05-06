@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.settings.ColorModeSetter
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.composables.ColorModeSetter
 
 @Composable
 fun SettingsScreen(navController: NavHostController, settingsParams: SettingsParams) {

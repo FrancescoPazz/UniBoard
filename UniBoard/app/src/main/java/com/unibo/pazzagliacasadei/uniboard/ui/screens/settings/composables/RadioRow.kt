@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.composables.settings
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

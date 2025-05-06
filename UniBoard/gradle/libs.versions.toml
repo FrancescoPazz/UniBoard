@@ -7,19 +7,19 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.04.01"
 
 ktorSerializationKotlinxJson = "3.1.2"
 koinAndroidxCompose = "4.0.4"
 navigationCompose = "2.8.9"
 googleGmsGoogleServices = "4.4.2"
-firebaseAuth = "23.2.0"
-runtimeLivedata = "1.7.8"
+runtimeLivedata = "1.8.0"
 datastorePreferences = "1.1.4"
 bomVersion = "3.1.4"
 credentials = "1.5.0"
 googleid = "1.1.1"
 ktorClientOkhttp = "3.1.2"
+coilCompose = "3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,7 +40,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
@@ -51,7 +50,7 @@ androidx-credentials = { module = "androidx.credentials:credentials", version.re
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
-
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

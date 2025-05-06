@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.composables.auth
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.CornerSize

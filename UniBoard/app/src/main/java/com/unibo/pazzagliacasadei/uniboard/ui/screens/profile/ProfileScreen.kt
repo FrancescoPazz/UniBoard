@@ -20,14 +20,14 @@ import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.Announcement
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.AnnouncementsTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.EditProfileButton
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.Message
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.MessagesTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileHeader
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.ProfileTabs
-import com.unibo.pazzagliacasadei.uniboard.ui.composables.profile.SettingsTabContent
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Announcement
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.AnnouncementsTabContent
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.EditProfileButton
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Message
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.MessagesTabContent
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileHeader
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileTabs
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.SettingsTabContent
 
 @Composable
 fun ProfileScreen(
