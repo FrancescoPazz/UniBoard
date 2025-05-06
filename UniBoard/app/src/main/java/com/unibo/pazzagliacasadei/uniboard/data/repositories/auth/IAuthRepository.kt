@@ -27,4 +27,6 @@ interface IAuthRepository {
     fun resetPassword(email: String): Flow<AuthResponse>
 
     suspend fun currentUser(): User?
+
+    suspend fun changePassword(oldPassword: String, newPassword: String)
 }

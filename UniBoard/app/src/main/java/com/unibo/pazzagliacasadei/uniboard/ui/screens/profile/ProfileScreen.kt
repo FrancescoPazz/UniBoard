@@ -1,8 +1,10 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -22,10 +24,9 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Announcement
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.AnnouncementsTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.EditProfileButton
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Message
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.MessagesTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileHeader
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileHeaderSection
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.SettingsTabContent
 
@@ -40,60 +41,46 @@ fun ProfileScreen(
     )
     var selectedTab by remember { mutableIntStateOf(0) }
 
-    val sampleAnnouncements = listOf( // TODO
-        Announcement("Brr Brr Patamim?", "Luca Pazzadei", "Cesena", R.drawable.logo),
-        Announcement("Aiuto ho molta baura", "Anonimo", "Naboli", R.drawable.logo),
-        Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
-        Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
-    )
-
-    val sampleMessages = listOf(
-        Message("Mario Rossi", "Ciao, il divano è ancora disponibile?"),
-        Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?"),
-    )
-
-    Scaffold(
-        topBar = { TopBar(navController) },
+    Scaffold(topBar = { TopBar(navController) },
         bottomBar = { BottomBar(navController) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileHeader( // TODO
-                name = "Luca Pazzadei",
-                subtitle = "Insegnante • Villamerina",
-                bio = "Appassionato di kebab e chitarre. Amo la storia e Lenin.",
-                imageRes = R.drawable.logo
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            EditProfileButton(onClick = {
-                // TODO
-            })
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            ProfileTabs(tabs = tabs,
-                selectedIndex = selectedTab,
-                onTabSelected = { selectedTab = it })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            when (selectedTab) {
-                0 -> AnnouncementsTabContent(announcements = sampleAnnouncements)
-                1 -> MessagesTabContent(messages = sampleMessages)
-                2 -> SettingsTabContent(onLogout = {
-                    profileParams.logout()
-                    navController.navigate(UniBoardRoute.Auth) {
-                        popUpTo(UniBoardRoute.Auth) { inclusive = true }
-                        launchSingleTop = true
-                    }
-                })
+            ProfileHeaderSection()
+            Spacer(Modifier.height(8.dp))
+            ProfileTabs(tabs, selectedTab) { selectedTab = it }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                val sampleAnnouncements = listOf(
+                    Announcement("Brr Brr Patamim?", "Luca Pazzadei", "Cesena", R.drawable.logo),
+                    Announcement("Aiuto ho molta baura", "Anonimo", "Napoli", R.drawable.logo),
+                    Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
+                    Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
+                )
+                val sampleMessages = listOf(
+                    Message("Mario Rossi", "Ciao, il divano è ancora disponibile?"),
+                    Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?"),
+                )
+                when (selectedTab) {
+                    0 -> AnnouncementsTabContent(sampleAnnouncements)
+                    1 -> MessagesTabContent(sampleMessages)
+                    2 -> SettingsTabContent(updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
+                        onLogout = {
+                            navController.navigate(UniBoardRoute.Auth) {
+                                popUpTo(UniBoardRoute.Auth) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                            profileParams.logout()
+                        })
+                }
             }
         }
     }
 }
+

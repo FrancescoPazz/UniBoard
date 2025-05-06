@@ -18,6 +18,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
@@ -110,8 +111,17 @@ fun UniBoardNavGraph(
                     )
                 }
                 composable<UniBoardRoute.Profile> {
+                    val profileViewModel = koinViewModel<ProfileViewModel>()
                     val profileParams = ProfileParams(
                         logout = { authViewModel.logout() },
+                        updatePasswordWithOldPassword = { oldPassword, newPassword, onSuccess, onError ->
+                            profileViewModel.updatePasswordWithOldPassword(
+                                oldPassword = oldPassword,
+                                newPassword = newPassword,
+                                onSuccess = onSuccess,
+                                onError = onError
+                            )
+                        }
                     )
                     ProfileScreen(navController, profileParams)
                 }
@@ -119,7 +129,6 @@ fun UniBoardNavGraph(
                     val settingsParams = SettingsParams(
                         changeTheme = { theme -> settingsViewModel.changeTheme(theme) },
                         themeState = themeState,
-                        logout = { authViewModel.logout() },
                     )
                     SettingsScreen(navController, settingsParams)
                 }

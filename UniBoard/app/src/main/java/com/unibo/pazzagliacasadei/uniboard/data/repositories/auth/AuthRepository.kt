@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.auth
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -162,5 +163,18 @@ class AuthRepository(
             tel = data.userMetadata?.get("tel")?.toString()?.trim('"')
                 ?: data.userMetadata?.get("phone_number")?.toString()?.trim('"'),
         )
+    }
+
+    override suspend fun changePassword(oldPassword: String, newPassword: String) {
+        val email = supabase.auth.currentUserOrNull()?.email ?: return
+        Log.d("ProfileViewModel", "Changing password for user: $email")
+        supabase.auth.signInWith(Email) {
+            this.email = email
+            this.password = oldPassword
+        }
+        supabase.auth.updateUser {
+            password = newPassword
+        }
+        Log.d("ProfileViewModel", "Password changed successfully for user: $email")
     }
 }
