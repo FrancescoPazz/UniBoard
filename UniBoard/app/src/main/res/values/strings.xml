@@ -35,4 +35,9 @@
     <string name="profile">Profile</string>
     <string name="username">Username</string>
     <string name="tel">Telephone</string>
+    <!-- Publish page -->
+    <string name="publish">Post</string>
+    <string name="post_title">Title</string>
+    <string name="post_content">Post content</string>
+    <string name="anonymous_post">Publish in anonymity</string>
 </resources>

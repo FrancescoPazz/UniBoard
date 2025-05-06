@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -82,6 +83,10 @@ fun BottomBar(navController: NavController) {
             name = stringResource(R.string.profile),
             route = UniBoardRoute.Profile,
             icon = Icons.Default.Person
+        ), BottomNavItem(
+            name = stringResource(R.string.publish),
+            route = UniBoardRoute.Publish,
+            icon = Icons.Default.Add
         )
     )
 
