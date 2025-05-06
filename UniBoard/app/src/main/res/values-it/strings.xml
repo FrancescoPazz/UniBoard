@@ -33,7 +33,12 @@
     <string name="edit_profile">Modifica profilo</string>
     <string name="home">Home</string>
     <string name="search">Cerca</string>
-    <string name="profile">Profile</string>
+    <string name="profile">Profilo</string>
     <string name="username">Nome utente</string>
     <string name="tel">Telefono</string>
+    <!-- Publish page -->
+    <string name="publish">Pubblica</string>
+    <string name="post_title">Titolo</string>
+    <string name="post_content">Contenuto del post</string>
+    <string name="anonymous_post">Pubblica in anonimato</string>
 </resources>

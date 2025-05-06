@@ -18,6 +18,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.theme.UniBoardTheme
@@ -36,7 +37,10 @@ sealed interface UniBoardRoute {
     data object Profile : UniBoardRoute
 
     @Serializable
-    data object Settings: UniBoardRoute
+    data object Settings : UniBoardRoute
+
+    @Serializable
+    data object Publish: UniBoardRoute
 }
 
 @Composable
@@ -67,12 +71,14 @@ fun UniBoardNavGraph(
                             authViewModel.login(email, password)
                         },
                         signUp = { email, password, username, name, surname, tel ->
-                            authViewModel.signUp(email = email,
+                            authViewModel.signUp(
+                                email = email,
                                 password = password,
                                 name = name,
                                 surname = surname,
                                 username = username,
-                                tel = tel)
+                                tel = tel
+                            )
                         },
                         resetPassword = { email ->
                             authViewModel.sendPasswordReset(email)
@@ -116,6 +122,9 @@ fun UniBoardNavGraph(
                         logout = { authViewModel.logout() },
                     )
                     SettingsScreen(navController, settingsParams)
+                }
+                composable<UniBoardRoute.Publish> {
+                    PublishScreen(navController)
                 }
             }
         }
