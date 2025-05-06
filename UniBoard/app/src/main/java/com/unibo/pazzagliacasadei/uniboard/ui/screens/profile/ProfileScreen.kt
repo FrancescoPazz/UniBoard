@@ -72,15 +72,17 @@ fun ProfileScreen(
                     1 -> MessagesTabContent(sampleMessages)
                     2 -> SettingsTabContent(updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
                         onLogout = {
+                            profileParams.logout()
+
                             navController.navigate(UniBoardRoute.Auth) {
-                                popUpTo(UniBoardRoute.Auth) { inclusive = true }
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true
+                                }
                                 launchSingleTop = true
                             }
-                            profileParams.logout()
                         })
                 }
             }
         }
     }
 }
-

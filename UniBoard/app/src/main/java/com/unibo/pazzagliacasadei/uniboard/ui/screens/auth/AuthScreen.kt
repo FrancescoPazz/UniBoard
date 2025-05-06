@@ -43,25 +43,6 @@ fun AuthScreen(
     var tel by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
 
-    LaunchedEffect(authState) {
-        when (authState) {
-            is AuthState.Authenticated -> {
-                navController.navigate(UniBoardRoute.Home) {
-                    popUpTo(UniBoardRoute.Auth) {
-                        inclusive = true
-                    }
-                }
-            }
-
-            is AuthState.Error -> {
-                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            else -> {}
-        }
-    }
-
     Scaffold { padding ->
         Column(
             modifier = Modifier
