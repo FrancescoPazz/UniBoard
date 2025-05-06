@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 
 data class AuthParams(
@@ -8,7 +9,8 @@ data class AuthParams(
     val signUp: (
         email: String, password: String, username: String, name: String?, surname: String?, tel: String?
     ) -> Unit,
-    val resetPassword: (email: String) -> Unit
+    val resetPassword: (email: String) -> Unit,
+    val loginGoogle: (context: Context) -> Unit
 )
 
 sealed class AuthState {

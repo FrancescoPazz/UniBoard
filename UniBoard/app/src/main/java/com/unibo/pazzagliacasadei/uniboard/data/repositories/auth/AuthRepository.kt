@@ -20,13 +20,11 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import java.security.MessageDigest
 import java.util.UUID
 
 private const val GOOGLE_SERVER_CLIENT_ID =
-    "965652282511-hveojtrsgklpr52hbi54qg9ct477llmh.apps.googleusercontent.com"
+    "565030994457-pbkbddivekdp4e42ad6tirf84jhis32h.apps.googleusercontent.com"
 
 class AuthRepository(
     private val supabase: SupabaseClient

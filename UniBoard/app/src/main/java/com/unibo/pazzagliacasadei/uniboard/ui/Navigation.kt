@@ -76,6 +76,9 @@ fun UniBoardNavGraph(
                         },
                         resetPassword = { email ->
                             authViewModel.sendPasswordReset(email)
+                        },
+                        loginGoogle = { context ->
+                            authViewModel.loginGoogle(context)
                         }
                     )
                     AuthScreen(navController, authParams)

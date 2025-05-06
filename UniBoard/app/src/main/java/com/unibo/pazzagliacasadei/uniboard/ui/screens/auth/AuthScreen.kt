@@ -225,7 +225,7 @@ fun AuthScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 GoogleButton(
                     text = stringResource(R.string.login_with_google),
-                    onClick = { /* TODO */ },
+                    onClick = { authParams.loginGoogle(context) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(24.dp))
