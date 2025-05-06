@@ -21,6 +21,7 @@
     <string name="send_reset_email">Invia email</string>
     <string name="back_to_login">Torna all\'accesso</string>
     <string name="reset_password_title">Reimposta Password</string>
+    <string name="password_not_match">Le password non corrispondono</string>
     <!-- Settings page -->
     <string name="theme">Tema</string>
     <string name="lightMode">Tema chiaro</string>
