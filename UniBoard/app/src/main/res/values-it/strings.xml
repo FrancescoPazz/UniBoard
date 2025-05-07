@@ -54,4 +54,11 @@
     <!-- Yes -->
     <string name="yes">Sì</string>
     <string name="no">No</string>
+    <!-- Detail Post -->
+    <string name="position">Posizione</string>
+    <string name="by">di</string>
+    <string name="send">Invia</string>
+    <string name="comments">Commenti</string>
+    <string name="no_commented_yet">Nessun commento. Sii il primo a scrivere!</string>
+    <string name="write_comment">Scrivi un commento…</string>
 </resources>

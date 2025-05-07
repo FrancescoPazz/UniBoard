@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.SettingsRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
@@ -20,10 +22,12 @@ val modules = module {
     viewModel { SettingsViewModel(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
+    viewModel { DetailViewModel(get()) }
 
     single { AuthRepository(get()) }
     single { UserRepository(get()) }
     single { HomeRepository(get()) }
     single { SettingsRepository(get()) }
+    single { DetailRepository(get()) }
     single { get<Context>().dataStore }
 }

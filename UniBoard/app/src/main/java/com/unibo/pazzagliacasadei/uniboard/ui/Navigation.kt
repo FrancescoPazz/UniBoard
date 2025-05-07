@@ -19,6 +19,9 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
@@ -47,6 +50,9 @@ sealed interface UniBoardRoute {
 
     @Serializable
     data object Publish: UniBoardRoute
+
+    @Serializable
+    data object Detail : UniBoardRoute
 }
 
 @Composable
@@ -57,6 +63,7 @@ fun UniBoardNavGraph(
     val authViewModel = koinViewModel<AuthViewModel>()
     val authState by authViewModel.authState.observeAsState()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
+    val detailViewModel = koinViewModel<DetailViewModel>()
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(authState) {
@@ -140,8 +147,8 @@ fun UniBoardNavGraph(
                             filterPosts = { filterIndex ->
                                 homeViewModel.filterPosts(filterIndex)
                             },
-                            getPostDetails = { postId ->
-                                navController.navigate("post/$postId")
+                            selectPost = { post ->
+                                detailViewModel.setPost(post)
                             }
                         )
                     )
@@ -170,6 +177,18 @@ fun UniBoardNavGraph(
                 }
                 composable<UniBoardRoute.Publish> {
                     PublishScreen(navController)
+                }
+                composable<UniBoardRoute.Detail> {
+                    DetailScreen(
+                        navController,
+                        detailParams = DetailParams(
+                            post = detailViewModel.post.observeAsState(),
+                            comments = detailViewModel.comments.observeAsState(),
+                            addComment = { text ->
+                                detailViewModel.addComment(text)
+                            }
+                        )
+                    )
                 }
             }
         }

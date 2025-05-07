@@ -6,5 +6,5 @@ data class HomeParams(
     val posts: List<Post>,
     val searchPosts: (query: String) -> Unit,
     val filterPosts: (filterIndex: Int) -> Unit,
-    val getPostDetails: (postId: String) -> Unit,
+    val selectPost: (post: Post) -> Unit,
 )

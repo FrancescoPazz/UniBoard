@@ -26,8 +26,8 @@ fun PostCard(
         .clickable { onClick() }) {
         Column {
             AsyncImage(
-                model = post.imageUrl,
-                contentDescription = post.title,
+                model = post.content,
+                contentDescription = post.author,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -35,12 +35,12 @@ fun PostCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = post.title,
+                text = post.author,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
             Text(
-                text = post.subtitle,
+                text = post.publishDate,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )

@@ -53,4 +53,11 @@
     <!-- Yes -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <!-- Detail Post -->
+    <string name="position">Position</string>
+    <string name="by">by</string>
+    <string name="send">Send</string>
+    <string name="comments">Comments</string>
+    <string name="no_commented_yet">No comments. Be the first to write!</string>
+    <string name="write_comment">Write a comment…</string>
 </resources>

@@ -25,7 +25,7 @@ import java.security.MessageDigest
 import java.util.UUID
 
 private const val GOOGLE_SERVER_CLIENT_ID =
-    "565030994457-pbkbddivekdp4e42ad6tirf84jhis32h.apps.googleusercontent.com"
+    "565030994457-omk63okmp2lqc1pqr5bpc5tqntt9g5ls.apps.googleusercontent.com"
 
 class AuthRepository(
     private val supabase: SupabaseClient
@@ -87,7 +87,7 @@ class AuthRepository(
         val rawNonce = UUID.randomUUID().toString()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(rawNonce.toByteArray())
-        return digest.joinToString("") { "%02x".format(it) }
+        return digest.fold("") { str, it ->  str + "%02x".format(it) }
     }
 
     override fun signInWithGoogle(context: Context): Flow<AuthResponse> = flow {

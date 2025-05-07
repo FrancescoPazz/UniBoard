@@ -3,12 +3,15 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
+class HomeViewModel(
+    private val repository: HomeRepository,
+) : ViewModel() {
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts
 

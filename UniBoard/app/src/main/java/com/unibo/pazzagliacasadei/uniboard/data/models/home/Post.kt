@@ -1,10 +1,15 @@
 package com.unibo.pazzagliacasadei.uniboard.data.models.home
 
-import java.util.UUID
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Post(
-    val id: UUID,
-    val title: String,
-    val subtitle: String,
-    val imageUrl: String
+    @SerialName("id") val id: String,
+
+    @SerialName("author") val author: String,
+
+    @SerialName("publish_date") val publishDate: String,
+
+    @SerialName("content") val content: String
 )
