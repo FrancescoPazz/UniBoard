@@ -8,6 +8,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -18,6 +19,7 @@ val modules = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { HomeViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
 
     single { AuthRepository(get()) }
     single { UserRepository(get()) }

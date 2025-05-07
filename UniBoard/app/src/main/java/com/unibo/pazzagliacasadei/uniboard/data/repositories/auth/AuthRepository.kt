@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.auth
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -20,13 +21,11 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import java.security.MessageDigest
 import java.util.UUID
 
 private const val GOOGLE_SERVER_CLIENT_ID =
-    "965652282511-hveojtrsgklpr52hbi54qg9ct477llmh.apps.googleusercontent.com"
+    "565030994457-pbkbddivekdp4e42ad6tirf84jhis32h.apps.googleusercontent.com"
 
 class AuthRepository(
     private val supabase: SupabaseClient
@@ -164,5 +163,18 @@ class AuthRepository(
             tel = data.userMetadata?.get("tel")?.toString()?.trim('"')
                 ?: data.userMetadata?.get("phone_number")?.toString()?.trim('"'),
         )
+    }
+
+    override suspend fun changePassword(oldPassword: String, newPassword: String) {
+        val email = supabase.auth.currentUserOrNull()?.email ?: return
+        Log.d("ProfileViewModel", "Changing password for user: $email")
+        supabase.auth.signInWith(Email) {
+            this.email = email
+            this.password = oldPassword
+        }
+        supabase.auth.updateUser {
+            password = newPassword
+        }
+        Log.d("ProfileViewModel", "Password changed successfully for user: $email")
     }
 }

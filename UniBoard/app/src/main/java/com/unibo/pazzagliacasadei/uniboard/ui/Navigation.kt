@@ -1,9 +1,13 @@
 package com.unibo.pazzagliacasadei.uniboard.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,11 +17,13 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
@@ -47,10 +53,36 @@ sealed interface UniBoardRoute {
 fun UniBoardNavGraph(
     navController: NavHostController,
 ) {
+    val context = LocalContext.current
     val authViewModel = koinViewModel<AuthViewModel>()
-
+    val authState by authViewModel.authState.observeAsState()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Authenticated -> {
+                navController.navigate(UniBoardRoute.Home) {
+                    popUpTo(UniBoardRoute.Auth) {
+                        inclusive = true
+                    }
+                }
+            }
+            is AuthState.Unauthenticated -> {
+                navController.navigate(UniBoardRoute.Auth) {
+                    popUpTo(UniBoardRoute.Auth) {
+                        inclusive = true
+                    }
+                }
+            }
+            is AuthState.Error -> {
+                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            else -> {}
+        }
+    }
 
     KoinContext {
         UniBoardTheme(
@@ -60,9 +92,14 @@ fun UniBoardNavGraph(
                 Theme.System -> isSystemInDarkTheme()
             }
         ) {
+            val startRoute = when (authState) {
+                is AuthState.Authenticated -> UniBoardRoute.Home
+                else -> UniBoardRoute.Auth
+            }
+
             NavHost(
                 navController = navController,
-                startDestination = UniBoardRoute.Auth,
+                startDestination = startRoute,
             ) {
                 composable<UniBoardRoute.Auth> {
                     val authParams = AuthParams(
@@ -82,6 +119,9 @@ fun UniBoardNavGraph(
                         },
                         resetPassword = { email ->
                             authViewModel.sendPasswordReset(email)
+                        },
+                        loginGoogle = { context ->
+                            authViewModel.loginGoogle(context)
                         }
                     )
                     AuthScreen(navController, authParams)
@@ -107,8 +147,17 @@ fun UniBoardNavGraph(
                     )
                 }
                 composable<UniBoardRoute.Profile> {
+                    val profileViewModel = koinViewModel<ProfileViewModel>()
                     val profileParams = ProfileParams(
                         logout = { authViewModel.logout() },
+                        updatePasswordWithOldPassword = { oldPassword, newPassword, onSuccess, onError ->
+                            profileViewModel.updatePasswordWithOldPassword(
+                                oldPassword = oldPassword,
+                                newPassword = newPassword,
+                                onSuccess = onSuccess,
+                                onError = onError
+                            )
+                        }
                     )
                     ProfileScreen(navController, profileParams)
                 }
@@ -116,7 +165,6 @@ fun UniBoardNavGraph(
                     val settingsParams = SettingsParams(
                         changeTheme = { theme -> settingsViewModel.changeTheme(theme) },
                         themeState = themeState,
-                        logout = { authViewModel.logout() },
                     )
                     SettingsScreen(navController, settingsParams)
                 }
