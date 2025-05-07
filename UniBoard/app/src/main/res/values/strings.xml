@@ -45,4 +45,12 @@
     <string name="post_title">Title</string>
     <string name="post_content">Post content</string>
     <string name="anonymous_post">Publish in anonymity</string>
+    <string name="publish_page_photos">Photos</string>
+    <string name="publish_page_max_four">You can load up to a maximum of four photos</string>
+    <string name="publish_page_image_deletion_warning">Are you sure about removing this photo?</string>
+    <!-- Icons -->
+    <string name="camera_icon">Photo</string>
+    <!-- Yes -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
