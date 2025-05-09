@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.unibo.pazzagliacasadei.uniboard.R
-import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
+import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,14 +1,10 @@
-package com.unibo.pazzagliacasadei.uniboard.ui
+package com.unibo.pazzagliacasadei.uniboard.ui.navigation
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -26,6 +22,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
@@ -60,37 +57,12 @@ sealed interface UniBoardRoute {
 fun UniBoardNavGraph(
     navController: NavHostController,
 ) {
-    val context = LocalContext.current
     val authViewModel = koinViewModel<AuthViewModel>()
-    val authState by authViewModel.authState.observeAsState()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val detailViewModel = koinViewModel<DetailViewModel>()
+
+    val authState = authViewModel.authState.observeAsState()
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(authState) {
-        when (authState) {
-            is AuthState.Authenticated -> {
-                navController.navigate(UniBoardRoute.Home) {
-                    popUpTo(UniBoardRoute.Auth) {
-                        inclusive = true
-                    }
-                }
-            }
-            is AuthState.Unauthenticated -> {
-                navController.navigate(UniBoardRoute.Auth) {
-                    popUpTo(UniBoardRoute.Auth) {
-                        inclusive = true
-                    }
-                }
-            }
-            is AuthState.Error -> {
-                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            else -> {}
-        }
-    }
 
     KoinContext {
         UniBoardTheme(
@@ -100,8 +72,11 @@ fun UniBoardNavGraph(
                 Theme.System -> isSystemInDarkTheme()
             }
         ) {
-
-            val startRoute = when (authState) {
+            if (authState.value == null || authState.value == AuthState.Loading) {
+                LoadingScreen()
+                return@UniBoardTheme
+            }
+            val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
                 else -> UniBoardRoute.Auth
             }

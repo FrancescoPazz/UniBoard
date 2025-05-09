@@ -1,6 +1,5 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,7 +7,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.unibo.pazzagliacasadei.uniboard.ui.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.LoginForm
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.ResetPasswordForm
