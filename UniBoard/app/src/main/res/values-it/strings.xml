@@ -49,6 +49,8 @@
     <string name="publish_page_photos">Fotografie</string>
     <string name="publish_page_max_four">Puoi caricare fino a 4 foto</string>
     <string name="publish_page_image_deletion_warning">Sei sicuro di voler rimuovere questa fotografia?</string>
+    <string name="gallery">Galleria</string>
+    <string name="camera">Fotocamera</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>
     <!-- Yes -->

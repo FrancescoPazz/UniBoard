@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -99,6 +100,7 @@ fun UniBoardNavGraph(
                 Theme.System -> isSystemInDarkTheme()
             }
         ) {
+
             val startRoute = when (authState) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
                 else -> UniBoardRoute.Auth

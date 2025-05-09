@@ -82,4 +82,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Map
+    implementation(libs.maps.compose)
+
+    //CameraX
+    implementation(libs.androidx.camera.camera2)
+
 }
