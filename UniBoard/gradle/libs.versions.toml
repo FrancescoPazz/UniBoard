@@ -1,22 +1,25 @@
 [versions]
 agp = "8.10.0"
-cameraCamera2 = "1.4.2"
+androidPluginAnnotationV9 = "3.0.2"
+androidSdk = "11.8.7"
+jetpackComposeAutocomplete = "2.0.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
+kotlinxCoroutinesPlayServices = "1.10.1"
+lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
+composeBom = "2025.05.00"
 
 ktorSerializationKotlinxJson = "3.1.2"
 koinAndroidxCompose = "4.0.4"
-mapsCompose = "6.4.1"
-navigationCompose = "2.8.9"
+navigationCompose = "2.9.0"
 googleGmsGoogleServices = "4.4.2"
-runtimeLivedata = "1.8.0"
-datastorePreferences = "1.1.4"
+playServicesLocation = "21.3.0"
+runtimeLivedata = "1.8.1"
+datastorePreferences = "1.1.6"
 bomVersion = "3.1.4"
 credentials = "1.5.0"
 googleid = "1.1.1"
@@ -24,8 +27,10 @@ ktorClientOkhttp = "3.1.2"
 coilCompose = "3.1.0"
 
 [libraries]
-androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCamera2" }
+android-plugin-annotation-v9 = { module = "org.maplibre.gl:android-plugin-annotation-v9", version.ref = "androidPluginAnnotationV9" }
+android-sdk = { module = "org.maplibre.gl:android-sdk", version.ref = "androidSdk" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+jetpack-compose-autocomplete = { module = "com.stadiamaps:jetpack-compose-autocomplete", version.ref = "jetpackComposeAutocomplete" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -42,10 +47,11 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
 realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt" }
 auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt" }

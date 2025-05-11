@@ -84,9 +84,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Map
-    implementation(libs.maps.compose)
-
-    //CameraX
-    implementation(libs.androidx.camera.camera2)
-
+    implementation(libs.android.sdk)
+    implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.jetpack.compose.autocomplete)
+    implementation(libs.android.plugin.annotation.v9)
 }

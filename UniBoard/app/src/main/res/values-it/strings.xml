@@ -51,6 +51,7 @@
     <string name="publish_page_image_deletion_warning">Sei sicuro di voler rimuovere questa fotografia?</string>
     <string name="gallery">Galleria</string>
     <string name="camera">Fotocamera</string>
+    <string name="location_get">Ottieni posizione corrente</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>
     <!-- Yes -->
