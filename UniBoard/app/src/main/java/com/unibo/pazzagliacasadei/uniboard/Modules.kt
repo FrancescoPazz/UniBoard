@@ -11,6 +11,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -23,6 +24,7 @@ val modules = module {
     viewModel { HomeViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { DetailViewModel(get()) }
+    viewModel { PublishViewModel() }
 
     single { AuthRepository(get()) }
     single { UserRepository(get()) }

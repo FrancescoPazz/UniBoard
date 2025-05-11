@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -19,6 +20,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,24 +33,27 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader.camera.rememberCameraLauncher
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader.camera.saveImageToStorage
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader.image.createImageUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun CameraModeDialog(
     showDialog: MutableState<Boolean>,
-    images: SnapshotStateList<Uri>
+    images: SnapshotStateList<Uri>,
+    context: Context = LocalContext.current
 ) {
-    val ctx = LocalContext.current
 
-    val cameraLauncher = rememberCameraLauncher(
-        onPictureTaken = {
-            img -> saveImageToStorage(img, ctx.contentResolver)
-            showDialog.value = false
+    val loadedPhotoUri = remember { mutableStateOf(Uri.EMPTY) }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && loadedPhotoUri.value != Uri.EMPTY) {
+            images.add(loadedPhotoUri.value)
         }
-    )
+        showDialog.value = false
+    }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -91,7 +97,9 @@ fun CameraModeDialog(
                     Row(
                         modifier = Modifier
                             .clickable {
-                                cameraLauncher.captureImage()
+                                val uri = createImageUri(context)
+                                loadedPhotoUri.value = uri
+                                cameraLauncher.launch(uri)
                             }
                             .fillMaxWidth()
                             .height(50.dp),

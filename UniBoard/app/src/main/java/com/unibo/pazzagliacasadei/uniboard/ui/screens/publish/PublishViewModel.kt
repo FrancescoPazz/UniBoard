@@ -1,4 +1,13 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish
 
-class PublishViewModel {
+import android.net.Uri
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+
+class PublishViewModel : ViewModel() {
+    val images = mutableStateListOf<Uri>()
+    val postTitle = mutableStateOf("")
+    val postTextContent = mutableStateOf("")
+    val anonymousUser = mutableStateOf(false)
 }

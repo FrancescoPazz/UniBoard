@@ -26,6 +26,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.theme.UniBoardTheme
@@ -47,7 +48,7 @@ sealed interface UniBoardRoute {
     data object Settings : UniBoardRoute
 
     @Serializable
-    data object Publish: UniBoardRoute
+    data object Publish : UniBoardRoute
 
     @Serializable
     data object Detail : UniBoardRoute
@@ -153,7 +154,8 @@ fun UniBoardNavGraph(
                     SettingsScreen(navController, settingsParams)
                 }
                 composable<UniBoardRoute.Publish> {
-                    PublishScreen(navController)
+                    val publishViewModel = koinViewModel<PublishViewModel>()
+                    PublishScreen(publishViewModel, navController)
                 }
                 composable<UniBoardRoute.Detail> {
                     DetailScreen(
