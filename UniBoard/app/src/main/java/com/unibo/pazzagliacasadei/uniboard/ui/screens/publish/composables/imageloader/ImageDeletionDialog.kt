@@ -13,6 +13,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 
@@ -20,26 +22,27 @@ import com.unibo.pazzagliacasadei.uniboard.R
 fun ImageDeletionDialog(dialog: MutableState<Boolean>, removeFunction: () -> Unit) {
     Surface {
         Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding((16 * 2).dp)
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = stringResource(R.string.publish_page_image_deletion_warning),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = TextUnit(24.0f, TextUnitType.Sp)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(
                     onClick = { removeFunction(); dialog.value = false }
                 ) {
-                    Text(stringResource(R.string.yes))
+                    Text(stringResource(R.string.yes), fontSize = TextUnit(24.0f, TextUnitType.Sp))
                 }
                 TextButton(
                     onClick = { dialog.value = false }
                 ) {
-                    Text(stringResource(R.string.no))
+                    Text(stringResource(R.string.no), fontSize = TextUnit(24.0f, TextUnitType.Sp))
                 }
             }
 

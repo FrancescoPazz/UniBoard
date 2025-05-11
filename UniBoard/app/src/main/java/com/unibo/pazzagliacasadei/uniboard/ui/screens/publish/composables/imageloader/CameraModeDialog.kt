@@ -70,7 +70,9 @@ fun CameraModeDialog(
             Surface(
                 modifier = Modifier.clip(RoundedCornerShape(5.dp))
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
                     Row(
                         modifier = Modifier
                             .clickable {
