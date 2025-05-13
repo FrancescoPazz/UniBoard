@@ -134,6 +134,7 @@ fun UniBoardNavGraph(
                 composable<UniBoardRoute.Profile> {
                     val profileViewModel = koinViewModel<ProfileViewModel>()
                     val profileParams = ProfileParams(
+                        user = profileViewModel.user.observeAsState(),
                         logout = { authViewModel.logout() },
                         updatePasswordWithOldPassword = { oldPassword, newPassword, onSuccess, onError ->
                             profileViewModel.updatePasswordWithOldPassword(

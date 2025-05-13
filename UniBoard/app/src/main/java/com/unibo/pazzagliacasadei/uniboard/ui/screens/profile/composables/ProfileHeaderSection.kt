@@ -8,14 +8,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 
 @Composable
-fun ProfileHeaderSection() {
+fun ProfileHeaderSection(user: User) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ProfileHeader(
-            name = "Luca Pazzadei",
-            subtitle = "Insegnante • Villamerina",
-            bio = "Appassionato di kebab e chitarre. Amo la storia e Lenin.",
+            username = user.username,
+            email = user.email,
+            moreInfo = "${user.name} ${user.surname}",
             imageRes = R.drawable.logo
         )
         Spacer(Modifier.height(8.dp))

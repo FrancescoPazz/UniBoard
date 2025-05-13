@@ -22,7 +22,7 @@ val modules = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { HomeViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { PublishViewModel() }
 

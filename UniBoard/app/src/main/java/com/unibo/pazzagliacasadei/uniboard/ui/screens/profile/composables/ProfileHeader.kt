@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProfileHeader(
-    name: String, subtitle: String, bio: String, imageRes: Int, modifier: Modifier = Modifier
+    username: String, email: String, moreInfo: String, imageRes: Int, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
@@ -33,14 +33,14 @@ fun ProfileHeader(
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(name, style = MaterialTheme.typography.headlineSmall)
+        Text(username, style = MaterialTheme.typography.headlineSmall)
         Text(
-            subtitle,
+            email,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
-            bio,
+            moreInfo,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 4.dp)

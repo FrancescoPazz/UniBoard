@@ -22,6 +22,7 @@ import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Announcement
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.AnnouncementsTabContent
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Message
@@ -49,38 +50,43 @@ fun ProfileScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileHeaderSection()
-            Spacer(Modifier.height(8.dp))
-            ProfileTabs(tabs, selectedTab) { selectedTab = it }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                val sampleAnnouncements = listOf(
-                    Announcement("Brr Brr Patamim?", "Luca Pazzadei", "Cesena", R.drawable.logo),
-                    Announcement("Aiuto ho molta baura", "Anonimo", "Napoli", R.drawable.logo),
-                    Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
-                    Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
-                )
-                val sampleMessages = listOf(
-                    Message("Mario Rossi", "Ciao, il divano è ancora disponibile?"),
-                    Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?"),
-                )
-                when (selectedTab) {
-                    0 -> AnnouncementsTabContent(sampleAnnouncements)
-                    1 -> MessagesTabContent(sampleMessages)
-                    2 -> SettingsTabContent(updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
-                        onLogout = {
-                            profileParams.logout()
-
-                            navController.navigate(UniBoardRoute.Auth) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    inclusive = true
+            if (profileParams.user.value == null) {
+                LoadingScreen()
+            } else {
+                ProfileHeaderSection(user = profileParams.user.value!!)
+                Spacer(Modifier.height(8.dp))
+                ProfileTabs(tabs, selectedTab) { selectedTab = it }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) {
+                    val sampleAnnouncements = listOf(
+                        Announcement("Brr Brr Patamim?", "Luca Pazzadei", "Cesena", R.drawable.logo),
+                        Announcement("Aiuto ho molta baura", "Anonimo", "Napoli", R.drawable.logo),
+                        Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
+                        Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
+                    )
+                    val sampleMessages = listOf(
+                        Message("Mario Rossi", "Ciao, il divano è ancora disponibile?"),
+                        Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?")
+                    )
+                    when (selectedTab) {
+                        0 -> AnnouncementsTabContent(sampleAnnouncements)
+                        1 -> MessagesTabContent(sampleMessages)
+                        2 -> SettingsTabContent(
+                            updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
+                            onLogout = {
+                                profileParams.logout()
+                                navController.navigate(UniBoardRoute.Auth) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
                                 }
-                                launchSingleTop = true
                             }
-                        })
+                        )
+                    }
                 }
             }
         }
