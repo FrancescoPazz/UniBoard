@@ -45,7 +45,8 @@ fun HomeScreen(
                 onQueryChange = { query = it },
                 onSearch = { params.searchPosts(it) })
             Spacer(modifier = Modifier.height(8.dp))
-            FilterTabs(titles = listOf("Tutti", "Recenti", "Popolari", "Vicino a te"),
+            FilterTabs(
+                titles = listOf("Tutti", "Recenti", "Popolari", "Vicino a te"),
                 selectedIndex = selectedTab,
                 onTabSelected = { index ->
                     selectedTab = index

@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -9,7 +10,10 @@ import androidx.compose.runtime.Composable
 fun FilterTabs(
     titles: List<String>, selectedIndex: Int, onTabSelected: (Int) -> Unit
 ) {
-    TabRow(selectedTabIndex = selectedIndex) {
+    TabRow(
+        selectedTabIndex = selectedIndex,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant) {
         titles.forEachIndexed { index, title ->
             Tab(selected = selectedIndex == index,
                 onClick = { onTabSelected(index) },
