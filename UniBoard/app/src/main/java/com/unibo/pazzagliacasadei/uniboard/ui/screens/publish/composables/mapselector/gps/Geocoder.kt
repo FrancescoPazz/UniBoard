@@ -47,7 +47,7 @@ suspend fun geocodeAddress(address: String): LatLng? {
     val client = OkHttpClient()
     val request = Request.Builder()
         .url(url)
-        .header("User-Agent", "YourAppName")
+        .header("User-Agent", "UniBoard")
         .build()
 
     return withContext(Dispatchers.IO) {
