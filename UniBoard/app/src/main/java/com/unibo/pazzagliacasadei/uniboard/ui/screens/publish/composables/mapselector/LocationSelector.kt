@@ -77,7 +77,7 @@ fun LocationSelector(
                             BitmapUtils.getBitmapFromDrawable(
                                 ContextCompat.getDrawable(
                                     context,
-                                    R.drawable.logo
+                                    R.drawable.marker
                                 )
                             )!!
                         )

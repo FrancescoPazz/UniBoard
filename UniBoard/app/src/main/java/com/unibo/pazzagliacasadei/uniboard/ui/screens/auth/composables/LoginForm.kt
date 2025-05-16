@@ -23,8 +23,6 @@ fun LoginForm(
     onEmailChange: (String)->Unit,
     password: String,
     onPasswordChange: (String)->Unit,
-    rememberMe: Boolean,
-    onRememberMeChange: (Boolean)->Unit,
     onSubmit: ()->Unit,
     onForgotPassword: ()->Unit,
     onGoogleLogin: ()->Unit,
@@ -43,11 +41,6 @@ fun LoginForm(
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = rememberMe, onCheckedChange = onRememberMeChange)
-            Text(text = stringResource(R.string.remember_me))
-        }
         Spacer(Modifier.height(12.dp))
         AuthButton(
             text = stringResource(R.string.login),

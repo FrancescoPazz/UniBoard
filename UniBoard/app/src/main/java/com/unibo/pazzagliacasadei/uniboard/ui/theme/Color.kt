@@ -2,7 +2,7 @@ package com.unibo.pazzagliacasadei.uniboard.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-//LightMode
+//Light Mode
 val lightSurface = Color(0xFFfff8f3)
 val lightOnSurface = Color(0xFF000000)
 val lightSurfaceContainer = Color(0xfffaefe2)
@@ -12,7 +12,7 @@ val lightOnPrimaryContainer = Color(0xFFffffff)
 val lightPrimary = Color(0xff3b2900)
 val lightOnPrimary = Color(0xffffffff)
 
-//DarkMode
+//Dark Mode
 val darkPrimaryContainer = Color(0xffe8bc69)
 val darkOnPrimaryContainer = Color(0xff120a00)
 val darkSurfaceContainer = Color(0xff353027)

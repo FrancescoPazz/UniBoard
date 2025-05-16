@@ -38,7 +38,6 @@ fun AuthScreen(
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
     var tel by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
 
     Scaffold { padding ->
         Column(
@@ -65,8 +64,6 @@ fun AuthScreen(
                     onEmailChange = { email = it },
                     password = password,
                     onPasswordChange = { password = it },
-                    rememberMe = rememberMe,
-                    onRememberMeChange = { rememberMe = it },
                     onSubmit = { authParams.login(email, password) },
                     onForgotPassword = { isResetMode = true },
                     onGoogleLogin = { authParams.loginGoogle(context) },

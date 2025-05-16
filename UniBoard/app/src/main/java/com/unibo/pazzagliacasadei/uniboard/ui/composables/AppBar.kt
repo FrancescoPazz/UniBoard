@@ -96,10 +96,6 @@ fun BottomBar(navController: NavController) {
             route = UniBoardRoute.Home,
             icon = Icons.Filled.Home
         ), BottomNavItem(
-            name = stringResource(R.string.search),
-            route = UniBoardRoute.Home,
-            icon = Icons.Filled.Search
-        ), BottomNavItem(
             name = stringResource(R.string.profile),
             route = UniBoardRoute.Profile,
             icon = Icons.Default.Person
