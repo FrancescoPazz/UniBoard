@@ -38,9 +38,6 @@ fun LocationSelector(
             .height(300.dp),
         factory = {
             MapView(context).apply {
-                onCreate(null)
-                onStart()
-                onResume()
                 getMapAsync { map ->
                     mapLibreMap = map
                     map.setStyle(

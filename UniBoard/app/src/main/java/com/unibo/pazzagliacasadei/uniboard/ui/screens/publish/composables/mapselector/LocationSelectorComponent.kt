@@ -37,11 +37,9 @@ fun LocationSelectorPicker(
                 }
             }
         }
-        Box {
-            LocationSelector(
-                position = position,
-                context = context
-            )
-        }
+        LocationSelector(
+            position = position,
+            context = context
+        )
     }
 }
