@@ -1,10 +1,8 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -37,106 +35,109 @@ fun SettingsTabContent(
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
+    var showChangePassword by remember { mutableStateOf(false) }
     var currentPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Text(
-                text = stringResource(R.string.change_password),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
+            EditProfileButton(onClick = { showChangePassword = !showChangePassword })
         }
-        item {
-            OutlinedTextField(
-                value = currentPassword,
-                onValueChange = { currentPassword = it },
-                label = { Text(stringResource(R.string.old_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.primary,
+        if (showChangePassword) {
+            item {
+                Text(
+                    text = stringResource(R.string.change_password),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 )
-            )
-        }
-        item {
-            OutlinedTextField(
-                value = newPassword,
-                onValueChange = { newPassword = it },
-                label = { Text(stringResource(R.string.password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.primary,
-                )
-            )
-        }
-        item {
-            OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text(stringResource(R.string.confirm_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.primary,
-                )
-            )
-        }
-        item {
-            Button(
-                onClick = {
-                    Log.d(
-                        "SettingsRepository",
-                        "Attempt change password: old=$currentPassword, new=$newPassword, confirm=$confirmPassword"
+            }
+            item {
+                OutlinedTextField(
+                    value = currentPassword,
+                    onValueChange = { currentPassword = it },
+                    label = { Text(stringResource(R.string.old_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary
                     )
-                    if (newPassword == confirmPassword) {
-                        updatePasswordWithOldPassword(
-                            currentPassword,
-                            newPassword,
-                            {
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.password_change_success),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            },
-                            {
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.password_change_fail),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        )
-                    } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.password_not_match),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.tertiary,
-                    containerColor = MaterialTheme.colorScheme.onTertiary
                 )
-            ) {
-                Text(stringResource(R.string.change_password))
+            }
+            item {
+                OutlinedTextField(
+                    value = newPassword,
+                    onValueChange = { newPassword = it },
+                    label = { Text(stringResource(R.string.password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = confirmPassword,
+                    onValueChange = { confirmPassword = it },
+                    label = { Text(stringResource(R.string.confirm_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+            item {
+                Button(
+                    onClick = {
+                        if (newPassword == confirmPassword) {
+                            updatePasswordWithOldPassword(
+                                currentPassword,
+                                newPassword,
+                                {
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.password_change_success),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    showChangePassword = false
+                                },
+                                {
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.password_change_fail),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            )
+                        } else {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.password_not_match),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        containerColor = MaterialTheme.colorScheme.onTertiary
+                    ),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+                ) {
+                    Text(stringResource(R.string.change_password))
+                }
             }
         }
         item {
-            TextButton(onClick = onLogout) {
+            TextButton(onClick = onLogout, modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(R.string.logout),
                     style = MaterialTheme.typography.titleLarge
