@@ -74,6 +74,7 @@ dependencies {
 
     // Coil Async Image
     implementation(libs.coil.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

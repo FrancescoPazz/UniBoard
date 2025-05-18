@@ -37,7 +37,6 @@ fun ProfileHeader(
         Text(
             email,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             moreInfo,

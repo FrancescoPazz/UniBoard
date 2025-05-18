@@ -3,6 +3,7 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.dp
 fun DividerWithText(
     text: String,
     modifier: Modifier = Modifier,
-    lineColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium
 ) {
     Row(
@@ -26,21 +26,19 @@ fun DividerWithText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         HorizontalDivider(
+            thickness = 1.3.dp,
             modifier = Modifier.weight(1f),
-            thickness = 1.dp,
-            color = lineColor
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = text,
-            modifier = Modifier
-                .padding(horizontal = 8.dp),
             style = textStyle,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(horizontal = 8.dp)
         )
         HorizontalDivider(
+            thickness = 1.3.dp,
             modifier = Modifier.weight(1f),
-            thickness = 1.dp,
-            color = lineColor
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

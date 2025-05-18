@@ -62,11 +62,7 @@ fun SettingsTabContent(
                     onValueChange = { currentPassword = it },
                     label = { Text(stringResource(R.string.old_password)) },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.primary
-                    )
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                 )
             }
             item {
@@ -75,11 +71,7 @@ fun SettingsTabContent(
                     onValueChange = { newPassword = it },
                     label = { Text(stringResource(R.string.password)) },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.primary
-                    )
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                 )
             }
             item {
@@ -88,11 +80,7 @@ fun SettingsTabContent(
                     onValueChange = { confirmPassword = it },
                     label = { Text(stringResource(R.string.confirm_password)) },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.primary
-                    )
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
                 )
             }
             item {
@@ -126,10 +114,6 @@ fun SettingsTabContent(
                             ).show()
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.tertiary,
-                        containerColor = MaterialTheme.colorScheme.onTertiary
-                    ),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
                 ) {
                     Text(stringResource(R.string.change_password))

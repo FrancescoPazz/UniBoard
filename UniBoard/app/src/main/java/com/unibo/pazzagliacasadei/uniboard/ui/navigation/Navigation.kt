@@ -29,7 +29,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.theme.UniBoardTheme
+import com.unibo.pazzagliacasadei.uniboard.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinContext
@@ -66,7 +66,7 @@ fun UniBoardNavGraph(
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
 
     KoinContext {
-        UniBoardTheme(
+        AppTheme(
             darkTheme = when (themeState.theme) {
                 Theme.Light -> false
                 Theme.Dark -> true
@@ -75,7 +75,7 @@ fun UniBoardNavGraph(
         ) {
             if (authState.value == null || authState.value == AuthState.Loading) {
                 LoadingScreen()
-                return@UniBoardTheme
+                return@AppTheme
             }
             val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
@@ -109,7 +109,7 @@ fun UniBoardNavGraph(
                             authViewModel.loginGoogle(context)
                         }
                     )
-                    AuthScreen(navController, authParams)
+                    AuthScreen(authParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()

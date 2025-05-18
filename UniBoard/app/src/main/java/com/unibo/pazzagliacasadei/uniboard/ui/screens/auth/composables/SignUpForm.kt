@@ -87,8 +87,7 @@ fun SignUpForm(
         AuthButton(
             text = stringResource(R.string.signup),
             onClick = onSubmit,
-            enabled = passwordsMatch && !isLoading,
-            modifier = Modifier.fillMaxWidth()
+            enabled = passwordsMatch && !isLoading
         )
     }
 }
