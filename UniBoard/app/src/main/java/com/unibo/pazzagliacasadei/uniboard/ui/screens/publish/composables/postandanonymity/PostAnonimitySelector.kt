@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postandanonymity
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

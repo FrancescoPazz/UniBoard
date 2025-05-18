@@ -57,6 +57,7 @@
     <!-- Yes -->
     <string name="yes">Sì</string>
     <string name="no">No</string>
+    <string name="forward">Avanti</string>
     <!-- Detail Post -->
     <string name="position">Posizione</string>
     <string name="by">di</string>

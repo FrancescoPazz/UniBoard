@@ -1,24 +1,23 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector.gps.AddressAutocomplete
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector.gps.GPSScreen
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector.gps.geocodeAddress
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.AddressAutocomplete
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.GPSScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.geocodeAddress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.maplibre.android.geometry.LatLng
 
 @Composable
-fun LocationSelectorPicker(
+fun LocationComponent(
     position: MutableState<LatLng?>,
     context: Context = LocalContext.current
 ) {
@@ -37,7 +36,7 @@ fun LocationSelectorPicker(
                 }
             }
         }
-        LocationSelector(
+        MapSelector(
             position = position,
             context = context
         )

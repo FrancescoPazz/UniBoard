@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location
 
 import android.content.Context
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +25,7 @@ import org.maplibre.android.plugins.annotation.SymbolOptions
 import org.maplibre.android.utils.BitmapUtils
 
 @Composable
-fun LocationSelector(
+fun MapSelector(
     position: MutableState<LatLng?>,
     context: Context = LocalContext.current,
 ) {
@@ -103,5 +103,5 @@ private fun addMarker(symbolManager: SymbolManager, latLng: LatLng) {
 }
 
 private fun moveCamera(map: MapLibreMap, latLng: LatLng) {
-    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.0))
+    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0))
 }

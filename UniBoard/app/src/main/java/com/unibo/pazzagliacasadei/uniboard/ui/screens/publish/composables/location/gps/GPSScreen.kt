@@ -1,19 +1,15 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.mapselector.gps
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -27,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -91,13 +86,7 @@ fun GPSScreen(position: MutableState<LatLng?>, ctx: Context = LocalContext.curre
 
     Button(
         onClick = ::getLocationOrRequestPermission,
-        shape = RoundedCornerShape(5.dp),
-        colors = ButtonColors(
-            MaterialTheme.colorScheme.onSurface,
-            contentColor = MaterialTheme.colorScheme.surface,
-            MaterialTheme.colorScheme.onSurfaceVariant,
-            MaterialTheme.colorScheme.surfaceVariant
-        )
+        shape = RoundedCornerShape(5.dp)
     ) {
         Text(stringResource(R.string.location_get))
     }

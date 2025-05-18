@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import com.unibo.pazzagliacasadei.uniboard.R
 @Composable
 fun ImageLoader(uriList: SnapshotStateList<Uri>) {
     val openDeletionDialog = remember { mutableStateOf(false) }
-    Column {
+    Column{
         Text(text = stringResource(R.string.publish_page_photos))
         FlowRow(
             modifier = Modifier

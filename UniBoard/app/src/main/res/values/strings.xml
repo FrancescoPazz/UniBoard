@@ -53,6 +53,7 @@
     <!-- Icons -->
     <string name="camera_icon">Photo</string>
     <!-- YesNo -->
+    <string name="forward">Next</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <!-- Detail Post -->
