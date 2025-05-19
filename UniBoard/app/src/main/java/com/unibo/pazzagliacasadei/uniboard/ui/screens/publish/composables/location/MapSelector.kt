@@ -103,5 +103,5 @@ private fun addMarker(symbolManager: SymbolManager, latLng: LatLng) {
 }
 
 private fun moveCamera(map: MapLibreMap, latLng: LatLng) {
-    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0))
+    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0))
 }

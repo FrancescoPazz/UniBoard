@@ -49,7 +49,7 @@ fun SingleImageDisplay(
         modifier = Modifier
             .width(100.dp)
             .height(100.dp)
-            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(5.dp))
+            .border(1.5.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(5.dp))
             .clip(RoundedCornerShape(5.dp))
             .clickable {
                 dialog.value = true

@@ -20,7 +20,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader.ImageLoader
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.LocationComponent
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.phases.PostAndAnonymitySelector
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postandanonymity.PostAndAnonymitySelector
 
 @Composable
 fun PublishScreen(viewModel: PublishViewModel, navController: NavHostController) {

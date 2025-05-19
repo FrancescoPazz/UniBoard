@@ -1,68 +1,47 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.unibo.pazzagliacasadei.uniboard.R
 import kotlinx.coroutines.delay
 
 @Composable
 fun AddressAutocomplete(
-    onAddressSelected: (String) -> Unit
+    suggestions: SnapshotStateList<String>,
+    modifier: Modifier
 ) {
     var query by remember { mutableStateOf("") }
-    var suggestions by remember { mutableStateOf(listOf<String>()) }
-    val showSuggestions = remember { mutableStateOf(false) }
 
     LaunchedEffect(query) {
         if (query.length >= 3) {
             delay(500) // debounce di 500ms
-            suggestions = try {
-                fetchAddressSuggestions(query)
+            try {
+                suggestions.clear()
+                suggestions.addAll(fetchAddressSuggestions(query))
             } catch (_: Exception) {
-                emptyList()
+                suggestions.clear()
             }
         } else {
-            suggestions = emptyList()
+            suggestions.clear()
         }
     }
 
     TextField(
         value = query,
+        modifier = modifier,
         onValueChange = {
             query = it
-            showSuggestions.value = true
         },
-        label = { Text("Cerca indirizzo") },
-        modifier = Modifier.fillMaxWidth()
+        label = { Text(stringResource(R.string.address_search)) }
     )
-
-    if (showSuggestions.value) {
-        Column {
-            suggestions.forEach { suggestion ->
-                Text(
-                    text = suggestion,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onAddressSelected(suggestion)
-                            showSuggestions.value = false
-                        }
-                        .padding(8.dp)
-                )
-            }
-        }
-    }
-
-
 }

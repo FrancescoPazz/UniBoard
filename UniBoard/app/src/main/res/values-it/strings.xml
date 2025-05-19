@@ -52,6 +52,7 @@
     <string name="gallery">Galleria</string>
     <string name="camera">Fotocamera</string>
     <string name="location_get">Ottieni posizione corrente</string>
+    <string name="address_search">Cerca indirizzo</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>
     <!-- Yes -->

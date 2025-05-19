@@ -1,10 +1,8 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.phases
+package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postandanonymity
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postandanonymity.PostAnonymitySelector
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postandanonymity.PostContent
 
 @Composable
 fun PostAndAnonymitySelector(
