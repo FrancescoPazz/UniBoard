@@ -72,12 +72,7 @@ fun ProfileScreen(
                             profileParams.conversations, profileParams.loadConversations
                         ) {
                             profileParams.setContactInfo(it.contactId, it.contactUsername)
-                            navController.navigate(UniBoardRoute.Chat) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            }
+                            navController.navigate(UniBoardRoute.Chat)
                         }
 
                         2 -> SettingsTabContent(

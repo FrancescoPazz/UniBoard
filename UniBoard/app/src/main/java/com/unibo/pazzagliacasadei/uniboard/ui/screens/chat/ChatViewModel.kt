@@ -24,7 +24,7 @@ class ChatViewModel(
     private val _messages = MutableLiveData<List<Message>>(emptyList())
     val messages: LiveData<List<Message>> = _messages
 
-    private val currentContactId: LiveData<String?> = chatRepository.currentContactId
+    val currentContactId: LiveData<String?> = chatRepository.currentContactId
     val currentContactUsername: LiveData<String?> = chatRepository.currentContactUsername
 
     fun setContactInfo (contactId: String, contactUsername: String) {

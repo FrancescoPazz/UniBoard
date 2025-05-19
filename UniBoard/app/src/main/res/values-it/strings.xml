@@ -73,4 +73,5 @@
     <!-- Chat page -->
     <string name="enter_message">Inserisci un messaggio</string>
     <string name="send_message">Invia messaggio</string>
+    <string name="you">Tu</string>
 </resources>

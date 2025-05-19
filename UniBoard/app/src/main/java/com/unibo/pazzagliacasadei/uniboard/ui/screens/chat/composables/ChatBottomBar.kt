@@ -56,7 +56,7 @@ fun ChatBottomBar(
                         messageInput = ""
                     }
                 }),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
 
             )
             Spacer(Modifier.width(8.dp))

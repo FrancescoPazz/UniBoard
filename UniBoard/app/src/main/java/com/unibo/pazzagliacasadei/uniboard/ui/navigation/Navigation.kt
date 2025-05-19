@@ -172,6 +172,7 @@ fun UniBoardNavGraph(
                 composable<UniBoardRoute.Chat> {
                     val chatViewModel = koinViewModel<ChatViewModel>()
                     ChatScreen(navController, ChatParams(
+                        contactId = chatViewModel.currentContactId.observeAsState(),
                         contactUsername = chatViewModel.currentContactUsername.observeAsState(),
                         messages = chatViewModel.messages.observeAsState(),
                         loadMessages = {

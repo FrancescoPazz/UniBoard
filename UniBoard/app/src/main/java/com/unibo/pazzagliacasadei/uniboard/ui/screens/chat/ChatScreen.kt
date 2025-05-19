@@ -46,10 +46,9 @@ fun ChatScreen(
                     .padding(paddingValues), state = listState
             ) {
                 items(messages!!) { msg ->
-                    MessageItem(msg = msg, contactUsername = params.contactUsername.value ?: "")
+                    MessageItem(msg = msg, contactUsername = params.contactUsername.value ?: "", contactId = params.contactId.value ?: "")
                 }
             }
         }
     }
 }
-
