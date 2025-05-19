@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
@@ -24,15 +26,13 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.theme.UniBoardTheme
+import com.unibo.pazzagliacasadei.uniboard.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinContext
@@ -72,7 +72,7 @@ fun UniBoardNavGraph(
     val themeState by settingsViewModel.state.collectAsStateWithLifecycle()
 
     KoinContext {
-        UniBoardTheme(
+        AppTheme(
             darkTheme = when (themeState.theme) {
                 Theme.Light -> false
                 Theme.Dark -> true
@@ -81,7 +81,7 @@ fun UniBoardNavGraph(
         ) {
             if (authState.value == null || authState.value == AuthState.Loading) {
                 LoadingScreen()
-                return@UniBoardTheme
+                return@AppTheme
             }
             val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
@@ -109,8 +109,9 @@ fun UniBoardNavGraph(
                             authViewModel.sendPasswordReset(email)
                         }, loginGoogle = { context ->
                             authViewModel.loginGoogle(context)
-                        })
-                    AuthScreen(navController, authParams)
+                        }
+                    )
+                    AuthScreen(authParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()

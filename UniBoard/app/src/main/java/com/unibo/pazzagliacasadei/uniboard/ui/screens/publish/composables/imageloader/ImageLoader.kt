@@ -12,18 +12,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 
 @Composable
 fun ImageLoader(uriList: SnapshotStateList<Uri>) {
     val openDeletionDialog = remember { mutableStateOf(false) }
-    Column {
-        Text(text = stringResource(R.string.publish_page_photos))
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text(
+            text = stringResource(R.string.publish_page_photos),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+            horizontalArrangement = Arrangement.Center
         ) {
             uriList.forEach { uri ->
                 SingleImageDisplay(uri, remove = { uriList.remove(it) }, openDeletionDialog)
@@ -32,7 +37,11 @@ fun ImageLoader(uriList: SnapshotStateList<Uri>) {
                 ImageLoadButton(uriList)
             }
         }
-        Text(text = stringResource(R.string.publish_page_max_four))
+        Text(
+            text = stringResource(R.string.publish_page_max_four),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 
 }

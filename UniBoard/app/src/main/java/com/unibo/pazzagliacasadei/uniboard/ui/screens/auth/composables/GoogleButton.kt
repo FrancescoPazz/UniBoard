@@ -1,15 +1,18 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,15 +24,16 @@ import com.unibo.pazzagliacasadei.uniboard.R
 
 @Composable
 fun GoogleButton(
-    text: String, onClick: () -> Unit, modifier: Modifier = Modifier
+    text: String, onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier,
-        shape = RoundedCornerShape(CornerSize(8.dp)),
-        border = null,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White, contentColor = Color.Black
+            containerColor = Color.White,
+            contentColor = Color.Black
         )
     ) {
         Row(

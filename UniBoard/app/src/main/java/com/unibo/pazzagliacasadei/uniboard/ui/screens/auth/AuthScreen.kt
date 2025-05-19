@@ -1,7 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.LoginForm
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.ResetPasswordForm
@@ -24,7 +23,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.SignUpFor
 
 @Composable
 fun AuthScreen(
-    navController: NavHostController, authParams: AuthParams
+    authParams: AuthParams
 ) {
     val context = LocalContext.current
     var isLoginMode by remember { mutableStateOf(true) }
@@ -44,8 +43,8 @@ fun AuthScreen(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .padding(padding)
-                .padding(horizontal = 32.dp, vertical = 24.dp)
-                .fillMaxWidth(),
+                .padding(horizontal = 32.dp)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AuthHeader(isLoginMode) {

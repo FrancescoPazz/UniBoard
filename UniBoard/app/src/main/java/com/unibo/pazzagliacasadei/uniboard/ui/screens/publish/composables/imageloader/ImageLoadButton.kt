@@ -36,7 +36,7 @@ fun ImageLoadButton(loadedUri: SnapshotStateList<Uri>) {
             .height(100.dp)
             .width(100.dp),
         shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface)
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.onSurface)
     ) {
         Icon(
             painter = painterResource(R.drawable.camera),

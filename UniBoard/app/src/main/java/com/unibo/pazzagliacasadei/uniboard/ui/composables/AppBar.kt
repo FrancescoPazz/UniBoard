@@ -1,7 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.composables
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,18 +9,14 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -30,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.unibo.pazzagliacasadei.uniboard.R
@@ -60,8 +54,7 @@ fun TopBar(navController: NavController) {
                 currentRoute.replaceFirstChar { it.uppercase() }
             }
             Text(
-                titleText,
-                color = MaterialTheme.colorScheme.onBackground,
+                titleText
             )
         }
     }, navigationIcon = {
@@ -69,16 +62,14 @@ fun TopBar(navController: NavController) {
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(
                     Icons.AutoMirrored.Outlined.ArrowBack,
-                    contentDescription = stringResource(R.string.back),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    contentDescription = stringResource(R.string.back)
                 )
             }
         }
     }, actions = {
         IconButton(onClick = { navController.navigate(UniBoardRoute.Settings) }) {
             Icon(
-                Icons.Filled.Settings, contentDescription = stringResource(R.string.settings),
-                tint = MaterialTheme.colorScheme.onBackground
+                Icons.Filled.Settings, contentDescription = stringResource(R.string.settings)
             )
         }
     })
@@ -110,9 +101,7 @@ fun BottomBar(navController: NavController) {
     val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast(".")
 
     NavigationBar(
-        modifier = Modifier.fillMaxWidth(),
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -120,18 +109,14 @@ fun BottomBar(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             bottomNavItems.forEach { item ->
-                val isSelected = currentRoute == item.route.toString()
-
                 NavigationBarItem(icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.name,
-                        tint = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.secondary
+                        contentDescription = item.name
                     )
                 }, label = {
                     Text(
                         text = item.name,
-                        color = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.secondary
                     )
                 }, selected = currentRoute == item.route.toString(), onClick = {
                     if (currentRoute != item.route.toString()) {

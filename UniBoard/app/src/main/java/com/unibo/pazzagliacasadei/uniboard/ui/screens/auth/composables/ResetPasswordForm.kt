@@ -38,8 +38,7 @@ fun ResetPasswordForm(
         AuthButton(
             text = stringResource(R.string.send_reset_email),
             onClick = onSubmit,
-            enabled = email.isNotBlank() && !isLoading,
-            modifier = Modifier.fillMaxWidth()
+            enabled = email.isNotBlank() && !isLoading
         )
         Spacer(Modifier.height(8.dp))
         TextButton(onClick = onBack) {

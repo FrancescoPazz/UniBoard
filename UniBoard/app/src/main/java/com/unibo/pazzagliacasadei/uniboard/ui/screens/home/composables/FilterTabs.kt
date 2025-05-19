@@ -11,11 +11,11 @@ fun FilterTabs(
     titles: List<String>, selectedIndex: Int, onTabSelected: (Int) -> Unit
 ) {
     TabRow(
-        selectedTabIndex = selectedIndex,
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant) {
+        selectedTabIndex = selectedIndex
+    ) {
         titles.forEachIndexed { index, title ->
-            Tab(selected = selectedIndex == index,
+            Tab(
+                selected = selectedIndex == index,
                 onClick = { onTabSelected(index) },
                 text = { Text(title) })
         }

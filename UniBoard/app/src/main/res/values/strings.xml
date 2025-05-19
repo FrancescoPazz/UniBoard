@@ -53,9 +53,11 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="location_get">Get current location</string>
+    <string name="address_search">Search for an address</string>
     <!-- Icons -->
     <string name="camera_icon">Photo</string>
     <!-- YesNo -->
+    <string name="forward">Next</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <!-- Detail Post -->

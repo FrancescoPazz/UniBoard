@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -14,17 +15,13 @@ import androidx.compose.ui.unit.dp
 fun AuthButton(
     text: String,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier,
         enabled = enabled,
         shape = RoundedCornerShape(CornerSize(8.dp)),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black, contentColor = Color.White
-        ),
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(text)
     }
