@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,13 @@ fun AuthScreen(
     var surname by remember { mutableStateOf("") }
     var tel by remember { mutableStateOf("") }
 
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Error) {
+            Toast
+                .makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_LONG)
+                .show()
+        }
+    }
     Scaffold { padding ->
         Column(
             modifier = Modifier
@@ -86,9 +95,7 @@ fun AuthScreen(
                         authParams.signUp(
                             email, password, username, name, surname, tel
                         )
-                        isLoginMode = true
-                        email = ""; password = ""; confirmPassword = ""
-                        username = ""; name = ""; surname = ""; tel = ""
+                        confirmPassword = ""
                     },
                     isLoading = authState == AuthState.Loading
                 )
