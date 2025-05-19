@@ -25,7 +25,6 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Announcement
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.AnnouncementsTabContent
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Message
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.MessagesTabContent
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileHeaderSection
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileTabs
@@ -67,13 +66,20 @@ fun ProfileScreen(
                         Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
                         Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
                     )
-                    val sampleMessages = listOf(
-                        Message("Mario Rossi", "Ciao, il divano è ancora disponibile?"),
-                        Message("Giulia Bianchi", "Posso venire a vedere la lampada domani?")
-                    )
                     when (selectedTab) {
                         0 -> AnnouncementsTabContent(sampleAnnouncements)
-                        1 -> MessagesTabContent(sampleMessages)
+                        1 -> MessagesTabContent(
+                            profileParams.conversations, profileParams.loadConversations
+                        ) {
+                            profileParams.setContactInfo(it.contactId, it.contactUsername)
+                            navController.navigate(UniBoardRoute.Chat) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
+
                         2 -> SettingsTabContent(
                             updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
                             onLogout = {

@@ -29,6 +29,9 @@
     <string name="lightMode">Light theme</string>
     <string name="darkMode">Dark theme</string>
     <string name="systemMode">System theme</string>
+    <!-- User messages page -->
+    <string name="no_conversations">No conversations</string>
+
     <!-- User settings page -->
     <string name="my_announces">My announces</string>
     <string name="messages">Messages</string>
@@ -62,4 +65,8 @@
     <string name="comments">Comments</string>
     <string name="no_commented_yet">No comments. Be the first to write!</string>
     <string name="write_comment">Write a comment…</string>
+
+    <!-- Chat page -->
+    <string name="enter_message">Enter your message</string>
+    <string name="send_message">Send message</string>
 </resources>

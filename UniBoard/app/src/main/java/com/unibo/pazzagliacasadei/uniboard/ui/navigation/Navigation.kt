@@ -11,22 +11,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.PublishViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.theme.UniBoardTheme
@@ -52,6 +55,9 @@ sealed interface UniBoardRoute {
 
     @Serializable
     data object Detail : UniBoardRoute
+
+    @Serializable
+    data object Chat : UniBoardRoute
 }
 
 @Composable
@@ -87,12 +93,10 @@ fun UniBoardNavGraph(
                 startDestination = startRoute,
             ) {
                 composable<UniBoardRoute.Auth> {
-                    val authParams = AuthParams(
-                        authState = authViewModel.authState,
-                        login = { email, password ->
+                    val authParams =
+                        AuthParams(authState = authViewModel.authState, login = { email, password ->
                             authViewModel.login(email, password)
-                        },
-                        signUp = { email, password, username, name, surname, tel ->
+                        }, signUp = { email, password, username, name, surname, tel ->
                             authViewModel.signUp(
                                 email = email,
                                 password = password,
@@ -101,38 +105,29 @@ fun UniBoardNavGraph(
                                 username = username,
                                 tel = tel
                             )
-                        },
-                        resetPassword = { email ->
+                        }, resetPassword = { email ->
                             authViewModel.sendPasswordReset(email)
-                        },
-                        loginGoogle = { context ->
+                        }, loginGoogle = { context ->
                             authViewModel.loginGoogle(context)
-                        }
-                    )
+                        })
                     AuthScreen(navController, authParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()
                     val posts by homeViewModel.posts.collectAsState()
 
-                    HomeScreen(
-                        navController,
-                        HomeParams(
-                            posts = posts,
-                            searchPosts = { query ->
-                                homeViewModel.searchPosts(query)
-                            },
-                            filterPosts = { filterIndex ->
-                                homeViewModel.filterPosts(filterIndex)
-                            },
-                            selectPost = { post ->
-                                detailViewModel.setPost(post)
-                            }
-                        )
-                    )
+                    HomeScreen(navController, HomeParams(posts = posts, searchPosts = { query ->
+                        homeViewModel.searchPosts(query)
+                    }, filterPosts = { filterIndex ->
+                        homeViewModel.filterPosts(filterIndex)
+                    }, selectPost = { post ->
+                        detailViewModel.setPost(post)
+                    }))
                 }
                 composable<UniBoardRoute.Profile> {
                     val profileViewModel = koinViewModel<ProfileViewModel>()
+                    val chatViewModel = koinViewModel<ChatViewModel>()
+
                     val profileParams = ProfileParams(
                         user = profileViewModel.user.observeAsState(),
                         logout = { authViewModel.logout() },
@@ -143,7 +138,14 @@ fun UniBoardNavGraph(
                                 onSuccess = onSuccess,
                                 onError = onError
                             )
-                        }
+                        },
+                        conversations = profileViewModel.conversations.observeAsState(),
+                        loadConversations = {
+                            profileViewModel.loadConversations()
+                        },
+                        setContactInfo = { contactId, contactUsername ->
+                            chatViewModel.setContactInfo(contactId, contactUsername)
+                        },
                     )
                     ProfileScreen(navController, profileParams)
                 }
@@ -159,16 +161,25 @@ fun UniBoardNavGraph(
                     PublishScreen(publishViewModel, navController)
                 }
                 composable<UniBoardRoute.Detail> {
-                    DetailScreen(
-                        navController,
-                        detailParams = DetailParams(
-                            post = detailViewModel.post.observeAsState(),
+                    DetailScreen(navController,
+                        detailParams = DetailParams(post = detailViewModel.post.observeAsState(),
                             comments = detailViewModel.comments.observeAsState(),
                             addComment = { text ->
                                 detailViewModel.addComment(text)
-                            }
-                        )
-                    )
+                            }))
+                }
+                composable<UniBoardRoute.Chat> {
+                    val chatViewModel = koinViewModel<ChatViewModel>()
+                    ChatScreen(navController, ChatParams(
+                        contactUsername = chatViewModel.currentContactUsername.observeAsState(),
+                        messages = chatViewModel.messages.observeAsState(),
+                        loadMessages = {
+                            chatViewModel.loadMessages()
+                        },
+                        sendMessage = { messageInput ->
+                            chatViewModel.sendMessage(messageInput)
+                        }
+                    ))
                 }
             }
         }

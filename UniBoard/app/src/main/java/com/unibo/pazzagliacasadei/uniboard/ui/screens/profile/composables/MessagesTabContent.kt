@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,12 +16,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,14 +35,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
+import androidx.compose.foundation.layout.Arrangement
 
 @Composable
 fun MessagesTabContent(
-    messages: List<Message>, onSearch: (String) -> Unit = {}
+    conversations: State<List<Conversation>?>,
+    loadConversations: () -> Unit,
+    onConversationClick: (Conversation) -> Unit
 ) {
     var query by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    LaunchedEffect(loadConversations) {
+        loadConversations()
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,26 +67,54 @@ fun MessagesTabContent(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search
                 ),
-                keyboardActions = KeyboardActions(onSearch = { onSearch(query) }))
+                keyboardActions = KeyboardActions(onSearch = {
+                })
+            )
             Spacer(Modifier.width(8.dp))
             Button(
-                onClick = { onSearch(query) }, modifier = Modifier.height(56.dp)
+                onClick = {  },
+                modifier = Modifier.height(56.dp)
             ) {
                 Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search))
             }
         }
 
-        val filtered = if (query.isBlank()) messages
-        else messages.filter {
-            it.sender.contains(query, ignoreCase = true)
+        val filtered: List<Conversation>? = conversations.value?.filter { conversation ->
+            conversation.contactUsername.contains(query, ignoreCase = true)
         }
 
-        LazyColumn {
-            items(filtered) { msg ->
-                ListItem(headlineContent = { Text(msg.sender) },
-                    supportingContent = { Text(msg.preview) },
-                    modifier = Modifier.clickable { /* apri conversazione */ })
-                HorizontalDivider()
+        if (conversations.value == null) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+        else if (filtered.isNullOrEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = stringResource(R.string.no_conversations))
+            }
+        }
+        else {
+            LazyColumn(
+                modifier = Modifier.weight(1f)
+            ) {
+                items(filtered) { conversation ->
+                    ListItem(
+                        headlineContent = { Text(conversation.contactUsername) },
+                        supportingContent = { Text(conversation.lastMessage ?: "No messages") },
+                        modifier = Modifier.clickable { onConversationClick(conversation) }
+                    )
+                    HorizontalDivider()
+                }
             }
         }
     }

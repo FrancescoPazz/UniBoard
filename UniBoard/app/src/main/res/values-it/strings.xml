@@ -31,7 +31,10 @@
     <string name="lightMode">Tema chiaro</string>
     <string name="darkMode">Tema scuro</string>
     <string name="systemMode">Tema di sistema</string>
-    <!-- User settings -->
+    <!-- User messages page -->
+    <string name="no_conversations">Nessuna conversazione</string>
+
+    <!-- User settings page -->
     <string name="my_announces">I miei annunci</string>
     <string name="messages">Messaggi</string>
     <string name="user_settings">Settings</string>
@@ -64,4 +67,8 @@
     <string name="comments">Commenti</string>
     <string name="no_commented_yet">Nessun commento. Sii il primo a scrivere!</string>
     <string name="write_comment">Scrivi un commento…</string>
+
+    <!-- Chat page -->
+    <string name="enter_message">Inserisci un messaggio</string>
+    <string name="send_message">Invia messaggio</string>
 </resources>

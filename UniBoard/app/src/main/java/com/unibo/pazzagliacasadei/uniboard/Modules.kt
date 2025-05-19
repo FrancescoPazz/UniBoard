@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.SettingsRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.chat.ChatRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileViewModel
@@ -22,7 +24,8 @@ val modules = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { HomeViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { ChatViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { PublishViewModel() }
 
@@ -31,5 +34,6 @@ val modules = module {
     single { HomeRepository(get()) }
     single { SettingsRepository(get()) }
     single { DetailRepository(get()) }
+    single { ChatRepository(get()) }
     single { get<Context>().dataStore }
 }
