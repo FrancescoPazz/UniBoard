@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
@@ -18,6 +20,8 @@ import com.unibo.pazzagliacasadei.uniboard.R
 fun SignUpForm(
     name: String,
     onNameChange: (String) -> Unit,
+    tel: String,
+    onTelChange: (String) -> Unit,
     surname: String,
     onSurnameChange: (String) -> Unit,
     username: String,
@@ -55,10 +59,23 @@ fun SignUpForm(
         )
         Spacer(Modifier.height(8.dp))
         TextField(
+            value = tel,
+            onValueChange = onTelChange,
+            label = { Text(stringResource(R.string.tel)) },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Phone
+            )
+        )
+        Spacer(Modifier.height(8.dp))
+        TextField(
             value = email,
             onValueChange = onEmailChange,
             label = { Text(stringResource(R.string.email)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Email
+            )
         )
         Spacer(Modifier.height(8.dp))
         TextField(

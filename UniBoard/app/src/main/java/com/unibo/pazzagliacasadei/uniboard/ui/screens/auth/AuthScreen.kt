@@ -1,12 +1,18 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
-import android.widget.Toast
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,12 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.LoginForm
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.ResetPasswordForm
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.SignUpForm
 
+@SuppressLint("DiscouragedApi")
 @Composable
 fun AuthScreen(
     authParams: AuthParams
@@ -40,13 +49,38 @@ fun AuthScreen(
     var surname by remember { mutableStateOf("") }
     var tel by remember { mutableStateOf("") }
 
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogIdentificator by remember { mutableStateOf("") }
+
     LaunchedEffect(authState) {
         if (authState is AuthState.Error) {
-            Toast
-                .makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_LONG)
-                .show()
+            showDialog = true
+            dialogIdentificator = (authState as AuthState.Error).message.split(" ")[0]
         }
     }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = stringResource(R.string.auth_error)) },
+            text = {
+                val resId = remember(dialogIdentificator) {
+                    context.resources.getIdentifier(
+                        dialogIdentificator,
+                        "string",
+                        context.packageName
+                    )
+                }
+                Text(text = stringResource(resId)) },
+            confirmButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text(stringResource(id = android.R.string.ok))
+                }
+            },
+            icon = { Icon(Icons.Filled.Info, contentDescription = "Error Icon") }
+        )
+    }
+
     Scaffold { padding ->
         Column(
             modifier = Modifier
@@ -82,6 +116,8 @@ fun AuthScreen(
                     onNameChange = { name = it },
                     surname = surname,
                     onSurnameChange = { surname = it },
+                    tel = tel,
+                    onTelChange = { tel = it },
                     username = username,
                     onUsernameChange = { username = it },
                     email = email,
