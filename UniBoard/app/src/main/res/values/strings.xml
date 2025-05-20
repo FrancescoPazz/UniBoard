@@ -24,6 +24,10 @@
     <string name="old_password">Old Password</string>
     <string name="password_change_success">Change password successful</string>
     <string name="password_change_fail">Change password failed</string>
+    <string name="auth_error">Authentication error</string>
+    <string name="validation_failed">No credential inserted</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="email_not_confirmed">Email not confirmed</string>
     <!-- Settings page -->
     <string name="theme">Theme</string>
     <string name="lightMode">Light theme</string>

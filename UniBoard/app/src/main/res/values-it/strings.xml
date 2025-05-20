@@ -11,7 +11,6 @@
     <string name="signup">Registrati</string>
     <string name="back">Indietro</string>
     <string name="logout">Disconnettiti</string>
-    <string name="remember_me">Ricordami</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
     <string name="or_text">oppure</string>
     <string name="login_with_google">Accedi con Google</string>
@@ -26,6 +25,10 @@
     <string name="old_password">Vecchia Password</string>
     <string name="password_change_success">Cambio password avvenuto con successo</string>
     <string name="password_change_fail">Cambio password fallito</string>
+    <string name="auth_error">Errore di autenticazione</string>
+    <string name="validation_failed">Errore di validazione</string>
+    <string name="invalid_credentials">Credenziali non valide</string>
+    <string name="email_not_confirmed">Email non confermata</string>
     <!-- Settings page -->
     <string name="theme">Tema</string>
     <string name="lightMode">Tema chiaro</string>
