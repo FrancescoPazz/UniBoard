@@ -5,9 +5,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.publish.IPublishRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.publish.PublishRepository
+import kotlinx.coroutines.launch
 import org.maplibre.android.geometry.LatLng
 
-class PublishViewModel : ViewModel() {
+class PublishViewModel(val publishRepository: IPublishRepository) : ViewModel() {
     val images = mutableStateListOf<Uri>()
     val postTitle = mutableStateOf("")
     val postTextContent = mutableStateOf("")
@@ -17,5 +21,13 @@ class PublishViewModel : ViewModel() {
 
     val removeUriFromList = fun(uri: Uri) {
         images.remove(uri)
+    }
+
+    fun publishPost(){
+        viewModelScope.launch {
+            publishRepository.publishPost(
+                images.toList()
+            )
+        }
     }
 }
