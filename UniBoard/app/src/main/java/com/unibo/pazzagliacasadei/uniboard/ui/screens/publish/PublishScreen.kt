@@ -41,7 +41,7 @@ fun PublishScreen(viewModel: PublishViewModel, navController: NavHostController)
                     viewModel.anonymousUser
                 )
 
-                1 -> ImageLoader(viewModel.images)
+                1 -> ImageLoader(viewModel.images, viewModel.removeUriFromList )
                 2 -> LocationComponent(viewModel.position)
             }
             Row(

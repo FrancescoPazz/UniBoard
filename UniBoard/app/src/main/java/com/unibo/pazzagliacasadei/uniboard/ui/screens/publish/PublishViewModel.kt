@@ -14,4 +14,8 @@ class PublishViewModel : ViewModel() {
     val anonymousUser = mutableStateOf(false)
     val position = mutableStateOf<LatLng?>(null)
     val publishPhase = mutableIntStateOf(0)
+
+    val removeUriFromList = fun(uri: Uri) {
+        images.remove(uri)
+    }
 }
