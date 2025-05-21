@@ -58,6 +58,7 @@
     <string name="camera">Camera</string>
     <string name="location_get">Get current location</string>
     <string name="address_search">Search for an address</string>
+    <string name="location_disabled">Location is disabled</string>
     <!-- Icons -->
     <string name="camera_icon">Photo</string>
     <!-- YesNo -->
@@ -76,4 +77,9 @@
     <string name="enter_message">Enter your message</string>
     <string name="send_message">Send message</string>
     <string name="you">You</string>
+    <string name="location_must_be_enabled">Location must be enabled to get your coordinates in the app.</string>
+    <string name="no_location_permission">Location permission denied</string>
+    <string name="location_permission_required">Location permission is required to get your coordinates in the app.</string>
+    <string name="grant">Grant</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

@@ -59,6 +59,7 @@
     <string name="camera">Fotocamera</string>
     <string name="location_get">Ottieni posizione corrente</string>
     <string name="address_search">Cerca indirizzo</string>
+    <string name="location_disabled">Posizione disabilitata</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>
     <!-- Yes -->
@@ -77,4 +78,9 @@
     <string name="enter_message">Inserisci un messaggio</string>
     <string name="send_message">Invia messaggio</string>
     <string name="you">Tu</string>
+    <string name="location_must_be_enabled">La posizione deve essere abilitata per consentire all\'app di ottnere le tue coordinate.</string>
+    <string name="no_location_permission">Il permesso di accesso alla posizione è stato negato</string>
+    <string name="location_permission_required">Il permesso di accesso alla posizione è necessario per ottenere le tue coordinate in app.</string>
+    <string name="grant">Concedi</string>
+    <string name="dismiss">Annulla</string>
 </resources>

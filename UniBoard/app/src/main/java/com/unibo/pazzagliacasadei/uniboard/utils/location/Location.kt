@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.utils
+package com.unibo.pazzagliacasadei.uniboard.utils.location
 
 import android.Manifest
 import android.content.Context
