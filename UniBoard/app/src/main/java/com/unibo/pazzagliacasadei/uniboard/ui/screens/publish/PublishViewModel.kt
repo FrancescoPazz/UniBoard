@@ -6,12 +6,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.unibo.pazzagliacasadei.uniboard.data.repositories.publish.IPublishRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.publish.PublishRepository
 import kotlinx.coroutines.launch
 import org.maplibre.android.geometry.LatLng
 
-class PublishViewModel(val publishRepository: IPublishRepository) : ViewModel() {
+class PublishViewModel(val publishRepository: PublishRepository) : ViewModel() {
     val images = mutableStateListOf<Uri>()
     val postTitle = mutableStateOf("")
     val postTextContent = mutableStateOf("")
