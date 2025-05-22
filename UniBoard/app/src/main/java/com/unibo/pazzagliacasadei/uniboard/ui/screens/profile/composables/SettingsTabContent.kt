@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +40,7 @@ fun SettingsTabContent(
     var currentPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier
@@ -121,7 +123,27 @@ fun SettingsTabContent(
             }
         }
         item {
-            TextButton(onClick = onLogout, modifier = Modifier.fillMaxWidth()) {
+            if (showDialog) {
+                AlertDialog(
+                    title = { Text("Disconnessione") },
+                    text = { Text("Sei sicuro di volerti disconnettere?") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            onLogout()
+                            showDialog = false
+                        }) {
+                            Text("Conferma")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDialog = false }) {
+                            Text("Annulla")
+                        }
+                    },
+                    onDismissRequest = { }
+                )
+            }
+            TextButton(onClick = { showDialog = true }, modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(R.string.logout),
                     style = MaterialTheme.typography.titleLarge
