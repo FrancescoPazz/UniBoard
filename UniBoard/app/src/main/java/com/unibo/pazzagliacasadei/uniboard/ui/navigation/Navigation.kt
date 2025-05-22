@@ -22,6 +22,8 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.forgot_password.ForgotPasswordParams
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.forgot_password.ForgotPasswordScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
@@ -49,6 +51,9 @@ sealed interface UniBoardRoute {
 
     @Serializable
     data object Settings : UniBoardRoute
+
+    @Serializable
+    data object ForgotPassword : UniBoardRoute
 
     @Serializable
     data object Publish : UniBoardRoute
@@ -85,6 +90,7 @@ fun UniBoardNavGraph(
             }
             val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
+                is AuthState.ForgotPassword -> UniBoardRoute.ForgotPassword
                 else -> UniBoardRoute.Auth
             }
 
@@ -109,9 +115,18 @@ fun UniBoardNavGraph(
                             authViewModel.sendPasswordReset(email)
                         }, loginGoogle = { context ->
                             authViewModel.loginGoogle(context)
+                        },
+                        sendOtp = { email, otp ->
+                            authViewModel.sendOTPCode(email, otp)
                         }
                     )
                     AuthScreen(authParams)
+                }
+                composable<UniBoardRoute.ForgotPassword> {
+                    val forgotPasswordParams = ForgotPasswordParams(
+                        changeForgottenPassword = authViewModel::changeForgottenPassword,
+                    )
+                    ForgotPasswordScreen(forgotPasswordParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()

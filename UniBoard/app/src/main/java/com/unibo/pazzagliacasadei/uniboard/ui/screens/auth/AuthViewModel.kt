@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,9 +21,12 @@ class AuthViewModel(
     init {
         viewModelScope.launch {
             authRepo.authState().collect { state ->
-                _authState.postValue(state)
-                if (state is AuthState.Authenticated) {
-                    userRepo.loadUserData()
+                Log.d("AuthViewModel", "Auth state changed: $state")
+                if (_authState.value != AuthState.ForgotPassword){
+                    _authState.postValue(state)
+                    if (state is AuthState.Authenticated) {
+                        userRepo.loadUserData()
+                    }
                 }
             }
         }
@@ -103,6 +107,25 @@ class AuthViewModel(
             } else if (ok is AuthResponse.Failure) {
                 _authState.value = AuthState.Error("Impossible to reset password")
             }
+        }
+    }
+
+    private val emailForgotPassword = MutableLiveData<String>("")
+    fun sendOTPCode(email: String, otp: String) {
+        viewModelScope.launch {
+            val ok = authRepo.sendOtp(email, otp).single()
+            if (ok is AuthResponse.Success) {
+                emailForgotPassword.value = email
+                _authState.value = AuthState.ForgotPassword
+            } else if (ok is AuthResponse.Failure) {
+                _authState.value = AuthState.Error("Impossible to send OTP code")
+            }
+        }
+    }
+
+    fun changeForgottenPassword(newPassword: String) {
+        viewModelScope.launch {
+            authRepo.changeForgottenPassword(emailForgotPassword.value!!, newPassword)
         }
     }
 

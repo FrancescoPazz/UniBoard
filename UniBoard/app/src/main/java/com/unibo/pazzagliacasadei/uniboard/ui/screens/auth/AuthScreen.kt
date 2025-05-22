@@ -49,13 +49,15 @@ fun AuthScreen(
     var surname by remember { mutableStateOf("") }
     var tel by remember { mutableStateOf("") }
 
+    var otp by remember { mutableStateOf("") }
+
     var showDialog by remember { mutableStateOf(false) }
-    var dialogIdentificator by remember { mutableStateOf("") }
+    var dialogId by remember { mutableStateOf("") }
 
     LaunchedEffect(authState) {
         if (authState is AuthState.Error) {
             showDialog = true
-            dialogIdentificator = (authState as AuthState.Error).message.split(" ")[0]
+            dialogId = (authState as AuthState.Error).message.split(" ")[0]
         }
     }
 
@@ -64,14 +66,19 @@ fun AuthScreen(
             onDismissRequest = { showDialog = false },
             title = { Text(text = stringResource(R.string.auth_error)) },
             text = {
-                val resId = remember(dialogIdentificator) {
+                val resId = remember(dialogId) {
                     context.resources.getIdentifier(
-                        dialogIdentificator,
+                        dialogId,
                         "string",
                         context.packageName
                     )
                 }
-                Text(text = stringResource(resId)) },
+                val titleText = if (resId != 0) {
+                    stringResource(resId)
+                } else {
+                    dialogId.replaceFirstChar { it.uppercase() }
+                }
+                Text(titleText) },
             confirmButton = {
                 Button(onClick = { showDialog = false }) {
                     Text(stringResource(id = android.R.string.ok))
@@ -96,9 +103,13 @@ fun AuthScreen(
             }
 
             if (isResetMode) {
-                ResetPasswordForm(email = email,
+                ResetPasswordForm(
+                    email = email,
                     onEmailChange = { email = it },
-                    onSubmit = { authParams.resetPassword(email) },
+                    otp = otp,
+                    onOtpChange = { otp = it },
+                    sendEmail = { authParams.resetPassword(email) },
+                    sendOtp = { authParams.sendOtp(email, otp) },
                     isLoading = authState == AuthState.Loading,
                     onBack = { isResetMode = false })
             } else if (isLoginMode) {

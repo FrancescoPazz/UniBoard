@@ -10,12 +10,14 @@ data class AuthParams(
         email: String, password: String, username: String, name: String?, surname: String?, tel: String?
     ) -> Unit,
     val resetPassword: (email: String) -> Unit,
+    val sendOtp: (email: String, otp: String) -> Unit,
     val loginGoogle: (context: Context) -> Unit
 )
 
 sealed class AuthState {
     data object Authenticated : AuthState()
     data object Unauthenticated : AuthState()
+    data object ForgotPassword : AuthState()
     data object Loading : AuthState()
     data class Error(val message: String) : AuthState()
 }

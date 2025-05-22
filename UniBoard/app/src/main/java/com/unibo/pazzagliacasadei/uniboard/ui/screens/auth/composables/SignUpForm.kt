@@ -104,7 +104,7 @@ fun SignUpForm(
         AuthButton(
             text = stringResource(R.string.signup),
             onClick = onSubmit,
-            enabled = passwordsMatch && !isLoading
+            enabled = username.isNotEmpty() && passwordsMatch && !isLoading
         )
     }
 }

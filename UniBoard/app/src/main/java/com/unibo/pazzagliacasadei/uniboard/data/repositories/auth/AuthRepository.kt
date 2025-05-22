@@ -10,6 +10,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthResponse
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
@@ -30,7 +31,6 @@ private const val GOOGLE_SERVER_CLIENT_ID =
 class AuthRepository(
     private val supabase: SupabaseClient
 ) : IAuthRepository {
-
     override fun authState(): Flow<AuthState> = supabase.auth.sessionStatus.map { status ->
         when (status) {
             is SessionStatus.Initializing -> AuthState.Loading
@@ -151,6 +151,15 @@ class AuthRepository(
         }
     }
 
+    fun sendOtp(email: String, otp: String): Flow<AuthResponse> = flow {
+        try {
+            supabase.auth.verifyEmailOtp(type = OtpType.Email.EMAIL, email = email, token = otp)
+            emit(AuthResponse.Success)
+        } catch (e: Exception) {
+            emit(AuthResponse.Failure(e.message ?: "Send OTP error"))
+        }
+    }
+
     override suspend fun currentUser(): User? {
         val session = supabase.auth.currentSessionOrNull() ?: return null
         val data = session.user!!
@@ -176,5 +185,24 @@ class AuthRepository(
             password = newPassword
         }
         Log.d("ProfileViewModel", "Password changed successfully for user: $email")
+    }
+
+    suspend fun changeForgottenPassword(email: String, newPassword: String) = flow  {
+        try {
+            val user = supabase.from("users")
+                .select {
+                    filter {
+                        eq("email", email)
+                    }
+                }.decodeSingle<User>()
+
+            supabase.auth.admin.updateUserById(user.id) {
+                password = newPassword
+            }
+            emit (AuthResponse.Success)
+        } catch (e: Exception) {
+            Log.e("AuthRepository", "Error changing password: ${e.message}")
+            emit (AuthResponse.Failure(e.message ?: "Error changing password"))
+        }
     }
 }
