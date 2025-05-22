@@ -1,12 +1,9 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps
 
 import android.Manifest
-import android.content.Context
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -17,11 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.res.stringResource
 import com.unibo.pazzagliacasadei.uniboard.R
-import com.unibo.pazzagliacasadei.uniboard.utils.LocationService
+import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
 import com.unibo.pazzagliacasadei.uniboard.utils.PermissionStatus
 import com.unibo.pazzagliacasadei.uniboard.utils.rememberMultiplePermissions
 import kotlinx.coroutines.launch
@@ -30,15 +26,13 @@ import org.maplibre.android.geometry.LatLng
 @Composable
 fun GPSScreen(
     position: MutableState<LatLng?>,
-    ctx: Context = LocalContext.current,
+    locationService: LocationService,
     modifier: Modifier
 ) {
 
     var showLocationDisabledAlert by remember { mutableStateOf(false) }
     var showPermissionDeniedAlert by remember { mutableStateOf(false) }
 
-    val locationService = remember { LocationService(ctx) }
-    val isLoading by locationService.isLoadingLocation.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
     fun getCurrentLocation() = scope.launch {
@@ -70,10 +64,6 @@ fun GPSScreen(
         }
     }
 
-    if (isLoading) {
-        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-    }
-
     IconButton(
         onClick = ::getLocationOrRequestPermission,
         modifier = modifier
@@ -83,8 +73,8 @@ fun GPSScreen(
 
     if (showLocationDisabledAlert) {
         AlertDialog(
-            title = { Text("Location disabled") },
-            text = { Text("Location must be enabled to get your coordinates in the app.") },
+            title = { Text(stringResource(R.string.location_disabled)) },
+            text = { Text(stringResource(R.string.location_must_be_enabled)) },
             confirmButton = {
                 TextButton(onClick = {
                     locationService.openLocationSettings()
@@ -104,19 +94,19 @@ fun GPSScreen(
 
     if (showPermissionDeniedAlert) {
         AlertDialog(
-            title = { Text("Location permission denied") },
-            text = { Text("Location permission is required to get your coordinates in the app.") },
+            title = { Text(stringResource(R.string.no_location_permission)) },
+            text = { Text(stringResource(R.string.location_permission_required)) },
             confirmButton = {
                 TextButton(onClick = {
                     locationPermissions.launchPermissionRequest()
                     showPermissionDeniedAlert = false
                 }) {
-                    Text("Grant")
+                    Text(stringResource(R.string.grant))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showPermissionDeniedAlert = false }) {
-                    Text("Dismiss")
+                    Text(stringResource(R.string.dismiss))
                 }
             },
             onDismissRequest = { showPermissionDeniedAlert = false }

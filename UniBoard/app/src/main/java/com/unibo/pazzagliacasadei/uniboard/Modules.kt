@@ -8,6 +8,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.repositories.chat.ChatRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.publish.PublishRepository
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
@@ -27,7 +28,7 @@ val modules = module {
     viewModel { ChatViewModel(get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { DetailViewModel(get()) }
-    viewModel { PublishViewModel() }
+    viewModel { PublishViewModel(get()) }
 
     single { AuthRepository(get()) }
     single { UserRepository(get()) }
@@ -36,4 +37,5 @@ val modules = module {
     single { DetailRepository(get()) }
     single { ChatRepository(get()) }
     single { get<Context>().dataStore }
+    single { PublishRepository(get()) }
 }

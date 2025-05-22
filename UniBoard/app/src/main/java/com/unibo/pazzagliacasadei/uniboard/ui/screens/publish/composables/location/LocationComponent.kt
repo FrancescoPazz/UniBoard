@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.AddressAutocomplete
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.GPSScreen
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps.geocodeAddress
+import com.unibo.pazzagliacasadei.uniboard.utils.location.geocodeAddress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,13 +25,20 @@ import org.maplibre.android.geometry.LatLng
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
 
 @Composable
 fun LocationComponent(
     position: MutableState<LatLng?>,
 ) {
     val context = LocalContext.current
+    val locationService = remember { LocationService(context) }
+    val isLoading by locationService.isLoadingLocation.collectAsStateWithLifecycle()
+
     Column (verticalArrangement = Arrangement.spacedBy(16.dp)){
         val suggestions = remember { mutableStateListOf<String>() }
         fun onSuggestionClicked(suggestion: String) {
@@ -47,7 +54,11 @@ fun LocationComponent(
         Card(elevation = CardDefaults.cardElevation(4.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 AddressAutocomplete(suggestions, modifier = Modifier.weight(4f))
-                GPSScreen(position, modifier = Modifier.weight(1f))
+                GPSScreen(position, locationService, modifier = Modifier.weight(1f))
+            }
+
+            if (isLoading){
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
 
             LazyColumn {

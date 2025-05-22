@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
     val user: LiveData<User?> = userRepository.currentUserLiveData

@@ -1,5 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.imageloader
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 
 @Composable
-fun ImageDeletionDialog(dialog: MutableState<Boolean>, removeFunction: () -> Unit) {
+fun ImageDeletionDialog(
+    dialog: MutableState<Boolean>,
+    userResponse: MutableState<Boolean>
+) {
     Surface {
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -35,12 +40,12 @@ fun ImageDeletionDialog(dialog: MutableState<Boolean>, removeFunction: () -> Uni
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(
-                    onClick = { removeFunction(); dialog.value = false }
+                    onClick = { userResponse.value = true; dialog.value = false }
                 ) {
                     Text(stringResource(R.string.yes), fontSize = TextUnit(24.0f, TextUnitType.Sp))
                 }
                 TextButton(
-                    onClick = { dialog.value = false }
+                    onClick = { dialog.value = false; userResponse.value = false }
                 ) {
                     Text(stringResource(R.string.no), fontSize = TextUnit(24.0f, TextUnitType.Sp))
                 }

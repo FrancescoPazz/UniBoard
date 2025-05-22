@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.location.gps
+package com.unibo.pazzagliacasadei.uniboard.utils.location
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
