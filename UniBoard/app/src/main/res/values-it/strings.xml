@@ -53,6 +53,7 @@
     <string name="publish">Pubblica</string>
     <string name="post_title">Titolo</string>
     <string name="post_content">Contenuto del post</string>
+    <string name="anonymous">Anonimo</string>
     <string name="anonymous_post">Pubblica in anonimato</string>
     <string name="publish_page_photos">Fotografie</string>
     <string name="publish_page_max_four">Puoi caricare fino a 4 foto</string>
@@ -62,6 +63,9 @@
     <string name="location_get">Ottieni posizione corrente</string>
     <string name="address_search">Cerca indirizzo</string>
     <string name="location_disabled">Posizione disabilitata</string>
+    <string name="post_publish_success">Pubblicazione avvenuta con successo</string>
+    <string name="post_publish_fail">Pubblicazione fallita</string>
+    <string name="post_image">Immagine del post</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>
     <!-- Yes -->

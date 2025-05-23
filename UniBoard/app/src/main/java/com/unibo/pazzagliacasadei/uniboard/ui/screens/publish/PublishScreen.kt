@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.publish
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,7 +60,19 @@ fun PublishScreen(viewModel: PublishViewModel, navController: NavHostController)
                     { Text(stringResource(R.string.forward)) }
                 } else {
                     Button(onClick = {
-                        viewModel.publishPost(context)
+                        val ok = viewModel.publishPost(context)
+                        if (ok)
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.post_publish_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        else
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.post_publish_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
                     }) { Text(stringResource(R.string.publish)) }
                 }
             }

@@ -23,6 +23,7 @@ fun DetailScreen(
 ) {
     val post by detailParams.post
     val author by detailParams.author
+    val photos by detailParams.photos
     val comments by detailParams.comments
 
     Scaffold(topBar = { TopBar(navController) }) { padding ->
@@ -32,7 +33,7 @@ fun DetailScreen(
                 .padding(padding)
         ) {
             post?.let {
-                DetailHeader(it, author)
+                DetailHeader(it, author, photos)
                 Spacer(Modifier.height(16.dp))
                 DetailDescription(it)
                 Spacer(Modifier.height(16.dp))

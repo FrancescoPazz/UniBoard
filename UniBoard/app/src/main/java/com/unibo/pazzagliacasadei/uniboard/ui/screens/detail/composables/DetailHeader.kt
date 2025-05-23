@@ -13,15 +13,38 @@ import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageBitmap
+
+fun ByteArray.toImageBitmap(): ImageBitmap {
+    val bitmap = BitmapFactory.decodeByteArray(this, 0, size)
+    return bitmap.asImageBitmap()
+}
 
 @Composable
-fun DetailHeader(post: Post, author : User?) {
+fun DetailHeader(post: Post, author : User?, photos: List<ByteArray>?) {
     Column(Modifier.padding(horizontal = 16.dp)) {
         Text(post.title, style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(4.dp))
-        Text("${stringResource(R.string.by)} ${author?.username ?: post.author}", style = MaterialTheme.typography.bodyMedium)
+        Text("${stringResource(R.string.by)} ${
+            if (post.anonymous) {
+                stringResource(R.string.anonymous) 
+            } else {
+                author?.username ?: post.author
+            }
+        }", style = MaterialTheme.typography.bodyMedium)
         Text(post.date, style = MaterialTheme.typography.bodySmall)
         Spacer(Modifier.height(8.dp))
-        // TODO: add image method to retrieve post images.
+        if (!photos.isNullOrEmpty()) {
+            photos.forEach { photo ->
+                Image(
+                    bitmap = photo.toImageBitmap(),
+                    contentDescription = stringResource(R.string.post_image),
+                    modifier = Modifier.height(150.dp)
+                )
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.publish
 
 import androidx.compose.ui.util.fastForEachIndexed
+import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostRetrieved
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostToPublish
 import io.github.jan.supabase.SupabaseClient
@@ -27,19 +28,39 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
         ) { select() }.decodeSingle<PostRetrieved>()
     }
 
+    private suspend fun createPhotoRow(
+        postId: String,
+        imageName: String,
+    ) {
+        supabase.from("photos").insert(
+            Photo(
+                postId,
+                imageName
+            )
+        )
+    }
+
     override suspend fun publishPost(
         postTitle: String,
         postTextContent: String,
         isAnonymous: Boolean,
         position: LatLng?,
         images: List<ByteArray>
-    ) {
-        val post = createPostRow(postTitle, postTextContent, isAnonymous)
-        val postImagesBucketApi = supabase.storage.from("post-images")
-        images.fastForEachIndexed { index, imageBytes ->
-            postImagesBucketApi.upload("${post.id}/${index}.jpg", imageBytes){
-                upsert = false
+    ) : Boolean {
+        try {
+            val post = createPostRow(postTitle, postTextContent, isAnonymous)
+            val postImagesBucketApi = supabase.storage.from("post-images")
+            images.fastForEachIndexed { index, imageBytes ->
+                createPhotoRow(post.id, "${post.id}/${index}.jpg")
+                postImagesBucketApi.upload("${post.id}/${index}.jpg", imageBytes){
+                    upsert = false
+                }
             }
+            return true
+        } catch (
+            e: Exception
+        ) {
+            return false
         }
     }
 }

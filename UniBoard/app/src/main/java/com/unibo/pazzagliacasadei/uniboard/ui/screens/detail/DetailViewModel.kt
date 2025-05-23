@@ -15,6 +15,7 @@ class DetailViewModel(
     val post: LiveData<Post?> = detailRepository.currentDetailPost
     val author: LiveData<User?> = detailRepository.currentAuthorPost
     val comments: LiveData<List<Comment>?> = detailRepository.comments
+    val photos: LiveData<List<ByteArray>?> = detailRepository.convertedPhotos
 
     fun setPost(post: Post) {
         viewModelScope.launch {

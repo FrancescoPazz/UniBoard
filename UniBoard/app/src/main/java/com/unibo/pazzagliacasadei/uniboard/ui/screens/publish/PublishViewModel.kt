@@ -24,13 +24,14 @@ class PublishViewModel(val publishRepository: PublishRepository) : ViewModel() {
         images.remove(uri)
     }
 
-    fun publishPost(context: Context) {
+    fun publishPost(context: Context) : Boolean {
+        var ok = false
         viewModelScope.launch {
             val imagesBytesList = mutableListOf<ByteArray>()
             for (imgUri in images) {
                 imagesBytesList.add(uriToBytes(imgUri, context))
             }
-            publishRepository.publishPost(
+            ok = publishRepository.publishPost(
                 postTitle.value,
                 postTextContent.value,
                 anonymousUser.value,
@@ -38,5 +39,6 @@ class PublishViewModel(val publishRepository: PublishRepository) : ViewModel() {
                 imagesBytesList.toList()
             )
         }
+        return ok
     }
 }

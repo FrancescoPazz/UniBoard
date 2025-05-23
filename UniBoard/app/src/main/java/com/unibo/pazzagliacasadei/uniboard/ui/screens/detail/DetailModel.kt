@@ -8,6 +8,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 data class DetailParams(
     val post: State<Post?>,
     val author: State<User?>,
+    val photos: State<List<ByteArray>?>,
     val comments: State<List<Comment>?>,
     val addComment: (text: String) -> Unit,
 )

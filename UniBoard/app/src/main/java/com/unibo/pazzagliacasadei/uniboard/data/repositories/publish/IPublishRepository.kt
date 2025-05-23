@@ -9,5 +9,5 @@ interface IPublishRepository {
         isAnonymous: Boolean,
         position: LatLng?,
         images: List<ByteArray>
-    )
+    ) : Boolean
 }
