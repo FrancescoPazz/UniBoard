@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -24,6 +25,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.publish.composables.postan
 
 @Composable
 fun PublishScreen(viewModel: PublishViewModel, navController: NavHostController) {
+    val context = LocalContext.current
     Scaffold(
         topBar = { TopBar(navController) },
         bottomBar = { BottomBar(navController) }) { paddingValues ->
@@ -56,7 +58,9 @@ fun PublishScreen(viewModel: PublishViewModel, navController: NavHostController)
                     Button(onClick = { viewModel.publishPhase.intValue++ })
                     { Text(stringResource(R.string.forward)) }
                 } else {
-                    Button(onClick = { }) { Text(stringResource(R.string.publish)) }
+                    Button(onClick = {
+                        viewModel.publishPost(context)
+                    }) { Text(stringResource(R.string.publish)) }
                 }
             }
         }

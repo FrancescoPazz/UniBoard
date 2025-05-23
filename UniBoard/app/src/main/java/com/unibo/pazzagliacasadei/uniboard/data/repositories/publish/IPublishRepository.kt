@@ -1,9 +1,13 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.publish
 
-import android.net.Uri
+import org.maplibre.android.geometry.LatLng
 
 interface IPublishRepository {
     suspend fun publishPost(
-        images: List<Uri>
+        postTitle: String,
+        postTextContent: String,
+        isAnonymous: Boolean,
+        position: LatLng?,
+        images: List<ByteArray>
     )
 }
