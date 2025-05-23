@@ -9,7 +9,11 @@ data class Post(
 
     @SerialName("author") val author: String,
 
-    @SerialName("publish_date") val publishDate: String,
+    @SerialName("publish_date") val date: String,
 
-    @SerialName("content") val content: String
+    @SerialName("content") val content: String,
+
+    @SerialName("title") val title: String,
+
+    @SerialName("anonymous") val anonymous: Boolean
 )

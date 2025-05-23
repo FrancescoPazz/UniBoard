@@ -178,7 +178,9 @@ fun UniBoardNavGraph(
                 }
                 composable<UniBoardRoute.Detail> {
                     DetailScreen(navController,
-                        detailParams = DetailParams(post = detailViewModel.post.observeAsState(),
+                        detailParams = DetailParams(
+                            post = detailViewModel.post.observeAsState(),
+                            author = detailViewModel.author.observeAsState(),
                             comments = detailViewModel.comments.observeAsState(),
                             addComment = { text ->
                                 detailViewModel.addComment(text)

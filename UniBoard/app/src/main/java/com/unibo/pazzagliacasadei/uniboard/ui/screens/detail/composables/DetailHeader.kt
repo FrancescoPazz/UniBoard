@@ -8,24 +8,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
+import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 
 @Composable
-fun DetailHeader(post: Post) {
+fun DetailHeader(post: Post, author : User?) {
     Column(Modifier.padding(horizontal = 16.dp)) {
-        Text(post.content, style = MaterialTheme.typography.headlineSmall)
+        Text(post.title, style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(4.dp))
-        Text("${R.string.by} ${post.author}", style = MaterialTheme.typography.bodyMedium)
-        Text(post.publishDate, style = MaterialTheme.typography.bodySmall)
-        Spacer(Modifier.height(8.dp))/* TODO AsyncImage(
-            model = post.imageUrl,
-            contentDescription = post.title,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            contentScale = ContentScale.Crop
-        )*/
+        Text("${stringResource(R.string.by)} ${author?.username ?: post.author}", style = MaterialTheme.typography.bodyMedium)
+        Text(post.date, style = MaterialTheme.typography.bodySmall)
+        Spacer(Modifier.height(8.dp))
+        // TODO: add image method to retrieve post images.
     }
 }

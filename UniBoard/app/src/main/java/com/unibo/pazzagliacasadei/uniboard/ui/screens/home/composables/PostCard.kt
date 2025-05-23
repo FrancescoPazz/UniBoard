@@ -41,12 +41,12 @@ fun PostCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = post.author,
+                text = post.title,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
             Text(
-                text = post.publishDate,
+                text = post.date,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
