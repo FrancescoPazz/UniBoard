@@ -40,7 +40,6 @@ class DetailRepository(
     override suspend fun addComment(postId: String, text: String): Comment {
         val newComment = try {
             val comment = Comment(
-                id = UUID.randomUUID().toString(),
                 postId = postId,
                 authorId = supabase.auth.currentUserOrNull()?.id
                     ?: throw Exception("User not logged in"),

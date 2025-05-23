@@ -6,8 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Message(
-    @SerialName("id") val id: String,
-
     @SerialName("sent_time") val sentTime: Instant,
 
     @SerialName("content") val content: String,

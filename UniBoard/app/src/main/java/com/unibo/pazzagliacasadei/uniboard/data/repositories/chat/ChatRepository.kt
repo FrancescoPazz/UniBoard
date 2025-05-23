@@ -11,7 +11,6 @@ import io.github.jan.supabase.postgrest.query.Order
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
-import java.util.UUID
 
 class ChatRepository(
     private val supabase: SupabaseClient
@@ -78,7 +77,6 @@ class ChatRepository(
 
         try {
             val message = Message(
-                id = UUID.randomUUID().toString(),
                 senderId = userId,
                 receiverId = contactId,
                 content = messageInput,
