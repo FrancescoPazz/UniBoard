@@ -11,7 +11,8 @@ data class AuthParams(
     ) -> Unit,
     val resetPassword: (email: String) -> Unit,
     val sendOtp: (email: String, otp: String) -> Unit,
-    val loginGoogle: (context: Context) -> Unit
+    val loginGoogle: (context: Context) -> Unit,
+    val changeForgottenPassword: (newPassword: String) -> Unit
 )
 
 sealed class AuthState {

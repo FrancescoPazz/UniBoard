@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 
@@ -31,6 +32,8 @@ fun ResetPasswordForm(
     isLoading: Boolean,
     onBack: () -> Unit
 ) {
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var showOTPFields by remember { mutableStateOf(false) }
 
     Column {
@@ -76,6 +79,28 @@ fun ResetPasswordForm(
                     keyboardType = KeyboardType.Number
                 )
             )
+
+            Spacer(Modifier.height(8.dp))
+
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text(stringResource(R.string.new_password)) },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            TextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = { Text(stringResource(R.string.confirm_password)) },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(16.dp))
+
             AuthButton(
                 text = stringResource(R.string.send), onClick = {
                     sendOtp()

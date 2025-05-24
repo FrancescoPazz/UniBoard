@@ -91,6 +91,5 @@ class ChatRepository(
         } catch (e: Exception) {
             throw e
         }
-
     }
 }
