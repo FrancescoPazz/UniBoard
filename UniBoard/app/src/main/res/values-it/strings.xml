@@ -6,6 +6,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="settings">Impostazioni</string>
+    <string name="new_password">Nuova password</string>
     <string name="confirm_password">Conferma password</string>
     <string name="login">Accedi</string>
     <string name="signup">Registrati</string>

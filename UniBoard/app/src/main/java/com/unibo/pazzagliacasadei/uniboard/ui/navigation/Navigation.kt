@@ -22,8 +22,6 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.forgot_password.ForgotPasswordParams
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.forgot_password.ForgotPasswordScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
@@ -118,15 +116,14 @@ fun UniBoardNavGraph(
                         },
                         sendOtp = { email, otp ->
                             authViewModel.sendOTPCode(email, otp)
+                        },
+                        changeForgottenPassword = { newPassword ->
+                            authViewModel.changeForgottenPassword(
+                                newPassword = newPassword
+                            )
                         }
                     )
                     AuthScreen(authParams)
-                }
-                composable<UniBoardRoute.ForgotPassword> {
-                    val forgotPasswordParams = ForgotPasswordParams(
-                        changeForgottenPassword = authViewModel::changeForgottenPassword,
-                    )
-                    ForgotPasswordScreen(forgotPasswordParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()
