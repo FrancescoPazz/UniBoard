@@ -3,6 +3,7 @@ package com.unibo.pazzagliacasadei.uniboard.data.repositories.publish
 import android.util.Log
 import androidx.compose.ui.util.fastForEachIndexed
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
+import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostRetrieved
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostToPublish
 import io.github.jan.supabase.SupabaseClient
@@ -12,7 +13,7 @@ import io.github.jan.supabase.storage.storage
 import kotlinx.datetime.Clock.System
 import org.maplibre.android.geometry.LatLng
 
-enum class PublicationErrors{
+enum class PublicationErrors {
     EMPTY_STRINGS,
     GENERIC
 }
@@ -47,10 +48,18 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
     }
 
     private suspend fun createPosition(
-        position: LatLng?
-    ){
+        postId: String,
+        position: LatLng
+    ) {
         supabase.from("positions").insert(
-
+            Position(
+                postId,
+                null,
+                null,
+                null,
+                null,
+                latLng = "POINT(${position.latitude} ${position.longitude})",
+            )
         )
     }
 
@@ -68,6 +77,9 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
             postImagesBucketApi.upload("${post.id}/${index}.jpg", imageBytes) {
                 upsert = false
             }
+        }
+        if (position != null) {
+            createPosition(post.id, position)
         }
         return true
     }

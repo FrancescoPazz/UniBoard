@@ -2,7 +2,6 @@ package com.unibo.pazzagliacasadei.uniboard.data.models.post
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.maplibre.android.geometry.LatLng
 
 @Serializable
 data class Position(
@@ -11,5 +10,5 @@ data class Position(
     @SerialName("civic") val civic: String?,
     @SerialName("city") val city: String?,
     @SerialName("postal_code") val postal: String?,
-    @SerialName("latlong") val latLng: LatLng
+    @SerialName("latlong") val latLng: String
 )
