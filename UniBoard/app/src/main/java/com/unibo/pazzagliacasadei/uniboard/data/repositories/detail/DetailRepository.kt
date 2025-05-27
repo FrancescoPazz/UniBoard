@@ -80,8 +80,6 @@ class DetailRepository(
         try {
             val convPhotos = mutableListOf<ByteArray>()
             photos.value?.forEach { photo ->
-                Log.d("DetailRepository", "photos.value: ${photos.value}")
-                Log.d("DetailRepository", "convertPhotona: ${photo.name}")
                 val bucket = supabase.storage.from("post-images")
                 val bytes = bucket.downloadPublic(photo.name) {
                     transform {
@@ -91,7 +89,6 @@ class DetailRepository(
                 }
                 convPhotos.add(bytes)
             }
-            Log.d("DetailRepository", "convertPhotos: $convPhotos")
             return convPhotos
         } catch (e: Exception) {
             Log.e("DetailRepository", "convertPhotos failed", e)

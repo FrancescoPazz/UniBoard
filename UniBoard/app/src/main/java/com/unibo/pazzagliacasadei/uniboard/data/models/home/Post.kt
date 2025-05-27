@@ -16,4 +16,5 @@ data class Post(
     @SerialName("title") val title: String,
 
     @SerialName("anonymous") val anonymous: Boolean
+
 )

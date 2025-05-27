@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
+import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
@@ -134,7 +135,7 @@ fun UniBoardNavGraph(
                     }, filterPosts = { filterIndex ->
                         homeViewModel.filterPosts(filterIndex)
                     }, selectPost = { post ->
-                        detailViewModel.setPost(post)
+                        detailViewModel.setPost(post.postData)
                     }))
                 }
                 composable<UniBoardRoute.Profile> {
