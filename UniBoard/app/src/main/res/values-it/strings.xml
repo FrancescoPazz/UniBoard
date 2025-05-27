@@ -64,7 +64,8 @@
     <string name="address_search">Cerca indirizzo</string>
     <string name="location_disabled">Posizione disabilitata</string>
     <string name="post_publish_success">Pubblicazione avvenuta con successo</string>
-    <string name="post_publish_fail">Pubblicazione fallita</string>
+    <string name="post_publish_fail_generic">Pubblicazione fallita per ragioni sconosciute</string>
+    <string name="post_publish_fail_fields">Pubblicazione fallita: I campi titolo e contenuto non possono essere vuoti</string>
     <string name="post_image">Immagine del post</string>
     <!-- Icons -->
     <string name="camera_icon">Fotografia</string>

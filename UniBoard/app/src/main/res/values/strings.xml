@@ -63,7 +63,8 @@
     <string name="address_search">Search for an address</string>
     <string name="location_disabled">Location is disabled</string>
     <string name="post_publish_success">Post published successfully</string>
-    <string name="post_publish_fail">Post publishing failed</string>
+    <string name="post_publish_fail_generic">Post publishing failed for unknown reasons</string>
+    <string name="post_publish_fail_fields">Post publishing failed: Title and content fields cannot be empty</string>
     <string name="post_image">Post image</string>
     <!-- Icons -->
     <string name="camera_icon">Photo</string>

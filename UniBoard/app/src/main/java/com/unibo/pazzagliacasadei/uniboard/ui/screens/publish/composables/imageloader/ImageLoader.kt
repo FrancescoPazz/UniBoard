@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -17,7 +19,9 @@ import com.unibo.pazzagliacasadei.uniboard.R
 
 @Composable
 fun ImageLoader(uriList: SnapshotStateList<Uri>, removeFunction: (uri: Uri) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         Text(
             text = stringResource(R.string.publish_page_photos),
             textAlign = TextAlign.Center,
@@ -28,7 +32,7 @@ fun ImageLoader(uriList: SnapshotStateList<Uri>, removeFunction: (uri: Uri) -> U
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            uriList.fastForEach <Uri> { uri ->
+            uriList.fastForEach<Uri> { uri ->
                 SingleImageDisplay(uri, removeFunction)
             }
             if (uriList.size < 4) {
