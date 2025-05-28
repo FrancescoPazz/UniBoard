@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
-import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.ProfileParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.settings.SettingsParams
@@ -152,6 +151,13 @@ fun UniBoardNavGraph(
                                 onSuccess = onSuccess,
                                 onError = onError
                             )
+                        },
+                        userPosts = profileViewModel.userPosts.observeAsState(),
+                        loadUserPosts = {
+                            profileViewModel.loadUserPosts()
+                        },
+                        selectUserPost = { post ->
+                            detailViewModel.setPost(post.postData)
                         },
                         conversations = profileViewModel.conversations.observeAsState(),
                         loadConversations = {

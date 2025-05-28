@@ -187,7 +187,7 @@ class AuthRepository(
         Log.d("ProfileViewModel", "Password changed successfully for user: $email")
     }
 
-    suspend fun changeForgottenPassword(email: String, newPassword: String) = flow  {
+    fun changeForgottenPassword(email: String, newPassword: String) = flow  {
         try {
             val user = supabase.from("users")
                 .select {

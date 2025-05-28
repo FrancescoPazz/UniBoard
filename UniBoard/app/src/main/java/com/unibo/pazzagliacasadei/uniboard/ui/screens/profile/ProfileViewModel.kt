@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
+import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.chat.ChatRepository
@@ -14,13 +15,27 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val authRepository: AuthRepository,
-    userRepository: UserRepository,
+    private val userRepository: UserRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
     val user: LiveData<User?> = userRepository.currentUserLiveData
 
     private val _conversations = MutableLiveData<List<Conversation>>()
     val conversations: LiveData<List<Conversation>> = _conversations
+
+    private val _userPosts = MutableLiveData<List<PostWithPreviewImage>?>()
+    val userPosts: LiveData<List<PostWithPreviewImage>?> = _userPosts
+
+    fun loadUserPosts() {
+        viewModelScope.launch {
+            try {
+                _userPosts.value = userRepository.getUserPosts()
+            } catch (e: Exception) {
+                Log.e("ProfileViewModel", "Error loading announcements: ${e.message}")
+                _userPosts.value = null
+            }
+        }
+    }
 
     fun loadConversations() {
         viewModelScope.launch {

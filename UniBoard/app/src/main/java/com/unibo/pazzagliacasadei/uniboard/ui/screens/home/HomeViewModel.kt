@@ -2,9 +2,7 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
-import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

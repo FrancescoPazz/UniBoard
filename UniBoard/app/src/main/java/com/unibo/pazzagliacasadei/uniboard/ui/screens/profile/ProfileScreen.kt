@@ -23,8 +23,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.Announcement
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.AnnouncementsTabContent
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.PostsTabContent
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.MessagesTabContent
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileHeaderSection
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables.ProfileTabs
@@ -35,7 +34,7 @@ fun ProfileScreen(
     navController: NavHostController, profileParams: ProfileParams
 ) {
     val tabs = listOf(
-        stringResource(R.string.my_announces),
+        stringResource(R.string.my_posts),
         stringResource(R.string.messages),
         stringResource(R.string.user_settings)
     )
@@ -60,14 +59,8 @@ fun ProfileScreen(
                         .weight(1f)
                         .fillMaxWidth()
                 ) {
-                    val sampleAnnouncements = listOf(
-                        Announcement("Brr Brr Patamim?", "Luca Pazzadei", "Cesena", R.drawable.logo),
-                        Announcement("Aiuto ho molta baura", "Anonimo", "Napoli", R.drawable.logo),
-                        Announcement("Lampada Sospensione", "€450", "Milano Est", R.drawable.logo),
-                        Announcement("Poltrona Nordica", "€680", "Milano Sud", R.drawable.logo)
-                    )
                     when (selectedTab) {
-                        0 -> AnnouncementsTabContent(sampleAnnouncements)
+                        0 -> PostsTabContent(navController, profileParams.userPosts, profileParams.loadUserPosts, profileParams.selectUserPost)
                         1 -> MessagesTabContent(
                             profileParams.conversations, profileParams.loadConversations
                         ) {

@@ -3,6 +3,9 @@ package com.unibo.pazzagliacasadei.uniboard.data.repositories.profile
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
+import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
+import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
+import com.unibo.pazzagliacasadei.uniboard.utils.images.getPreviewImage
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
@@ -48,6 +51,23 @@ class UserRepository(
                 Log.e("UserRepository", "Exception loading user data", e)
                 currentUserLiveData.postValue(null)
             }
+        }
+    }
+
+    suspend fun getUserPosts(): List<PostWithPreviewImage> {
+        val userId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
+
+        return try {
+            val response = supabase.from("posts").select {
+                filter {
+                    eq("author", userId)
+                }
+            }
+
+            response.decodeList<Post>().map { post -> PostWithPreviewImage(post, getPreviewImage(supabase, post.id)) }
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Error fetching user posts", e)
+            emptyList()
         }
     }
 
