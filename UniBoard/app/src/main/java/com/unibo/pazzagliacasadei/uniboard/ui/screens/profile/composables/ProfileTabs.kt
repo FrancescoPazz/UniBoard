@@ -4,7 +4,6 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -12,7 +11,7 @@ fun ProfileTabs(
     tabs: List<String>, selectedIndex: Int, onTabSelected: (Int) -> Unit
 ) {
     ScrollableTabRow(
-        selectedTabIndex = selectedIndex, edgePadding = 16.dp
+        selectedTabIndex = selectedIndex
     ) {
         tabs.forEachIndexed { index, title ->
             Tab(selected = index == selectedIndex,

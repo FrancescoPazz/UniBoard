@@ -127,7 +127,7 @@ fun UniBoardNavGraph(
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()
-                    val posts by homeViewModel.posts.collectAsState()
+                    val posts by homeViewModel.posts.observeAsState()
 
                     HomeScreen(navController, HomeParams(posts = posts, searchPosts = { query ->
                         homeViewModel.searchPosts(query)

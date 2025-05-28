@@ -7,15 +7,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -58,11 +62,31 @@ fun HomeScreen(
                 contentPadding = PaddingValues(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(params.posts) { post ->
-                    PostCard(post = post, onClick = {
-                        params.selectPost(post)
-                        navController.navigate(UniBoardRoute.Detail)
-                    })
+                if (params.posts == null) {
+                    item(span = { GridItemSpan(2) }) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                } else if (params.posts.isEmpty()) {
+                    item {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Nessun post trovato")
+                        }
+                    }
+                } else {
+                    items(params.posts) { post ->
+                        PostCard(post = post, onClick = {
+                            params.selectPost(post)
+                            navController.navigate(UniBoardRoute.Detail)
+                        })
+                    }
                 }
             }
         }

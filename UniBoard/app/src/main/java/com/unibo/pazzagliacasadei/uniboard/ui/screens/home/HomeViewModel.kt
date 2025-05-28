@@ -1,18 +1,18 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
 
 class HomeViewModel(
     private val repository: HomeRepository,
 ) : ViewModel() {
-    private val _posts = MutableStateFlow<List<PostWithPreviewImage>>(emptyList())
-    val posts: StateFlow<List<PostWithPreviewImage>> = _posts
+    private val _posts = MutableLiveData<List<PostWithPreviewImage>?>()
+    val posts: LiveData<List<PostWithPreviewImage>?> = _posts
 
     init {
         loadPosts()
