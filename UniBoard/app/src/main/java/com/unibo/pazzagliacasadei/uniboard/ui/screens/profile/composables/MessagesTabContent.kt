@@ -37,12 +37,16 @@ import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
+import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 
 @Composable
 fun MessagesTabContent(
     conversations: State<List<Conversation>?>,
     loadConversations: () -> Unit,
-    onConversationClick: (Conversation) -> Unit
+    onConversationClick: (Conversation) -> Unit,
+    searchUsers: (query: String) -> LiveData<List<User>>
 ) {
     var query by remember { mutableStateOf("") }
 
@@ -72,7 +76,7 @@ fun MessagesTabContent(
             )
             Spacer(Modifier.width(8.dp))
             Button(
-                onClick = {  },
+                onClick = { searchUsers(query) },
                 modifier = Modifier.height(56.dp)
             ) {
                 Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search))
@@ -110,7 +114,7 @@ fun MessagesTabContent(
                 items(filtered) { conversation ->
                     ListItem(
                         headlineContent = { Text(conversation.contactUsername) },
-                        supportingContent = { Text(conversation.lastMessage ?: "No messages") },
+                        supportingContent = { Text(conversation.lastMessage ?: stringResource(R.string.no_messages_yet), fontSize = 12.sp) },
                         modifier = Modifier.clickable { onConversationClick(conversation) }
                     )
                     HorizontalDivider()

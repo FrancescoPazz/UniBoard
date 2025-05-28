@@ -159,6 +159,9 @@ fun UniBoardNavGraph(
                         selectUserPost = { post ->
                             detailViewModel.setPost(post.postData)
                         },
+                        searchUsers = { query ->
+                            chatViewModel.searchUsers(query)
+                        },
                         conversations = profileViewModel.conversations.observeAsState(),
                         loadConversations = {
                             profileViewModel.loadConversations()

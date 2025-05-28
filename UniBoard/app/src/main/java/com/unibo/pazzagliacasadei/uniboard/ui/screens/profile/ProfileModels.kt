@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile
 
 import androidx.compose.runtime.State
+import androidx.lifecycle.LiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
@@ -12,6 +13,7 @@ data class ProfileParams(
     val loadUserPosts: () -> Unit,
     val userPosts: State<List<PostWithPreviewImage>?>,
     val selectUserPost: (post: PostWithPreviewImage) -> Unit,
+    val searchUsers: (query: String) -> LiveData<List<User>>,
     val conversations: State<List<Conversation>?>,
     val loadConversations: () -> Unit,
     val setContactInfo: (contactId: String, contactUsername: String) -> Unit

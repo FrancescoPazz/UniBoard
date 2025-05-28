@@ -2,6 +2,7 @@ package com.unibo.pazzagliacasadei.uniboard.data.repositories.chat
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Message
 import io.github.jan.supabase.SupabaseClient
@@ -18,6 +19,27 @@ class ChatRepository(
     val currentContactId = MutableLiveData<String?>()
     val currentContactUsername = MutableLiveData<String?>()
 
+    suspend fun searchUsers(query: String) : List<User> {
+        return try {
+            val userId = supabase.auth.currentUserOrNull()?.id
+                ?: throw IllegalStateException("No authenticated user")
+
+            val resp = supabase.from("users").select {
+                filter {
+                    or {
+                        ilike("username", "%$query%")
+                        ilike("email", "%$query%")
+                    }
+                }
+                filter { neq("id", userId) }
+            }
+            resp.decodeList<User>()
+        } catch (e: Exception) {
+            Log.e("ChatRepository", "searchUser failed", e)
+            emptyList()
+        }
+    }
+
     fun setContactInfo(contactId: String, contactUsername: String) {
         currentContactId.postValue(contactId)
         currentContactUsername.postValue(contactUsername)
@@ -28,12 +50,39 @@ class ChatRepository(
             ?: throw IllegalStateException("No authenticated user")
 
         try {
-            return supabase
+            val realConversations = supabase
                 .from("view_conversations")
                 .select{
                     filter { eq("user_id", userId) }
                 }
-                .decodeList()
+                .decodeList<Conversation>()
+            val otherUsersConversations = supabase
+                .from("users")
+                .select {
+                    filter {
+                        and {
+                            neq("id", userId)
+                        }
+                    }
+                }
+                .decodeList<User>().filter { emptyConv ->
+                    realConversations.none { realConv ->
+                        realConv.contactId == emptyConv.id
+                    }
+                }.map { emptyConv ->
+                    Conversation(
+                        userId = userId,
+                        contactId = emptyConv.id,
+                        contactUsername = emptyConv.username,
+                        lastMessage = null,
+                        lastTime = null
+                    )
+                }
+
+            val conversations = (realConversations + otherUsersConversations)
+                .distinctBy { it.contactId }
+                .sortedByDescending { it.lastTime }
+            return conversations
         } catch (e: Exception) {
             throw e
         }

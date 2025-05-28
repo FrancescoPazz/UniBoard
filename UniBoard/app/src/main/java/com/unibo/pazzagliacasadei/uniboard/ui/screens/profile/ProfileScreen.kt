@@ -62,12 +62,17 @@ fun ProfileScreen(
                     when (selectedTab) {
                         0 -> PostsTabContent(navController, profileParams.userPosts, profileParams.loadUserPosts, profileParams.selectUserPost)
                         1 -> MessagesTabContent(
-                            profileParams.conversations, profileParams.loadConversations
-                        ) {
-                            profileParams.setContactInfo(it.contactId, it.contactUsername)
-                            navController.navigate(UniBoardRoute.Chat)
-                        }
-
+                            conversations = profileParams.conversations,
+                            loadConversations = profileParams.loadConversations,
+                            onConversationClick = { conversation ->
+                                profileParams.setContactInfo(
+                                    conversation.contactId,
+                                    conversation.contactUsername
+                                )
+                                navController.navigate(UniBoardRoute.Chat)
+                            },
+                            searchUsers = profileParams.searchUsers
+                        )
                         2 -> SettingsTabContent(
                             updatePasswordWithOldPassword = profileParams.updatePasswordWithOldPassword,
                             onLogout = {
