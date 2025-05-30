@@ -55,19 +55,9 @@ class ChatViewModel(
 
         viewModelScope.launch {
             try {
-                val userId = userRepository.currentUserLiveData.value?.id
-                    ?: throw IllegalStateException("No authenticated user")
-                val contactId = currentContactId.value!!
-                val newMessage = Message(
-                    senderId = userId,
-                    receiverId = contactId,
-                    content = messageInput,
-                    sentTime = kotlinx.datetime.Clock.System.now()
-                )
                 val currentMessages = _messages.value ?: emptyList()
+                val newMessage = chatRepository.sendMessage(messageInput)
                 _messages.value = currentMessages + newMessage
-
-                chatRepository.sendMessage(messageInput)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -5,12 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Message
+import com.unibo.pazzagliacasadei.uniboard.data.models.profile.MessageToSend
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.postgrest.query.filter.FilterOperation
+import io.github.jan.supabase.postgrest.query.filter.FilterOperator
+import io.github.jan.supabase.realtime.selectAsFlow
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 class ChatRepository(
@@ -114,18 +121,39 @@ class ChatRepository(
                     Order.ASCENDING
                 )
             }
+        observeMessagesWith()
         Log.d("TEST ChatRepository", "fetchMessagesWith: ${resp.decodeList<Message>()}")
         emit(resp.decodeList())
     }
 
-    suspend fun sendMessage(messageInput: String) {
+    @OptIn(SupabaseExperimental::class)
+    private fun observeMessagesWith() {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("No authenticated user")
+        val flow: Flow<List<Message>> = supabase.from("messages").selectAsFlow(
+            Message::id,
+            filter = FilterOperation("receiver_id", FilterOperator.EQ, userId)
+        )
+
+        MainScope().launch {
+            flow.collect {
+                if (it.isNotEmpty()) {
+                    Log.d("TEST ChatRepository", "observeMessagesWith: $it")
+                } else {
+                    Log.d("TEST ChatRepository", "observeMessagesWith: No new messages")
+                }
+            }
+        }
+    }
+
+    suspend fun sendMessage(messageInput: String): Message {
         val userId = supabase.auth.currentUserOrNull()?.id
             ?: throw IllegalStateException("No authenticated user")
         val contactId = currentContactId.value
             ?: throw IllegalStateException("No contact selected")
 
         try {
-            val message = Message(
+            val message = MessageToSend(
                 senderId = userId,
                 receiverId = contactId,
                 content = messageInput,
@@ -137,6 +165,7 @@ class ChatRepository(
                 }
                 .decodeSingle<Message>()
             Log.d("TEST ChatRepository", "sendMessage: $test")
+            return test
         } catch (e: Exception) {
             throw e
         }
