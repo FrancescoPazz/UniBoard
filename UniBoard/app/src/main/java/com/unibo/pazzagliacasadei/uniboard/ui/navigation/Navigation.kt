@@ -190,6 +190,7 @@ fun UniBoardNavGraph(
                             author = detailViewModel.author.observeAsState(),
                             photos = detailViewModel.photos.observeAsState(),
                             comments = detailViewModel.comments.observeAsState(),
+                            position = detailViewModel.position.observeAsState(),
                             addComment = { text ->
                                 detailViewModel.addComment(text)
                             }))

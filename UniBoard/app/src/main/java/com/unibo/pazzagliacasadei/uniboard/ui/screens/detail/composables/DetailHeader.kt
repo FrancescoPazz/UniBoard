@@ -24,7 +24,7 @@ fun ByteArray.toImageBitmap(): ImageBitmap {
 }
 
 @Composable
-fun DetailHeader(post: Post, author : User?, photos: List<ByteArray>?) {
+fun DetailHeader(post: Post, author : User?) {
     Column(Modifier.padding(horizontal = 16.dp)) {
         Text(post.title, style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(4.dp))
@@ -37,14 +37,5 @@ fun DetailHeader(post: Post, author : User?, photos: List<ByteArray>?) {
         }", style = MaterialTheme.typography.bodyMedium)
         Text(post.date, style = MaterialTheme.typography.bodySmall)
         Spacer(Modifier.height(8.dp))
-        if (!photos.isNullOrEmpty()) {
-            photos.forEach { photo ->
-                Image(
-                    bitmap = photo.toImageBitmap(),
-                    contentDescription = stringResource(R.string.post_image),
-                    modifier = Modifier.height(150.dp)
-                )
-            }
-        }
     }
 }

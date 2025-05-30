@@ -6,6 +6,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.detail.Comment
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
+import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.storage.storage
@@ -18,8 +19,9 @@ class DetailRepository(
     val currentDetailPost = MutableLiveData<Post?>()
     val currentAuthorPost = MutableLiveData<User?>()
     val comments = MutableLiveData<List<Comment>?>(emptyList())
-    val photos = MutableLiveData<List<Photo>?>(emptyList())
+    private val photos = MutableLiveData<List<Photo>?>(emptyList())
     val convertedPhotos = MutableLiveData<List<ByteArray>?>(emptyList())
+    val currentPostPosition = MutableLiveData<Position?>(null)
 
     suspend fun setPost(post: Post) {
         currentDetailPost.value = post
@@ -31,6 +33,8 @@ class DetailRepository(
         photos.value = listOfPhotos
         val listOfConvertedPhotos = convertPhotos()
         convertedPhotos.postValue(listOfConvertedPhotos)
+        val position = getPostPosition()
+        currentPostPosition.postValue(position)
     }
 
     private suspend fun getAuthor() : User {
@@ -57,6 +61,38 @@ class DetailRepository(
             resp.decodeList<Comment>()
         } catch (e: Exception) {
             Log.e("DetailRepository", "getComments failed", e)
+            throw e
+        }
+    }
+
+    private suspend fun getPostPosition(): Position? {
+        Log.d("DetailRepository", "getPostPosition: ${currentDetailPost.value?.id}")
+        return try {
+            val resp = supabase.from("positions")
+                .select {
+                    filter {
+                        eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
+                    }
+                }
+            val position = resp.decodeSingleOrNull<Position>()
+
+            position?.let {
+                if (it.latLng.startsWith("POINT")) {
+                    val coordinates = it.latLng.substringAfter("(").substringBefore(")")
+                    val parts = coordinates.split(" ")
+                    if (parts.size == 2) {
+                        val formattedLatLng = "${parts[1]},${parts[0]}"
+                        val modifiedPosition = it.copy(latLng = formattedLatLng)
+                        Log.d("DetailRepository", "Converted position: $modifiedPosition")
+                        return modifiedPosition
+                    }
+                }
+            }
+
+            Log.d("DetailRepository", "getPostPosition: $position")
+            position
+        } catch (e: Exception) {
+            Log.e("DetailRepository", "getPostPosition failed", e)
             throw e
         }
     }

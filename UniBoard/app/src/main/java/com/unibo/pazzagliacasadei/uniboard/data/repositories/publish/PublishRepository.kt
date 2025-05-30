@@ -1,6 +1,5 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.publish
 
-import android.util.Log
 import androidx.compose.ui.util.fastForEachIndexed
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
@@ -58,7 +57,7 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
                 null,
                 null,
                 null,
-                latLng = "POINT(${position.latitude} ${position.longitude})",
+                latLng = "${position.latitude}|${position.longitude}",
             )
         )
     }

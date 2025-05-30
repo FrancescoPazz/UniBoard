@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ fun DetailScreen(
     val post by detailParams.post
     val author by detailParams.author
     val photos by detailParams.photos
+    val position by detailParams.position
     val comments by detailParams.comments
 
     Scaffold(topBar = { TopBar(navController) }) { padding ->
@@ -33,11 +35,11 @@ fun DetailScreen(
                 .padding(padding)
         ) {
             post?.let {
-                DetailHeader(it, author, photos)
+                DetailHeader(it, author)
                 Spacer(Modifier.height(16.dp))
-                DetailDescription(it)
+                DetailDescription(it, photos)
                 Spacer(Modifier.height(16.dp))
-                DetailMapSection(null)
+                DetailMapSection(position)
                 Spacer(Modifier.height(16.dp))
                 DetailCommentsSection(
                     comments = comments ?: emptyList(), onSend = detailParams.addComment

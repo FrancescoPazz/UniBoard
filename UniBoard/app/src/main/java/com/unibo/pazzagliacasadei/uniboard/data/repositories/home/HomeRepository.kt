@@ -7,7 +7,6 @@ import com.unibo.pazzagliacasadei.uniboard.utils.images.getPreviewImage
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Order
-import io.github.jan.supabase.storage.storage
 
 class HomeRepository(
     private val supabase: SupabaseClient
