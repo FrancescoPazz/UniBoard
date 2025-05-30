@@ -2,9 +2,8 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,15 +14,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProfileHeader(
     username: String, email: String, moreInfo: String, imageRes: Int, modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(imageRes),
@@ -32,17 +33,22 @@ fun ProfileHeader(
                 .size(100.dp)
                 .clip(CircleShape)
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(username, style = MaterialTheme.typography.headlineSmall)
-        Text(
-            email,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        Text(
-            moreInfo,
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .weight(1f)
+        ) {
+            Text(username, style = MaterialTheme.typography.headlineSmall)
+            Text(
+                email,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                moreInfo,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
