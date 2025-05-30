@@ -1,5 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,35 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.unibo.pazzagliacasadei.uniboard.R
-import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
+import com.unibo.pazzagliacasadei.uniboard.data.models.post.PositionLatLon
+import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import org.maplibre.android.plugins.annotation.SymbolManager
+import org.maplibre.android.plugins.annotation.SymbolOptions
 import org.maplibre.android.utils.BitmapUtils
-
-fun Position.toLatLng(): LatLng? {
-    return try {
-        val parts = latLng.split("|")
-        if (parts.size == 2) {
-            val lat = parts[0].toDouble()
-            val lng = parts[1].toDouble()
-            LatLng(lat, lng)
-        } else {
-            null
-        }
-    } catch (e: Exception) {
-        null
-    }
-}
+import java.util.Locale
 
 @Composable
-fun DetailMapSection(position: Position?) {
+fun DetailMapSection(position: PositionLatLon?) {
     if (position == null) return
 
     val context = LocalContext.current
-    val latLng = position.toLatLng()
+    Log.d("DetailMapSection", "Position: $position")
+    val initialLatLng = LatLng(position.lat, position.lon)
 
     Column(Modifier.padding(horizontal = 16.dp)) {
         Text(stringResource(R.string.position), style = MaterialTheme.typography.titleMedium)
@@ -61,12 +52,11 @@ fun DetailMapSection(position: Position?) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-            factory = {
-                MapView(context).apply {
+            factory = { ctx ->
+                MapView(ctx).apply {
                     getMapAsync { map ->
                         mapLibreMap = map
-                        map.setStyle(Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty"))
-                        { style ->
+                        map.setStyle(Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty")) { style ->
                             symbolManager = SymbolManager(this, map, style).apply {
                                 iconAllowOverlap = true
                                 textAllowOverlap = true
@@ -87,40 +77,43 @@ fun DetailMapSection(position: Position?) {
                                 isDoubleTapGesturesEnabled = false
                                 isCompassEnabled = false
                             }
+
+                            map.addOnMapClickListener {
+                                val latStr = String.format(Locale.US, "%.8f", position.lat)
+                                val lonStr = String.format(Locale.US, "%.8f", position.lon)
+
+                                val uri = Uri.parse("geo:$latStr,$lonStr?q=$latStr,$lonStr")
+                                val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                                    setPackage("com.google.android.apps.maps")
+                                }
+                                if (intent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(intent)
+                                } else {
+                                    val webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$latStr,$lonStr")
+                                    context.startActivity(
+                                        Intent(Intent.ACTION_VIEW, webUri)
+                                    )
+                                }
+                                true
+                            }
                         }
                     }
                 }
             },
-            update = { mapView ->
-                if (mapLibreMap != null && symbolManager != null && latLng != null) {
+            update = { _ ->
+                if (mapLibreMap != null && symbolManager != null) {
                     symbolManager?.deleteAll()
                     symbolManager?.create(
-                        org.maplibre.android.plugins.annotation.SymbolOptions()
-                            .withLatLng(latLng)
+                        SymbolOptions()
+                            .withLatLng(initialLatLng)
                             .withIconImage("marker-icon")
                             .withIconSize(0.2f)
                     )
                     mapLibreMap?.moveCamera(
-                        org.maplibre.android.camera.CameraUpdateFactory.newLatLngZoom(latLng, 10.0)
+                        CameraUpdateFactory.newLatLngZoom(initialLatLng, 10.0)
                     )
                 }
             }
         )
-
-        if (position.street != null || position.city != null) {
-            Spacer(Modifier.height(8.dp))
-            Text(
-                buildString {
-                    position.street?.let { append(it) }
-                    position.civic?.let { civic -> append(", $civic") }
-                    position.city?.let { city ->
-                        if (isNotEmpty()) append(", ")
-                        append(city)
-                    }
-                    position.postal?.let { postal -> append(" - $postal") }
-                },
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
     }
 }

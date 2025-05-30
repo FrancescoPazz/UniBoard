@@ -7,10 +7,13 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.detail.Comment
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
+import com.unibo.pazzagliacasadei.uniboard.data.models.post.PositionLatLon
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.storage.storage
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.rpc
 import java.time.Instant
 
 class DetailRepository(
@@ -21,7 +24,7 @@ class DetailRepository(
     val comments = MutableLiveData<List<Comment>?>(emptyList())
     private val photos = MutableLiveData<List<Photo>?>(emptyList())
     val convertedPhotos = MutableLiveData<List<ByteArray>?>(emptyList())
-    val currentPostPosition = MutableLiveData<Position?>(null)
+    val currentPostPosition = MutableLiveData<PositionLatLon?>(null)
 
     suspend fun setPost(post: Post) {
         currentDetailPost.value = post
@@ -65,7 +68,7 @@ class DetailRepository(
         }
     }
 
-    private suspend fun getPostPosition(): Position? {
+    private suspend fun getPostPosition(): PositionLatLon? {
         Log.d("DetailRepository", "getPostPosition: ${currentDetailPost.value?.id}")
         return try {
             val resp = supabase.from("positions")
@@ -75,26 +78,20 @@ class DetailRepository(
                     }
                 }
             val position = resp.decodeSingleOrNull<Position>()
+            val positionLatLon = position?.let { getLatLongFromWkb(it.latLng) }
 
-            position?.let {
-                if (it.latLng.startsWith("POINT")) {
-                    val coordinates = it.latLng.substringAfter("(").substringBefore(")")
-                    val parts = coordinates.split(" ")
-                    if (parts.size == 2) {
-                        val formattedLatLng = "${parts[1]},${parts[0]}"
-                        val modifiedPosition = it.copy(latLng = formattedLatLng)
-                        Log.d("DetailRepository", "Converted position: $modifiedPosition")
-                        return modifiedPosition
-                    }
-                }
-            }
-
-            Log.d("DetailRepository", "getPostPosition: $position")
-            position
+            positionLatLon
         } catch (e: Exception) {
             Log.e("DetailRepository", "getPostPosition failed", e)
             throw e
         }
+    }
+
+    private suspend fun getLatLongFromWkb(wkbHex: String): PositionLatLon {
+        val response = supabase.postgrest.rpc("extract_latlong_from_wkb", mapOf("wkb_hex" to wkbHex)
+            ).decodeSingle<PositionLatLon>()
+
+        return response
     }
 
     private suspend fun getPhotos(): List<Photo> {

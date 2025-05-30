@@ -57,7 +57,7 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
                 null,
                 null,
                 null,
-                latLng = "${position.latitude}|${position.longitude}",
+                latLng = "POINT(${position.latitude} ${position.longitude})",
             )
         )
     }
