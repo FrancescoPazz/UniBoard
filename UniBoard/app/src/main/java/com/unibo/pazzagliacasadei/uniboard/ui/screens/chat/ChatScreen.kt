@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.chat
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ fun ChatScreen(
     val listState = rememberLazyListState()
 
     LaunchedEffect(params.contactUsername.value) {
+        Log.d("test ChatScreen", "Contact username changed: ${params.contactUsername.value}")
         params.contactUsername.value?.let {
             params.loadMessages()
         }

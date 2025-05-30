@@ -16,7 +16,6 @@ import io.github.jan.supabase.postgrest.query.filter.FilterOperator
 import io.github.jan.supabase.realtime.selectAsFlow
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
@@ -25,6 +24,7 @@ class ChatRepository(
 ) {
     val currentContactId = MutableLiveData<String?>()
     val currentContactUsername = MutableLiveData<String?>()
+    val currentMessages = MutableLiveData<List<Message>>(emptyList())
 
     suspend fun searchUsers(query: String) : List<User> {
         return try {
@@ -95,12 +95,12 @@ class ChatRepository(
         }
     }
 
-    fun fetchmessagesWith(): Flow<List<Message>> = flow {
+    suspend fun fetchMessages() {
+        Log.d("TEST ChatRepository", "fetchMessagesWith: called")
         val userId = supabase.auth.currentUserOrNull()?.id
             ?: throw IllegalStateException("No authenticated user")
         val contactId = currentContactId.value
             ?: throw IllegalStateException("No contact selected")
-
         val resp = supabase
             .from("messages")
             .select {
@@ -121,9 +121,9 @@ class ChatRepository(
                     Order.ASCENDING
                 )
             }
+        currentMessages.value = resp.decodeList<Message>()
         observeMessagesWith()
         Log.d("TEST ChatRepository", "fetchMessagesWith: ${resp.decodeList<Message>()}")
-        emit(resp.decodeList())
     }
 
     @OptIn(SupabaseExperimental::class)
@@ -136,11 +136,13 @@ class ChatRepository(
         )
 
         MainScope().launch {
-            flow.collect {
-                if (it.isNotEmpty()) {
-                    Log.d("TEST ChatRepository", "observeMessagesWith: $it")
-                } else {
-                    Log.d("TEST ChatRepository", "observeMessagesWith: No new messages")
+            flow.collect { messages ->
+                messages.forEach { message ->
+                    Log.d("TEST ChatRepository", "observeMessagesWith: $message")
+                    val currentList = currentMessages.value ?: emptyList()
+                    if (currentList.none { it.id == message.id }) {
+                        currentMessages.postValue(currentList + message)
+                    }
                 }
             }
         }
@@ -164,6 +166,7 @@ class ChatRepository(
                     select()
                 }
                 .decodeSingle<Message>()
+            currentMessages.value = currentMessages.value?.plus(test) ?: listOf(test)
             Log.d("TEST ChatRepository", "sendMessage: $test")
             return test
         } catch (e: Exception) {

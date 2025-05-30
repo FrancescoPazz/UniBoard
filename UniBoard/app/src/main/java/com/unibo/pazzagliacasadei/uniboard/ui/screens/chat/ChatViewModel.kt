@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.chat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,9 +16,7 @@ class ChatViewModel(
     private val chatRepository: ChatRepository
 ) : ViewModel() {
     val user: LiveData<User?> = userRepository.currentUserLiveData
-
-    private val _messages = MutableLiveData<List<Message>>(emptyList())
-    val messages: LiveData<List<Message>> = _messages
+    val messages: LiveData<List<Message>> = chatRepository.currentMessages
 
     val currentContactId: LiveData<String?> = chatRepository.currentContactId
     val currentContactUsername: LiveData<String?> = chatRepository.currentContactUsername
@@ -40,11 +39,9 @@ class ChatViewModel(
     }
 
     fun loadMessages() {
+        Log.d("Test", "loadMessages called with contactId: ${currentContactId.value}")
         viewModelScope.launch {
-            chatRepository.fetchmessagesWith()
-                .collect { messageList ->
-                    _messages.value = messageList
-                }
+            chatRepository.fetchMessages()
         }
     }
 
@@ -55,9 +52,7 @@ class ChatViewModel(
 
         viewModelScope.launch {
             try {
-                val currentMessages = _messages.value ?: emptyList()
-                val newMessage = chatRepository.sendMessage(messageInput)
-                _messages.value = currentMessages + newMessage
+                chatRepository.sendMessage(messageInput)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
