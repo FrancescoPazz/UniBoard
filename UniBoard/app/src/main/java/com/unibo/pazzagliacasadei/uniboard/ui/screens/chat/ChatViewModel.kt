@@ -49,13 +49,28 @@ class ChatViewModel(
     }
 
     fun sendMessage(messageInput: String) {
-        if (currentContactId.value == null) {
-            throw IllegalStateException("No contact selected")
+        if (messageInput.isBlank() || currentContactId.value == null) {
+            return
         }
 
         viewModelScope.launch {
-            chatRepository.sendMessage(messageInput)
+            try {
+                val userId = userRepository.currentUserLiveData.value?.id
+                    ?: throw IllegalStateException("No authenticated user")
+                val contactId = currentContactId.value!!
+                val newMessage = Message(
+                    senderId = userId,
+                    receiverId = contactId,
+                    content = messageInput,
+                    sentTime = kotlinx.datetime.Clock.System.now()
+                )
+                val currentMessages = _messages.value ?: emptyList()
+                _messages.value = currentMessages + newMessage
+
+                chatRepository.sendMessage(messageInput)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
-
 }
