@@ -7,5 +7,5 @@ interface IHomeRepository {
     suspend fun getAllPosts(): List<PostWithPreviewImage>
     suspend fun searchPosts(query: String): List<PostWithPreviewImage>
     suspend fun getRecentPosts(): List<PostWithPreviewImage>
-    suspend fun getNearbyPosts(currentLocation: LatLng?): List<PostWithPreviewImage>
+    suspend fun getNearbyPosts(currentLocation: LatLng): List<PostWithPreviewImage>
 }

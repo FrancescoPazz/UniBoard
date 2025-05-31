@@ -1,5 +1,6 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -39,7 +40,7 @@ import org.maplibre.android.geometry.LatLng
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    homeVM : HomeViewModel,
+    homeVM: HomeViewModel,
     selectPost: (post: PostWithPreviewImage) -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -67,14 +68,16 @@ fun HomeScreen(
                 // TODO Tradurre
                 titles = listOf("Tutti", "Recenti", "Vicino a te"),
                 selectedIndex = selectedTab,
+                //TODO Sistemare alcune inconsistenze dovute alla coroutine
                 onTabSelected = { index ->
                     selectedTab = index
-                    if (index == 2){
+                    if (index == 2) {
                         scope.launch {
                             try {
                                 val loc = locationService.getCurrentLocation()
                                 homeVM.currentLocation.value = loc
-                            } catch (_: IllegalStateException) {
+                            } catch (e: IllegalStateException) {
+                                Log.e("TEST", e.toString())
                                 //TODO showLocationDisabledAlert = true
                             }
                         }

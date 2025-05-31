@@ -56,10 +56,7 @@ class HomeRepository(
         }
     }
 
-    override suspend fun getNearbyPosts(currentLocation: LatLng?): List<PostWithPreviewImage> {
-        if (currentLocation == null){
-            return emptyList()
-        }
+    override suspend fun getNearbyPosts(currentLocation: LatLng): List<PostWithPreviewImage> {
         return try {
             val response = supabase.postgrest.rpc(
                 function = "nearby_posts",
@@ -70,7 +67,8 @@ class HomeRepository(
             )
             val postList = response.decodeList<Post>()
             postList.map { post -> PostWithPreviewImage(post, getPreviewImage(supabase, post.id)) }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Log.e("TEST", e.toString())
             emptyList()
         }
     }

@@ -28,11 +28,13 @@ fun PostCard(
             .fillMaxWidth()
             .clickable { onClick() }) {
         Column {
-            Image(
-                bitmap = post.postImagePreview.toImageBitmap(),
-                contentDescription = null
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            if (post.postImagePreview != null){
+                Image(
+                    bitmap = post.postImagePreview.toImageBitmap(),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             Text(
                 text = post.postData.title,
                 style = MaterialTheme.typography.titleMedium,

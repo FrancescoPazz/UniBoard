@@ -4,15 +4,16 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.exceptions.NotFoundRestException
 import io.github.jan.supabase.storage.storage
 
 fun uriToBytes(uri: Uri, context: Context): ByteArray {
     return context.contentResolver.openInputStream(uri)?.readBytes() ?: ByteArray(0)
 }
 
-suspend fun getPreviewImage(supabase: SupabaseClient, postId: String): ByteArray {
+suspend fun getPreviewImage(supabase: SupabaseClient, postId: String): ByteArray? {
+    val bucket = supabase.storage.from("post-images")
     try {
-        val bucket = supabase.storage.from("post-images")
         val bytes = bucket.downloadPublic("${postId}/0.jpg") {
             transform {
                 fill()
@@ -20,8 +21,11 @@ suspend fun getPreviewImage(supabase: SupabaseClient, postId: String): ByteArray
             }
         }
         return bytes
-    } catch (e: Exception) {
-        Log.e("DetailRepository", "convertPhotos failed", e)
-        throw e
+    } catch (exception: Exception) {
+        if (exception is NotFoundRestException) {
+            return null
+        }
+        Log.e("TEST", "Conversione dell'immagine non riuscita")
+        return null
     }
 }

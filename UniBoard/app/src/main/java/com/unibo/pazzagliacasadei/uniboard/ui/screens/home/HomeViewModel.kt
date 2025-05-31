@@ -49,7 +49,12 @@ class HomeViewModel(
             posts.addAll(
                 when (filterIndex) {
                     1 -> repository.getRecentPosts()
-                    2 -> repository.getNearbyPosts(currentLocation.value)
+                    2 -> {
+                        if (currentLocation.value != null){
+                            repository.getNearbyPosts(currentLocation.value!!)
+                        }
+                        else emptyList()
+                    }
                     else -> repository.getAllPosts()
                 }
             )
