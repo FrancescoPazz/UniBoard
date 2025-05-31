@@ -2,7 +2,6 @@ package com.unibo.pazzagliacasadei.uniboard.ui.navigation
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,7 +21,6 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.chat.ChatViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.DetailViewModel
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeParams
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeScreen
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.HomeViewModel
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
@@ -98,44 +96,42 @@ fun UniBoardNavGraph(
             ) {
                 composable<UniBoardRoute.Auth> {
                     val authParams =
-                        AuthParams(authState = authViewModel.authState, login = { email, password ->
-                            authViewModel.login(email, password)
-                        }, signUp = { email, password, username, name, surname, tel ->
-                            authViewModel.signUp(
-                                email = email,
-                                password = password,
-                                name = name,
-                                surname = surname,
-                                username = username,
-                                tel = tel
-                            )
-                        }, resetPassword = { email ->
-                            authViewModel.sendPasswordReset(email)
-                        }, loginGoogle = { context ->
-                            authViewModel.loginGoogle(context)
-                        },
-                        sendOtp = { email, otp ->
-                            authViewModel.sendOTPCode(email, otp)
-                        },
-                        changeForgottenPassword = { newPassword ->
-                            authViewModel.changeForgottenPassword(
-                                newPassword = newPassword
-                            )
-                        }
-                    )
+                        AuthParams(
+                            authState = authViewModel.authState, login = { email, password ->
+                                authViewModel.login(email, password)
+                            }, signUp = { email, password, username, name, surname, tel ->
+                                authViewModel.signUp(
+                                    email = email,
+                                    password = password,
+                                    name = name,
+                                    surname = surname,
+                                    username = username,
+                                    tel = tel
+                                )
+                            }, resetPassword = { email ->
+                                authViewModel.sendPasswordReset(email)
+                            }, loginGoogle = { context ->
+                                authViewModel.loginGoogle(context)
+                            },
+                            sendOtp = { email, otp ->
+                                authViewModel.sendOTPCode(email, otp)
+                            },
+                            changeForgottenPassword = { newPassword ->
+                                authViewModel.changeForgottenPassword(
+                                    newPassword = newPassword
+                                )
+                            }
+                        )
                     AuthScreen(authParams)
                 }
                 composable<UniBoardRoute.Home> {
                     val homeViewModel: HomeViewModel = koinViewModel()
-                    val posts by homeViewModel.posts.observeAsState()
 
-                    HomeScreen(navController, HomeParams(posts = posts, searchPosts = { query ->
-                        homeViewModel.searchPosts(query)
-                    }, filterPosts = { filterIndex ->
-                        homeViewModel.filterPosts(filterIndex)
-                    }, selectPost = { post ->
-                        detailViewModel.setPost(post.postData)
-                    }))
+                    HomeScreen(
+                        navController, homeViewModel,
+                        selectPost = { post ->
+                            detailViewModel.setPost(post.postData)
+                        })
                 }
                 composable<UniBoardRoute.Profile> {
                     val profileViewModel = koinViewModel<ProfileViewModel>()
@@ -184,7 +180,8 @@ fun UniBoardNavGraph(
                     PublishScreen(publishViewModel, navController)
                 }
                 composable<UniBoardRoute.Detail> {
-                    DetailScreen(navController,
+                    DetailScreen(
+                        navController,
                         detailParams = DetailParams(
                             post = detailViewModel.post.observeAsState(),
                             author = detailViewModel.author.observeAsState(),
@@ -193,11 +190,13 @@ fun UniBoardNavGraph(
                             position = detailViewModel.position.observeAsState(),
                             addComment = { text ->
                                 detailViewModel.addComment(text)
-                            }))
+                            })
+                    )
                 }
                 composable<UniBoardRoute.Chat> {
                     val chatViewModel = koinViewModel<ChatViewModel>()
-                    ChatScreen(navController, ChatParams(
+                    ChatScreen(
+                        navController, ChatParams(
                         contactId = chatViewModel.currentContactId.observeAsState(),
                         contactUsername = chatViewModel.currentContactUsername.observeAsState(),
                         messages = chatViewModel.messages.observeAsState(),

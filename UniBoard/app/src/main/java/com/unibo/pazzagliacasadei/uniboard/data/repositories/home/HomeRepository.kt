@@ -6,7 +6,11 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.utils.images.getPreviewImage
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import org.maplibre.android.geometry.LatLng
 
 class HomeRepository(
     private val supabase: SupabaseClient
@@ -52,11 +56,22 @@ class HomeRepository(
         }
     }
 
-    override suspend fun getPopularPosts(): List<PostWithPreviewImage> {
-        TODO()
-    }
-
-    override suspend fun getNearbyPosts(): List<PostWithPreviewImage> {
-        TODO()
+    override suspend fun getNearbyPosts(currentLocation: LatLng?): List<PostWithPreviewImage> {
+        if (currentLocation == null){
+            return emptyList()
+        }
+        return try {
+            val response = supabase.postgrest.rpc(
+                function = "nearby_posts",
+                parameters = buildJsonObject {
+                    put("lat", currentLocation.latitude)
+                    put("long", currentLocation.longitude)
+                }
+            )
+            val postList = response.decodeList<Post>()
+            postList.map { post -> PostWithPreviewImage(post, getPreviewImage(supabase, post.id)) }
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 }

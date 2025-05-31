@@ -18,26 +18,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.FilterTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCard
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.SearchBar
+import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
+import kotlinx.coroutines.launch
+import org.maplibre.android.geometry.LatLng
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController, params: HomeParams
+    navController: NavHostController,
+    homeVM : HomeViewModel,
+    selectPost: (post: PostWithPreviewImage) -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var query by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
-    Scaffold(topBar = { TopBar(navController) },
+    val locationService = LocationService(LocalContext.current)
+
+
+    Scaffold(
+        topBar = { TopBar(navController) },
         bottomBar = { BottomBar(navController) }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -45,16 +58,28 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            SearchBar(query = query,
+            SearchBar(
+                query = query,
                 onQueryChange = { query = it },
-                onSearch = { params.searchPosts(it) })
+                onSearch = { homeVM.searchPosts(it) })
             Spacer(modifier = Modifier.height(8.dp))
             FilterTabs(
-                titles = listOf("Tutti", "Recenti", "Popolari", "Vicino a te"),
+                // TODO Tradurre
+                titles = listOf("Tutti", "Recenti", "Vicino a te"),
                 selectedIndex = selectedTab,
                 onTabSelected = { index ->
                     selectedTab = index
-                    params.filterPosts(index)
+                    if (index == 2){
+                        scope.launch {
+                            try {
+                                val loc = locationService.getCurrentLocation()
+                                homeVM.currentLocation.value = loc
+                            } catch (_: IllegalStateException) {
+                                //TODO showLocationDisabledAlert = true
+                            }
+                        }
+                    }
+                    homeVM.filterPosts(index)
                 })
             Spacer(modifier = Modifier.height(16.dp))
             LazyVerticalGrid(
@@ -62,7 +87,7 @@ fun HomeScreen(
                 contentPadding = PaddingValues(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (params.posts == null) {
+                if (homeVM.isLoading.value) {
                     item(span = { GridItemSpan(2) }) {
                         Column(
                             modifier = Modifier.fillMaxSize(),
@@ -71,19 +96,20 @@ fun HomeScreen(
                             CircularProgressIndicator()
                         }
                     }
-                } else if (params.posts.isEmpty()) {
+                } else if (homeVM.posts.isEmpty()) {
                     item {
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            //TODO Tradurre
                             Text("Nessun post trovato")
                         }
                     }
                 } else {
-                    items(params.posts) { post ->
+                    items(homeVM.posts) { post ->
                         PostCard(post = post, onClick = {
-                            params.selectPost(post)
+                            selectPost(post)
                             navController.navigate(UniBoardRoute.Detail)
                         })
                     }
