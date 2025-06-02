@@ -26,7 +26,7 @@ fun DetailDescription(post: Post, photos: List<ByteArray>?) {
                 Image(
                     bitmap = photo.toImageBitmap(),
                     contentDescription = stringResource(R.string.post_image),
-                    modifier = Modifier.height(150.dp)
+                    modifier = Modifier.height(250.dp)
                 )
             }
         }

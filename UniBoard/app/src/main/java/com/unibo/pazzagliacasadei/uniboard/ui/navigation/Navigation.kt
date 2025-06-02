@@ -183,11 +183,11 @@ fun UniBoardNavGraph(
                     DetailScreen(
                         navController,
                         detailParams = DetailParams(
-                            post = detailViewModel.post.observeAsState(),
-                            author = detailViewModel.author.observeAsState(),
-                            photos = detailViewModel.photos.observeAsState(),
-                            comments = detailViewModel.comments.observeAsState(),
-                            position = detailViewModel.position.observeAsState(),
+                            post = detailViewModel.post,
+                            author = detailViewModel.author,
+                            photos = detailViewModel.convertedPhotos,
+                            comments = detailViewModel.comments,
+                            position = detailViewModel.position,
                             addComment = { text ->
                                 detailViewModel.addComment(text)
                             })

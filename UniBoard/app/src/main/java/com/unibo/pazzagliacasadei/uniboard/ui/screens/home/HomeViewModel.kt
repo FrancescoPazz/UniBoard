@@ -1,20 +1,16 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import kotlinx.coroutines.launch
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.home.HomeRepository
-import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
 import org.maplibre.android.geometry.LatLng
 
 class HomeViewModel(
-    private val repository: HomeRepository,
+    private val homeRepository: HomeRepository,
 ) : ViewModel() {
     val posts = mutableStateListOf<PostWithPreviewImage>()
     val isLoading = mutableStateOf(true)
@@ -28,7 +24,7 @@ class HomeViewModel(
         viewModelScope.launch {
             isLoading.value = true
             posts.clear()
-            posts.addAll(repository.getAllPosts())
+            posts.addAll(homeRepository.getAllPosts())
             isLoading.value = false
         }
     }
@@ -37,7 +33,7 @@ class HomeViewModel(
         viewModelScope.launch {
             isLoading.value = true
             posts.clear()
-            posts.addAll(repository.searchPosts(query))
+            posts.addAll(homeRepository.searchPosts(query))
             isLoading.value = false
         }
     }
@@ -48,14 +44,14 @@ class HomeViewModel(
             posts.clear()
             posts.addAll(
                 when (filterIndex) {
-                    1 -> repository.getRecentPosts()
+                    1 -> homeRepository.getRecentPosts()
                     2 -> {
                         if (currentLocation.value != null){
-                            repository.getNearbyPosts(currentLocation.value!!)
+                            homeRepository.getNearbyPosts(currentLocation.value!!)
                         }
                         else emptyList()
                     }
-                    else -> repository.getAllPosts()
+                    else -> homeRepository.getAllPosts()
                 }
             )
             isLoading.value = false

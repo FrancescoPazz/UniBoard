@@ -44,9 +44,9 @@ fun DetailScreen(
 ) {
     val post by detailParams.post
     val author by detailParams.author
-    val photos by detailParams.photos
+    val photos = detailParams.photos
     val position by detailParams.position
-    val comments by detailParams.comments
+    val comments = detailParams.comments
     var commentText by remember { mutableStateOf("") }
 
     LaunchedEffect(position) {
@@ -77,9 +77,9 @@ fun DetailScreen(
 
                 item {
                     Column(Modifier.padding(horizontal = 16.dp)) {
-                        if (!comments.isNullOrEmpty()) {
+                        if (!comments.isEmpty()) {
                             Text(
-                                "${stringResource(R.string.comments)} (${comments!!.size})",
+                                "${stringResource(R.string.comments)} (${comments.size})",
                                 style = MaterialTheme.typography.titleMedium
                             )
                         } else {
@@ -92,9 +92,9 @@ fun DetailScreen(
                     }
                 }
 
-                if (!comments.isNullOrEmpty()) {
-                    items(comments!!) { comment ->
-                        CommentItem(comment!!)
+                if (!comments.isEmpty()) {
+                    items(comments) { comment ->
+                        CommentItem(comment)
                         HorizontalDivider()
                     }
                 }

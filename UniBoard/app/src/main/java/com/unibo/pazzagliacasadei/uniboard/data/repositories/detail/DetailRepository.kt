@@ -1,11 +1,9 @@
 package com.unibo.pazzagliacasadei.uniboard.data.repositories.detail
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.detail.Comment
 import com.unibo.pazzagliacasadei.uniboard.data.models.detail.CommentWithAuthor
-import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PositionLatLon
@@ -23,32 +21,12 @@ import java.time.Instant
 class DetailRepository(
     private val supabase: SupabaseClient
 ) : IDetailRepository {
-    val currentDetailPost = MutableLiveData<Post?>()
-    val currentAuthorPost = MutableLiveData<User?>()
-    val comments = MutableLiveData<List<CommentWithAuthor?>>(emptyList())
-    private val photos = MutableLiveData<List<Photo>?>(emptyList())
-    val convertedPhotos = MutableLiveData<List<ByteArray>?>(emptyList())
-    val currentPostPosition = MutableLiveData<PositionLatLon?>(null)
 
-    suspend fun setPost(post: Post) {
-        currentDetailPost.value = post
-        val author = getAuthor()
-        currentAuthorPost.postValue(author)
-        val listOfComments = getComments()
-        comments.postValue(listOfComments)
-        val listOfPhotos = getPhotos()
-        photos.value = listOfPhotos
-        val listOfConvertedPhotos = convertPhotos()
-        convertedPhotos.postValue(listOfConvertedPhotos)
-        val position = getPostPosition()
-        currentPostPosition.postValue(position)
-    }
-
-    private suspend fun getAuthor() : User {
+    override suspend fun getAuthor(authorId: String) : User {
         return try {
             supabase.from(USERS_TABLE).select {
                 filter {
-                    eq("id", currentDetailPost.value?.author ?: throw Exception("No author, ${currentDetailPost.value?.author}"))
+                    eq("id", authorId)
                 }
             }.decodeSingle<User>()
         } catch (e: Exception) {
@@ -57,12 +35,71 @@ class DetailRepository(
         }
     }
 
-    private suspend fun getComments (): List<CommentWithAuthor?> {
-        Log .d("DetailRepository", "getComments: ${currentDetailPost.value?.id}")
+    override suspend fun getPostPosition(postId: String): PositionLatLon? {
+        return try {
+            val resp = supabase.from(POSITIONS_TABLE)
+                .select {
+                    filter {
+                        eq("post_id", postId)
+                    }
+                }
+            val position = resp.decodeSingleOrNull<Position>()
+            val positionLatLon = position?.let { getLatLongFromWkb(it.latLng) }
+
+            positionLatLon
+        } catch (e: Exception) {
+            Log.e("DetailRepository", "getPostPosition failed", e)
+            throw e
+        }
+    }
+
+    private suspend fun getLatLongFromWkb(wkbHex: String): PositionLatLon {
+        val response = supabase.postgrest.rpc("extract_latlong_from_wkb", mapOf("wkb_hex" to wkbHex)
+            ).decodeSingle<PositionLatLon>()
+
+        return response
+    }
+
+    override suspend fun getPhotos(postId: String): List<Photo> {
+        return try {
+            val resp = supabase.from("photos").select {
+                filter {
+                    eq("post_id", postId)
+                }
+            }
+            Log.d("DetailRepository", "getPhotos: ${resp.decodeList<Photo>()}")
+            resp.decodeList<Photo>()
+        } catch (e: Exception) {
+            Log.e("DetailRepository", "getPhotos failed", e)
+            throw e
+        }
+    }
+
+    override suspend fun convertPhotos(unconvertedPhotos: List<Photo>) : List<ByteArray> {
+        try {
+            val convPhotos = mutableListOf<ByteArray>()
+            unconvertedPhotos.forEach { photo ->
+                val bucket = supabase.storage.from("post-images")
+                val bytes = bucket.downloadPublic(photo.name) {
+                    transform {
+                        fill()
+                        quality = 100
+                    }
+                }
+                convPhotos.add(bytes)
+            }
+            return convPhotos
+        } catch (e: Exception) {
+            Log.e("DetailRepository", "convertPhotos failed", e)
+            throw e
+        }
+    }
+
+    override suspend fun getComments (postId: String): List<CommentWithAuthor> {
         try {
             val comments = supabase.from(COMMENTS_TABLE).select {
                 filter {
-                    eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
+                    eq("post_id", postId)
                 }
             }.decodeList<Comment>()
 
@@ -84,67 +121,6 @@ class DetailRepository(
             return commentsWithAuthors.filterNotNull()
         } catch (e: Exception) {
             Log.e("DetailRepository", "getComments failed", e)
-            throw e
-        }
-    }
-
-    private suspend fun getPostPosition(): PositionLatLon? {
-        Log.d("DetailRepository", "getPostPosition: ${currentDetailPost.value?.id}")
-        return try {
-            val resp = supabase.from(POSITIONS_TABLE)
-                .select {
-                    filter {
-                        eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
-                    }
-                }
-            val position = resp.decodeSingleOrNull<Position>()
-            val positionLatLon = position?.let { getLatLongFromWkb(it.latLng) }
-
-            positionLatLon
-        } catch (e: Exception) {
-            Log.e("DetailRepository", "getPostPosition failed", e)
-            throw e
-        }
-    }
-
-    private suspend fun getLatLongFromWkb(wkbHex: String): PositionLatLon {
-        val response = supabase.postgrest.rpc("extract_latlong_from_wkb", mapOf("wkb_hex" to wkbHex)
-            ).decodeSingle<PositionLatLon>()
-
-        return response
-    }
-
-    private suspend fun getPhotos(): List<Photo> {
-        return try {
-            val resp = supabase.from("photos").select {
-                filter {
-                    eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
-                }
-            }
-            Log.d("DetailRepository", "getPhotos: ${resp.decodeList<Photo>()}")
-            resp.decodeList<Photo>()
-        } catch (e: Exception) {
-            Log.e("DetailRepository", "getPhotos failed", e)
-            throw e
-        }
-    }
-
-    private suspend fun convertPhotos() : List<ByteArray> {
-        try {
-            val convPhotos = mutableListOf<ByteArray>()
-            photos.value?.forEach { photo ->
-                val bucket = supabase.storage.from("post-images")
-                val bytes = bucket.downloadPublic(photo.name) {
-                    transform {
-                        fill()
-                        quality = 100
-                    }
-                }
-                convPhotos.add(bytes)
-            }
-            return convPhotos
-        } catch (e: Exception) {
-            Log.e("DetailRepository", "convertPhotos failed", e)
             throw e
         }
     }
