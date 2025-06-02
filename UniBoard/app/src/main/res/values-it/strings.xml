@@ -92,5 +92,11 @@
     <string name="location_permission_required">Il permesso di accesso alla posizione è necessario per ottenere le tue coordinate in app.</string>
     <string name="grant">Concedi</string>
     <string name="dismiss">Annulla</string>
-    <string name="no_messages_yet">Nessun messaggio...</string>
+    <string name="no_messages_yet">Nessun messaggio…</string>
+
+    <!-- Home page -->
+    <string name="all">Tutti</string>
+    <string name="recents">Recenti</string>
+    <string name="nearby">Vicini a te</string>
+    <string name="no_posts_found">Nessun post trovato…</string>
 </resources>

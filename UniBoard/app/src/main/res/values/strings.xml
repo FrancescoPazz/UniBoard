@@ -91,5 +91,11 @@
     <string name="location_permission_required">Location permission is required to get your coordinates in the app.</string>
     <string name="grant">Grant</string>
     <string name="dismiss">Dismiss</string>
-    <string name="no_messages_yet">No messages...</string>
+    <string name="no_messages_yet">No messages…</string>
+
+    <!-- Home page -->
+    <string name="all">All</string>
+    <string name="recents">Recents</string>
+    <string name="nearby">Nearby</string>
+    <string name="no_posts_found">No posts found…</string>
 </resources>

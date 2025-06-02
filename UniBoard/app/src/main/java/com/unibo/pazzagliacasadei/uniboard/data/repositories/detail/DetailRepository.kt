@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.detail.Comment
+import com.unibo.pazzagliacasadei.uniboard.data.models.detail.CommentWithAuthor
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
@@ -21,7 +22,7 @@ class DetailRepository(
 ) : IDetailRepository {
     val currentDetailPost = MutableLiveData<Post?>()
     val currentAuthorPost = MutableLiveData<User?>()
-    val comments = MutableLiveData<List<Comment>?>(emptyList())
+    val comments = MutableLiveData<List<CommentWithAuthor?>>(emptyList())
     private val photos = MutableLiveData<List<Photo>?>(emptyList())
     val convertedPhotos = MutableLiveData<List<ByteArray>?>(emptyList())
     val currentPostPosition = MutableLiveData<PositionLatLon?>(null)
@@ -53,15 +54,31 @@ class DetailRepository(
         }
     }
 
-    private suspend fun getComments (): List<Comment> {
+    private suspend fun getComments (): List<CommentWithAuthor?> {
         Log .d("DetailRepository", "getComments: ${currentDetailPost.value?.id}")
-        return try {
-            val resp = supabase.from("comments").select {
+        try {
+            val comments = supabase.from("comments").select {
                 filter {
                     eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
                 }
+            }.decodeList<Comment>()
+
+            val authors = supabase.from("users").select {
+                filter {
+                    isIn("id", comments.map { it.authorId })
+                }
+            }.decodeList<User>().associateBy { it.id }
+
+            val commentsWithAuthors = comments.map { comment ->
+                authors[comment.authorId]?.let {
+                    CommentWithAuthor(
+                        commentData = comment,
+                        author = it
+                    )
+                }
             }
-            resp.decodeList<Comment>()
+
+            return commentsWithAuthors.filterNotNull()
         } catch (e: Exception) {
             Log.e("DetailRepository", "getComments failed", e)
             throw e
@@ -144,8 +161,6 @@ class DetailRepository(
             Log.e("DetailRepository", "addComment failed", e)
             throw e
         }
-        val updated = (comments.value ?: emptyList()) + newComment
-        comments.postValue(updated)
         return newComment
     }
 }

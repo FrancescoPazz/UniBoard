@@ -94,7 +94,7 @@ fun DetailScreen(
 
                 if (!comments.isNullOrEmpty()) {
                     items(comments!!) { comment ->
-                        CommentItem(comment)
+                        CommentItem(comment!!)
                         HorizontalDivider()
                     }
                 }
