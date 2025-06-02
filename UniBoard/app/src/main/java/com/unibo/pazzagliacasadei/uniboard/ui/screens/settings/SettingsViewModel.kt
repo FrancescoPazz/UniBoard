@@ -3,7 +3,7 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.models.Theme
-import com.unibo.pazzagliacasadei.uniboard.data.repositories.SettingsRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.settings.SettingsRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn

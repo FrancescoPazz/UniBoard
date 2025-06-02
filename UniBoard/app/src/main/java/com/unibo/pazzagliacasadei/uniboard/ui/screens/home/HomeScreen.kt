@@ -34,7 +34,6 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.FilterTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCard
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCardStaggered
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.SearchBar
 import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
 import kotlinx.coroutines.launch

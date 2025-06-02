@@ -9,6 +9,9 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PositionLatLon
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.COMMENTS_TABLE
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.POSITIONS_TABLE
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.USERS_TABLE
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.storage.storage
@@ -43,7 +46,7 @@ class DetailRepository(
 
     private suspend fun getAuthor() : User {
         return try {
-            supabase.from("users").select {
+            supabase.from(USERS_TABLE).select {
                 filter {
                     eq("id", currentDetailPost.value?.author ?: throw Exception("No author, ${currentDetailPost.value?.author}"))
                 }
@@ -57,13 +60,13 @@ class DetailRepository(
     private suspend fun getComments (): List<CommentWithAuthor?> {
         Log .d("DetailRepository", "getComments: ${currentDetailPost.value?.id}")
         try {
-            val comments = supabase.from("comments").select {
+            val comments = supabase.from(COMMENTS_TABLE).select {
                 filter {
                     eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))
                 }
             }.decodeList<Comment>()
 
-            val authors = supabase.from("users").select {
+            val authors = supabase.from(USERS_TABLE).select {
                 filter {
                     isIn("id", comments.map { it.authorId })
                 }
@@ -88,7 +91,7 @@ class DetailRepository(
     private suspend fun getPostPosition(): PositionLatLon? {
         Log.d("DetailRepository", "getPostPosition: ${currentDetailPost.value?.id}")
         return try {
-            val resp = supabase.from("positions")
+            val resp = supabase.from(POSITIONS_TABLE)
                 .select {
                     filter {
                         eq("post_id", currentDetailPost.value?.id ?: throw Exception("No post id"))

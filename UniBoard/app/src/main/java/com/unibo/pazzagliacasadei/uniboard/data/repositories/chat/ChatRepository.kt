@@ -6,6 +6,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Conversation
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.Message
 import com.unibo.pazzagliacasadei.uniboard.data.models.profile.MessageToSend
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.USERS_TABLE
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.auth.auth
@@ -31,7 +32,7 @@ class ChatRepository(
             val userId = supabase.auth.currentUserOrNull()?.id
                 ?: throw IllegalStateException("No authenticated user")
 
-            val resp = supabase.from("users").select {
+            val resp = supabase.from(USERS_TABLE).select {
                 filter {
                     or {
                         ilike("username", "%$query%")
@@ -64,7 +65,7 @@ class ChatRepository(
                 }
                 .decodeList<Conversation>()
             val otherUsersConversations = supabase
-                .from("users")
+                .from(USERS_TABLE)
                 .select {
                     filter {
                         and {

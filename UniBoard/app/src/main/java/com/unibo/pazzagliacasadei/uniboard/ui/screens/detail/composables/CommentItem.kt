@@ -14,7 +14,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.detail.CommentWithAuthor
 
 @Composable
 fun CommentItem(comment: CommentWithAuthor) {
-    Row(Modifier.padding(vertical = 8.dp)) {
+    Row(Modifier.padding(8.dp)) {
         Spacer(Modifier.width(8.dp))
         Column {
             Text(

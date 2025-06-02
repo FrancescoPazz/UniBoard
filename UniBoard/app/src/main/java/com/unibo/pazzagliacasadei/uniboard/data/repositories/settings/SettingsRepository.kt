@@ -1,4 +1,4 @@
-package com.unibo.pazzagliacasadei.uniboard.data.repositories
+package com.unibo.pazzagliacasadei.uniboard.data.repositories.settings
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

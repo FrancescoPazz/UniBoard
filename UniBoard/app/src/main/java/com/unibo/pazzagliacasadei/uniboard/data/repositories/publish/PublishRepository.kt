@@ -5,6 +5,9 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.post.Photo
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.Position
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostRetrieved
 import com.unibo.pazzagliacasadei.uniboard.data.models.post.PostToPublish
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.PHOTOS_TABLE
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.POSITIONS_TABLE
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.POSTS_TABLE
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
@@ -23,7 +26,7 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
         postTextContent: String,
         isAnonymous: Boolean
     ): PostRetrieved {
-        return supabase.from("posts").insert(
+        return supabase.from(POSTS_TABLE).insert(
             PostToPublish(
                 supabase.auth.currentUserOrNull()!!.id,
                 System.now(),
@@ -38,7 +41,7 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
         postId: String,
         imageName: String,
     ) {
-        supabase.from("photos").insert(
+        supabase.from(PHOTOS_TABLE).insert(
             Photo(
                 postId,
                 imageName
@@ -50,7 +53,7 @@ class PublishRepository(val supabase: SupabaseClient) : IPublishRepository {
         postId: String,
         position: LatLng
     ) {
-        supabase.from("positions").insert(
+        supabase.from(POSITIONS_TABLE).insert(
             Position(
                 postId,
                 null,

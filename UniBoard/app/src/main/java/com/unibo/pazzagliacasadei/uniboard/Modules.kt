@@ -2,7 +2,7 @@ package com.unibo.pazzagliacasadei.uniboard
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
-import com.unibo.pazzagliacasadei.uniboard.data.repositories.SettingsRepository
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.settings.SettingsRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.chat.ChatRepository
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.detail.DetailRepository

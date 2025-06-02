@@ -3,6 +3,7 @@ package com.unibo.pazzagliacasadei.uniboard.data.repositories.home
 import android.util.Log
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.POSTS_TABLE
 import com.unibo.pazzagliacasadei.uniboard.utils.images.getPreviewImage
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
@@ -18,7 +19,7 @@ class HomeRepository(
 
     override suspend fun getAllPosts(): List<PostWithPreviewImage> {
         return try {
-            val resp = supabase.from("posts").select()
+            val resp = supabase.from(POSTS_TABLE).select()
             val postList = resp.decodeList<Post>()
             postList.map { post -> PostWithPreviewImage(post, getPreviewImage(supabase, post.id)) }
         } catch (e: Exception) {
@@ -29,7 +30,7 @@ class HomeRepository(
 
     override suspend fun searchPosts(query: String): List<PostWithPreviewImage> {
         return try {
-            val resp = supabase.from("posts").select {
+            val resp = supabase.from(POSTS_TABLE).select {
                 filter {
                     ilike("content", "%$query%")
                 }
@@ -44,7 +45,7 @@ class HomeRepository(
 
     override suspend fun getRecentPosts(): List<PostWithPreviewImage> {
         return try {
-            val resp = supabase.from("posts").select {
+            val resp = supabase.from(POSTS_TABLE).select {
                 order("publish_date", order = Order.DESCENDING)
                 limit(10)
             }

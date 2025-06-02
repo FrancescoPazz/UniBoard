@@ -7,6 +7,7 @@ import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.USERS_TABLE
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthResponse
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import io.github.jan.supabase.SupabaseClient
@@ -76,7 +77,7 @@ class AuthRepository(
                 username = username,
                 tel = tel,
             )
-            supabase.from("users").upsert(user)
+            supabase.from(USERS_TABLE).upsert(user)
             emit(AuthResponse.Success)
         } catch (e: Exception) {
             emit(AuthResponse.Failure(e.message ?: "Sign up error"))
@@ -126,7 +127,7 @@ class AuthRepository(
                 username = fullName,
                 tel = tel
             )
-            supabase.from("users").upsert(user)
+            supabase.from(USERS_TABLE).upsert(user)
             emit(AuthResponse.Success)
         } catch (e: Exception) {
             emit(AuthResponse.Failure(e.message ?: "Google login error"))
@@ -189,7 +190,7 @@ class AuthRepository(
 
     fun changeForgottenPassword(email: String, newPassword: String) = flow  {
         try {
-            val user = supabase.from("users")
+            val user = supabase.from(USERS_TABLE)
                 .select {
                     filter {
                         eq("email", email)

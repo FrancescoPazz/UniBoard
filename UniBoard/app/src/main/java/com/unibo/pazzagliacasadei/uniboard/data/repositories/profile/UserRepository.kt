@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.unibo.pazzagliacasadei.uniboard.data.models.auth.User
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.Post
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.POSTS_TABLE
+import com.unibo.pazzagliacasadei.uniboard.data.repositories.USERS_TABLE
 import com.unibo.pazzagliacasadei.uniboard.utils.images.getPreviewImage
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
@@ -30,7 +32,7 @@ class UserRepository(
             Log.d("UserRepository", "loadUserData: userId: $userId")
 
             try {
-                val resp = supabase.from("users").select {
+                val resp = supabase.from(USERS_TABLE).select {
                     filter {
                         eq("id", userId)
                     }
@@ -58,7 +60,7 @@ class UserRepository(
         val userId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
 
         return try {
-            val response = supabase.from("posts").select {
+            val response = supabase.from(POSTS_TABLE).select {
                 filter {
                     eq("author", userId)
                 }
