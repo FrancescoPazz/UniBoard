@@ -13,8 +13,8 @@ import io.github.jan.supabase.postgrest.from
 
 class UserRepository(
     private val supabase: SupabaseClient
-) {
-    suspend fun getUser() : User {
+) : IUserRepository {
+    override suspend fun getUser() : User {
         val userId = supabase.auth.currentUserOrNull()?.id
         return try {
             supabase.from(USERS_TABLE).select {
@@ -30,7 +30,7 @@ class UserRepository(
         }
     }
 
-    suspend fun getUserPosts(): List<PostWithPreviewImage> {
+    override suspend fun getUserPosts(): List<PostWithPreviewImage> {
         val userId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
 
         return try {

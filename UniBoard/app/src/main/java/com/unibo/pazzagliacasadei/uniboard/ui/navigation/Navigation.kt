@@ -138,7 +138,7 @@ fun UniBoardNavGraph(
                     val chatViewModel = koinViewModel<ChatViewModel>()
 
                     val profileParams = ProfileParams(
-                        user = profileViewModel.user.observeAsState(),
+                        user = profileViewModel.user,
                         logout = { authViewModel.logout() },
                         updatePasswordWithOldPassword = { oldPassword, newPassword, onSuccess, onError ->
                             profileViewModel.updatePasswordWithOldPassword(
