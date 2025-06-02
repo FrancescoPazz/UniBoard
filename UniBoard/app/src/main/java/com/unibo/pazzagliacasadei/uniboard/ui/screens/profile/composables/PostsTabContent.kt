@@ -1,15 +1,11 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,11 +21,6 @@ import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCard
-import com.unibo.pazzagliacasadei.uniboard.ui.screens.loading.LoadingScreen
-
-data class Announcement(
-    val title: String, val price: String, val location: String, val imageRes: Int
-)
 
 @Composable
 fun PostsTabContent(
@@ -38,35 +29,39 @@ fun PostsTabContent(
     loadUserPosts: () -> Unit,
     selectUserPost: (post: PostWithPreviewImage) -> Unit
 ) {
-
     LaunchedEffect(loadUserPosts) {
         loadUserPosts()
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp),
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(8.dp),
         modifier = Modifier.fillMaxHeight()
     ) {
         if (posts.value == null) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxHeight(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
             }
         }
-        else if (posts.value.isNullOrEmpty()) {
-            item {
-                Text(
-                    text = stringResource(R.string.no_posts_published_yet),
+        else if (posts.value!!.isEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Box(
                     modifier = Modifier.fillMaxHeight(),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_posts_published_yet),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
-        } else {
+        }
+        else {
             items(posts.value!!) { post ->
                 PostCard(
                     post = post,

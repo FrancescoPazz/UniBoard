@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +34,7 @@ import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.FilterTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCard
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCardStaggered
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.SearchBar
 import com.unibo.pazzagliacasadei.uniboard.utils.location.LocationService
 import kotlinx.coroutines.launch
@@ -87,13 +88,13 @@ fun HomeScreen(
                     homeVM.filterPosts(index)
                 })
             Spacer(modifier = Modifier.height(16.dp))
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
                 contentPadding = PaddingValues(8.dp),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 if (homeVM.isLoading.value) {
-                    item(span = { GridItemSpan(2) }) {
+                    item(span = StaggeredGridItemSpan.FullLine) {
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -102,7 +103,7 @@ fun HomeScreen(
                         }
                     }
                 } else if (homeVM.posts.isEmpty()) {
-                    item {
+                    item(span = StaggeredGridItemSpan.FullLine) {
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -112,10 +113,10 @@ fun HomeScreen(
                     }
                 } else {
                     items(homeVM.posts) { post ->
-                        PostCard(post = post, onClick = {
+                        PostCard(post = post) {
                             selectPost(post)
                             navController.navigate(UniBoardRoute.Detail)
-                        })
+                        }
                     }
                 }
             }
