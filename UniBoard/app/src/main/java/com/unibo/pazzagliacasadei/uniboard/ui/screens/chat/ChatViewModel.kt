@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.chat
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,11 +16,17 @@ class ChatViewModel(
     private val userRepository: UserRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
-    val user: LiveData<User?> = userRepository.currentUserLiveData
+    val user = mutableStateOf<User?>(null)
     val messages: LiveData<List<Message>> = chatRepository.currentMessages
 
     val currentContactId: LiveData<String?> = chatRepository.currentContactId
     val currentContactUsername: LiveData<String?> = chatRepository.currentContactUsername
+
+    init {
+        viewModelScope.launch {
+            user.value = userRepository.getUser()
+        }
+    }
 
     fun setContactInfo (contactId: String, contactUsername: String) {
         chatRepository.setContactInfo(contactId, contactUsername)

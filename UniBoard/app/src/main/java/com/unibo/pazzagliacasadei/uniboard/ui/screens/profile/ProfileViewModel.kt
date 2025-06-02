@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,13 +19,19 @@ class ProfileViewModel(
     private val userRepository: UserRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
-    val user: LiveData<User?> = userRepository.currentUserLiveData
+    val user = mutableStateOf<User?>(null)
 
     private val _conversations = MutableLiveData<List<Conversation>>()
     val conversations: LiveData<List<Conversation>> = _conversations
 
     private val _userPosts = MutableLiveData<List<PostWithPreviewImage>?>()
     val userPosts: LiveData<List<PostWithPreviewImage>?> = _userPosts
+
+    init {
+        viewModelScope.launch {
+            user.value = userRepository.getUser()
+        }
+    }
 
     fun loadUserPosts() {
         viewModelScope.launch {

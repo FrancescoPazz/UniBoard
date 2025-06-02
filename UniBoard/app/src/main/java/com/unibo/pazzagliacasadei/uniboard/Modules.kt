@@ -22,7 +22,7 @@ import org.koin.dsl.module
 val Context.dataStore by preferencesDataStore("settings")
 
 val modules = module {
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ChatViewModel(get(), get()) }

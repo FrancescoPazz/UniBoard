@@ -7,12 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unibo.pazzagliacasadei.uniboard.data.repositories.auth.AuthRepository
-import com.unibo.pazzagliacasadei.uniboard.data.repositories.profile.UserRepository
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val authRepo: AuthRepository, private val userRepo: UserRepository
+    private val authRepo: AuthRepository
 ) : ViewModel() {
 
     private val _authState = MutableLiveData<AuthState>(AuthState.Unauthenticated)
@@ -24,9 +23,6 @@ class AuthViewModel(
                 Log.d("AuthViewModel", "Auth state changed: $state")
                 if (_authState.value != AuthState.ForgotPassword){
                     _authState.postValue(state)
-                    if (state is AuthState.Authenticated) {
-                        userRepo.loadUserData()
-                    }
                 }
             }
         }
@@ -38,7 +34,6 @@ class AuthViewModel(
             authRepo.signIn(email, password).collect { resp ->
                 when (resp) {
                     is AuthResponse.Success -> {
-                        userRepo.loadUserData()
                         _authState.value = AuthState.Authenticated
                     }
 
@@ -87,7 +82,6 @@ class AuthViewModel(
             authRepo.signInWithGoogle(context).collect { resp ->
                 when (resp) {
                     is AuthResponse.Success -> {
-                        userRepo.loadUserData()
                         _authState.value = AuthState.Authenticated
                     }
 
@@ -133,7 +127,6 @@ class AuthViewModel(
         viewModelScope.launch {
             val ok = authRepo.signOut().single()
             if (ok is AuthResponse.Success) {
-                userRepo.clearUserData()
                 _authState.value = AuthState.Unauthenticated
             } else if (ok is AuthResponse.Failure) {
                 _authState.value = AuthState.Error("Logout error")
