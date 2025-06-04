@@ -33,6 +33,9 @@ class DetailViewModel(
                     detailRepository.getComments(post.value!!.id)
                 )
                 position.value = detailRepository.getPostPosition(post.value!!.id)
+
+                photos.clear()
+                convertedPhotos.clear()
                 photos.addAll(detailRepository.getPhotos(post.value!!.id))
                 convertedPhotos.addAll(detailRepository.convertPhotos(photos))
             } catch (e: Exception) {
