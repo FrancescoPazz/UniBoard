@@ -20,9 +20,10 @@ import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables.DetailD
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables.DetailHeader
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables.DetailMapSection
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -62,47 +63,75 @@ fun DetailScreen(
             post?.let {
                 item {
                     DetailHeader(it, author)
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(8.dp))
                 }
 
                 item {
                     DetailDescription(it, photos)
-                    Spacer(Modifier.height(16.dp))
                 }
 
                 item {
                     DetailMapSection(position)
-                    Spacer(Modifier.height(16.dp))
                 }
 
                 item {
-                    Column(Modifier.padding(horizontal = 16.dp)) {
-                        if (!comments.isEmpty()) {
+                    Card(
+                        shape = MaterialTheme.shapes.medium,
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Column(Modifier.padding(16.dp)) {
                             Text(
-                                "${stringResource(R.string.comments)} (${comments.size})",
-                                style = MaterialTheme.typography.titleMedium
+                                if (comments.isEmpty())
+                                    stringResource(R.string.no_commented_yet)
+                                else
+                                    "${stringResource(R.string.comments)} (${comments.size})",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.primary
                             )
-                        } else {
-                            Text(
-                                stringResource(R.string.no_commented_yet),
-                                style = MaterialTheme.typography.titleMedium
-                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            if (comments.isNotEmpty()) {
+                                Column {
+                                    comments.forEachIndexed { index, comment ->
+                                        CommentItem(comment)
+                                        if (index < comments.size - 1) {
+                                            HorizontalDivider(
+                                                thickness = 0.5.dp,
+                                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                                modifier = Modifier.padding(vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        Spacer(Modifier.height(8.dp))
-                    }
-                }
-
-                if (!comments.isEmpty()) {
-                    items(comments) { comment ->
-                        CommentItem(comment)
-                        HorizontalDivider()
                     }
                 }
 
                 item {
-                    Column(Modifier.padding(horizontal = 16.dp)) {
-                        Spacer(Modifier.height(8.dp))
-                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Card(
+                        shape = MaterialTheme.shapes.medium,
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             TextField(
                                 value = commentText,
                                 onValueChange = { commentText = it },

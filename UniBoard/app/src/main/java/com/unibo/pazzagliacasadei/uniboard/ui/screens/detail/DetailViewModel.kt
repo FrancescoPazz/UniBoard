@@ -19,7 +19,7 @@ class DetailViewModel(
     val author = mutableStateOf<User?>(null)
     val comments = mutableStateListOf<CommentWithAuthor>()
     val position = mutableStateOf<PositionLatLon?>(null)
-    val photos = mutableStateListOf<Photo>()
+    private val photos = mutableStateListOf<Photo>()
     val convertedPhotos = mutableStateListOf<ByteArray>()
 
     fun setPost(postPassed: Post) {
