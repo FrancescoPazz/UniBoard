@@ -1,8 +1,10 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.unibo.pazzagliacasadei.uniboard.R
@@ -51,7 +54,8 @@ fun HomeScreen(
     val locationService = LocationService(LocalContext.current)
 
 
-    Scaffold(topBar = { TopBar(navController) },
+    Scaffold(
+        topBar = { TopBar(navController) },
         bottomBar = { BottomBar(navController) }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -59,7 +63,8 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            SearchBar(query = query,
+            SearchBar(
+                query = query,
                 onQueryChange = { query = it },
                 onSearch = { homeVM.searchPosts(it) })
             Spacer(modifier = Modifier.height(8.dp))
@@ -72,49 +77,64 @@ fun HomeScreen(
 
                 //TODO Sistemare alcune inconsistenze dovute alla coroutine
                 onTabSelected = { index ->
+                    homeVM.showLocationDisabledDialog.value = false
                     selectedTab = index
                     if (index == 2) {
                         scope.launch {
                             try {
                                 val loc = locationService.getCurrentLocation()
                                 homeVM.currentLocation.value = loc
-                            } catch (e: IllegalStateException) {
+                            } catch (e: SecurityException) {
                                 Log.e("TEST", e.toString())
-                                //TODO showLocationDisabledAlert = true
+                                homeVM.showLocationDisabledDialog.value = true
                             }
                         }
                     }
                     homeVM.filterPosts(index)
                 })
             Spacer(modifier = Modifier.height(16.dp))
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp),
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                if (homeVM.isLoading.value) {
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            CircularProgressIndicator()
+            if (homeVM.showLocationDisabledDialog.value) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        stringResource(R.string.location_permission_required),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+
+                    if (homeVM.isLoading.value) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
-                    }
-                } else if (homeVM.posts.isEmpty()) {
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(stringResource(R.string.no_posts_found))
+                    } else if (homeVM.posts.isEmpty()) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(stringResource(R.string.no_posts_found))
+                            }
                         }
-                    }
-                } else {
-                    items(homeVM.posts) { post ->
-                        PostCard(post = post) {
-                            selectPost(post)
-                            navController.navigate(UniBoardRoute.Detail)
+                    } else {
+                        items(homeVM.posts) { post ->
+                            PostCard(post = post) {
+                                selectPost(post)
+                                navController.navigate(UniBoardRoute.Detail)
+                            }
                         }
                     }
                 }

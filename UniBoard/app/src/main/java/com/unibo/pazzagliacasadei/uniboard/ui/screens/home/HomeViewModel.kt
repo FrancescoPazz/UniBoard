@@ -15,6 +15,7 @@ class HomeViewModel(
     val posts = mutableStateListOf<PostWithPreviewImage>()
     val isLoading = mutableStateOf(true)
     val currentLocation = mutableStateOf<LatLng?>(null)
+    val showLocationDisabledDialog = mutableStateOf(false)
 
     init {
         loadPosts()
