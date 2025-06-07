@@ -1,7 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.profile.composables
 
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 fun ProfileTabs(
     tabs: List<String>, selectedIndex: Int, onTabSelected: (Int) -> Unit
 ) {
-    ScrollableTabRow(
+    TabRow(
         selectedTabIndex = selectedIndex
     ) {
         tabs.forEachIndexed { index, title ->

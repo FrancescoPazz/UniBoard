@@ -1,6 +1,5 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
