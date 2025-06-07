@@ -17,6 +17,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,7 @@ import com.unibo.pazzagliacasadei.uniboard.data.models.home.PostWithPreviewImage
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.TopBar
 import com.unibo.pazzagliacasadei.uniboard.ui.navigation.UniBoardRoute
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.FilterTabs
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.PostCard
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.home.composables.SearchBar
@@ -45,7 +47,9 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController,
     homeVM: HomeViewModel,
-    selectPost: (post: PostWithPreviewImage) -> Unit
+    selectPost: (post: PostWithPreviewImage) -> Unit,
+    authState: State<AuthState?>,
+    logout: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var query by remember { mutableStateOf("") }
@@ -53,10 +57,11 @@ fun HomeScreen(
 
     val locationService = LocationService(LocalContext.current)
 
-
     Scaffold(
         topBar = { TopBar(navController) },
-        bottomBar = { BottomBar(navController) }) { paddingValues ->
+        bottomBar = { BottomBar(navController,
+            authState.value == AuthState.AnonymousAuthenticated,
+            logout) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)

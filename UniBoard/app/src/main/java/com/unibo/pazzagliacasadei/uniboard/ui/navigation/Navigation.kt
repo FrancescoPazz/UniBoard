@@ -86,6 +86,7 @@ fun UniBoardNavGraph(
             }
             val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
+                is AuthState.AnonymousAuthenticated -> UniBoardRoute.Home
                 is AuthState.ForgotPassword -> UniBoardRoute.ForgotPassword
                 else -> UniBoardRoute.Auth
             }
@@ -99,7 +100,11 @@ fun UniBoardNavGraph(
                         AuthParams(
                             authState = authViewModel.authState, login = { email, password ->
                                 authViewModel.login(email, password)
-                            }, signUp = { email, password, username, name, surname, tel ->
+                            },
+                            loginAsGuest = {
+                                authViewModel.loginAsGuest()
+                            },
+                            signUp = { email, password, username, name, surname, tel ->
                                 authViewModel.signUp(
                                     email = email,
                                     password = password,
@@ -131,7 +136,10 @@ fun UniBoardNavGraph(
                         navController, homeViewModel,
                         selectPost = { post ->
                             detailViewModel.setPost(post.postData)
-                        })
+                        },
+                        authState = authState,
+                        logout = { authViewModel.logout() },
+                    )
                 }
                 composable<UniBoardRoute.Profile> {
                     val profileViewModel = koinViewModel<ProfileViewModel>()
@@ -183,6 +191,7 @@ fun UniBoardNavGraph(
                     DetailScreen(
                         navController,
                         detailParams = DetailParams(
+                            authState = authState,
                             post = detailViewModel.post,
                             author = detailViewModel.author,
                             photos = detailViewModel.convertedPhotos,
@@ -190,7 +199,9 @@ fun UniBoardNavGraph(
                             position = detailViewModel.position,
                             addComment = { text ->
                                 detailViewModel.addComment(text)
-                            })
+                            },
+                            logout = { authViewModel.logout() },
+                        )
                     )
                 }
                 composable<UniBoardRoute.Chat> {

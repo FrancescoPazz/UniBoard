@@ -76,26 +76,37 @@ fun TopBar(navController: NavController) {
 }
 
 data class BottomNavItem(
-    val name: String, val route: UniBoardRoute, val icon: ImageVector
+    val name: String, val route: UniBoardRoute, val icon: ImageVector, val action : (() -> Unit)? = null
 )
 
 @Composable
-fun BottomBar(navController: NavController) {
-    val bottomNavItems = listOf(
+fun BottomBar(navController: NavController, isGuest: Boolean = false, logout : (() -> Unit)? = null) {
+    val bottomNavItems = mutableListOf(
         BottomNavItem(
             name = stringResource(R.string.home),
             route = UniBoardRoute.Home,
             icon = Icons.Filled.Home
-        ), BottomNavItem(
+        )
+    )
+    if (!isGuest) {
+        bottomNavItems += BottomNavItem(
             name = stringResource(R.string.profile),
             route = UniBoardRoute.Profile,
             icon = Icons.Default.Person
-        ), BottomNavItem(
+        )
+        bottomNavItems += BottomNavItem(
             name = stringResource(R.string.publish),
             route = UniBoardRoute.Publish,
             icon = Icons.Default.Add
         )
-    )
+    } else {
+        bottomNavItems += BottomNavItem(
+            name = stringResource(R.string.authenticate),
+            route = UniBoardRoute.Auth,
+            icon = Icons.Default.Person,
+            action = logout
+        )
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast(".")
@@ -119,10 +130,16 @@ fun BottomBar(navController: NavController) {
                         text = item.name,
                     )
                 }, selected = currentRoute == item.route.toString(), onClick = {
+                    item.action?.invoke()
                     if (currentRoute != item.route.toString()) {
                         navController.navigate(item.route) {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
+                        }
+                        if (item.route == UniBoardRoute.Auth) {
+                            if (isGuest) {
+                                navController.navigate(UniBoardRoute.Auth)
+                            }
                         }
                     }
                 })

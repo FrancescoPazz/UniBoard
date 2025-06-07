@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 data class AuthParams(
     val authState: LiveData<AuthState>,
     val login: (email: String, password: String) -> Unit,
+    val loginAsGuest: () -> Unit,
     val signUp: (
         email: String, password: String, username: String, name: String?, surname: String?, tel: String?
     ) -> Unit,
@@ -17,6 +18,7 @@ data class AuthParams(
 
 sealed class AuthState {
     data object Authenticated : AuthState()
+    data object AnonymousAuthenticated : AuthState()
     data object Unauthenticated : AuthState()
     data object ForgotPassword : AuthState()
     data object Loading : AuthState()

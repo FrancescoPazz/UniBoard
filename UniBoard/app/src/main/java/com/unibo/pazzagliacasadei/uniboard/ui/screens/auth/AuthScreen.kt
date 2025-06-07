@@ -120,7 +120,8 @@ fun AuthScreen(
                     onSubmit = { authParams.login(email, password) },
                     onForgotPassword = { isResetMode = true },
                     onGoogleLogin = { authParams.loginGoogle(context) },
-                    isLoading = authState == AuthState.Loading
+                    isLoading = authState == AuthState.Loading,
+                    loginAsGuest = { authParams.loginAsGuest() }
                 )
             } else {
                 SignUpForm(name = name,

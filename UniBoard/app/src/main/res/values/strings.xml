@@ -31,6 +31,8 @@
     <string name="email_not_confirmed">Email not confirmed</string>
     <string name="otp_code">OTP Code</string>
     <string name="enter_otp_code">Enter the OTP code</string>
+    <string name="authenticate">Authenticate</string>
+    <string name="enter_as_guest">Enter as guest</string>
     <!-- Settings page -->
     <string name="theme">Theme</string>
     <string name="lightMode">Light theme</string>
@@ -81,6 +83,7 @@
     <string name="comments">Comments</string>
     <string name="no_commented_yet">No comments. Be the first to write!</string>
     <string name="write_comment">Write a comment…</string>
+    <string name="you_are_not_authenticated">You are not authenticated</string>
 
     <!-- Chat page -->
     <string name="enter_message">Enter your message</string>

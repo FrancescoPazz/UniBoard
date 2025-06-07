@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.composables.BottomBar
+import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.AuthState
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables.CommentItem
 
 @Composable
@@ -54,7 +55,11 @@ fun DetailScreen(
         Log.d("test DetailScreen", "Position: $position")
     }
 
-    Scaffold(topBar = { TopBar(navController) }, bottomBar = { BottomBar(navController) }) { padding ->
+    Scaffold(topBar = { TopBar(navController) }, bottomBar = { BottomBar(
+        navController,
+        detailParams.authState.value == AuthState.AnonymousAuthenticated,
+        detailParams.logout
+    ) }) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -135,8 +140,12 @@ fun DetailScreen(
                             TextField(
                                 value = commentText,
                                 onValueChange = { commentText = it },
-                                placeholder = { Text(stringResource(R.string.write_comment)) },
-                                modifier = Modifier.weight(1f)
+                                placeholder = { Text( if (detailParams.authState.value == AuthState.AnonymousAuthenticated)
+                                    stringResource(R.string.you_are_not_authenticated)
+                                else
+                                    stringResource(R.string.write_comment)) },
+                                modifier = Modifier.weight(1f),
+                                enabled = detailParams.authState.value != AuthState.AnonymousAuthenticated,
                             )
                             IconButton(
                                 enabled = commentText.isNotBlank(),

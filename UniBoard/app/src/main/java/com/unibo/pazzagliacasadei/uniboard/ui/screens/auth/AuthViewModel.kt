@@ -28,6 +28,23 @@ class AuthViewModel(
         }
     }
 
+    fun loginAsGuest() {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            authRepo.signInAsGuest().collect { resp ->
+                when (resp) {
+                    is AuthResponse.Success -> {
+                        _authState.value = AuthState.AnonymousAuthenticated
+                    }
+
+                    is AuthResponse.Failure -> {
+                        _authState.value = AuthState.Error(resp.message)
+                    }
+                }
+            }
+        }
+    }
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading

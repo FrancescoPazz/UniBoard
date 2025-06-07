@@ -11,6 +11,8 @@ interface IAuthRepository {
 
     fun signIn(email: String, password: String): Flow<AuthResponse>
 
+    fun signInAsGuest(): Flow<AuthResponse>
+
     fun signUp(
         email: String,
         password: String,

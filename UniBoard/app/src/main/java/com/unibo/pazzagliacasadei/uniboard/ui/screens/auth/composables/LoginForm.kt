@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -24,7 +25,8 @@ fun LoginForm(
     onSubmit: () -> Unit,
     onForgotPassword: () -> Unit,
     onGoogleLogin: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    loginAsGuest: () -> Unit
 ) {
     Column {
         TextField(
@@ -59,5 +61,14 @@ fun LoginForm(
             text = stringResource(R.string.login_with_google),
             onClick = onGoogleLogin
         )
+        Spacer(Modifier.height(8.dp))
+        HorizontalDivider()
+        Spacer(Modifier.height(8.dp))
+        TextButton(
+            onClick = { loginAsGuest() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(textAlign = TextAlign.Center, text = stringResource(R.string.enter_as_guest))
+        }
     }
 }

@@ -35,7 +35,15 @@ class AuthRepository(
     override fun authState(): Flow<AuthState> = supabase.auth.sessionStatus.map { status ->
         when (status) {
             is SessionStatus.Initializing -> AuthState.Loading
-            is SessionStatus.Authenticated -> AuthState.Authenticated
+            is SessionStatus.Authenticated ->
+                if (supabase.auth.currentUserOrNull()?.userMetadata?.get(
+                        "email",
+                    ) != null
+                ) {
+                    AuthState.Authenticated
+                } else {
+                    AuthState.AnonymousAuthenticated
+                }
             is SessionStatus.NotAuthenticated,
             is SessionStatus.RefreshFailure -> AuthState.Unauthenticated
         }
@@ -50,6 +58,15 @@ class AuthRepository(
             emit(AuthResponse.Success)
         } catch (e: Exception) {
             emit(AuthResponse.Failure(e.message ?: "Login error"))
+        }
+    }
+
+    override fun signInAsGuest(): Flow<AuthResponse> = flow {
+        try {
+            supabase.auth.signInAnonymously()
+            emit(AuthResponse.Success)
+        } catch (e: Exception) {
+            emit(AuthResponse.Failure(e.message ?: "Guest login error"))
         }
     }
 
