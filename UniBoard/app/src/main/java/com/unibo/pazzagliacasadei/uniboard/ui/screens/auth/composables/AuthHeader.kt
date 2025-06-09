@@ -28,14 +28,13 @@ fun AuthHeader(
             contentDescription = null,
             modifier = Modifier.size(80.dp)
         )
-        Spacer(Modifier.height(16.dp))
+        Text("UniBoard", textAlign = TextAlign.Center)
         Text(
             text = if (isLoginMode) stringResource(R.string.login)
             else stringResource(R.string.signup),
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(8.dp))
         TextButton(onClick = onToggleMode) {
             Text(
                 text = if (isLoginMode) stringResource(R.string.need_to_signup)

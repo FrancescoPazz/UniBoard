@@ -22,8 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthHeader
@@ -97,6 +99,7 @@ fun AuthScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             AuthHeader(isLoginMode) {
                 isLoginMode = !isLoginMode
                 isResetMode = false
