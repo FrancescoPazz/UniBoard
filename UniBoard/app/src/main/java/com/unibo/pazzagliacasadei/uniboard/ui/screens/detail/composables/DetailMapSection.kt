@@ -2,16 +2,17 @@ package com.unibo.pazzagliacasadei.uniboard.ui.screens.detail.composables
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,11 +37,17 @@ import org.maplibre.android.plugins.annotation.SymbolOptions
 import org.maplibre.android.utils.BitmapUtils
 import java.util.Locale
 
+
 @Composable
 fun DetailMapSection(position: PositionLatLon?) {
     if (position == null) return
     val context = LocalContext.current
     val initialLatLng = LatLng(position.lat, position.lon)
+
+    var showMapConfirmDialog by remember { mutableStateOf(false) }
+
+    val latStr = remember(position) { String.format(Locale.US, "%.8f", position.lat) }
+    val lonStr = remember(position) { String.format(Locale.US, "%.8f", position.lon) }
 
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -88,21 +95,7 @@ fun DetailMapSection(position: PositionLatLon?) {
                                 }
 
                                 map.addOnMapClickListener {
-                                    val latStr = String.format(Locale.US, "%.8f", position.lat)
-                                    val lonStr = String.format(Locale.US, "%.8f", position.lon)
-
-                                    val uri = Uri.parse("geo:$latStr,$lonStr?q=$latStr,$lonStr")
-                                    val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-                                        setPackage("com.google.android.apps.maps")
-                                    }
-                                    if (intent.resolveActivity(context.packageManager) != null) {
-                                        context.startActivity(intent)
-                                    } else {
-                                        val webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$latStr,$lonStr")
-                                        context.startActivity(
-                                            Intent(Intent.ACTION_VIEW, webUri)
-                                        )
-                                    }
+                                    showMapConfirmDialog = true
                                     true
                                 }
                             }
@@ -121,6 +114,38 @@ fun DetailMapSection(position: PositionLatLon?) {
                         mapLibreMap?.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(initialLatLng, 10.0)
                         )
+                    }
+                }
+            )
+        }
+
+        if (showMapConfirmDialog) {
+            AlertDialog(
+                onDismissRequest = { showMapConfirmDialog = false },
+                title = { Text(stringResource(R.string.open_maps)) },
+                text = { Text(stringResource(R.string.open_maps_confirmation)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showMapConfirmDialog = false
+
+                            val uri = Uri.parse("geo:$latStr,$lonStr?q=$latStr,$lonStr")
+                            val intent = Intent(Intent.ACTION_VIEW, uri)
+
+                            if (intent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(intent)
+                            } else {
+                                val webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$latStr,$lonStr")
+                                context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
+                            }
+                        }
+                    ) {
+                        Text(stringResource(R.string.open))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showMapConfirmDialog = false }) {
+                        Text(stringResource(R.string.no))
                     }
                 }
             )

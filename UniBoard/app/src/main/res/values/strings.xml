@@ -33,6 +33,10 @@
     <string name="enter_otp_code">Enter the OTP code</string>
     <string name="authenticate">Authenticate</string>
     <string name="enter_as_guest">Enter as guest</string>
+    <string name="open_maps">Open in Maps</string>
+    <string name="open_maps_confirmation">Do you want to open the location in Maps?</string>
+    <string name="open">Open</string>
+    <string name="cancel">Cancel</string>
     <!-- Settings page -->
     <string name="theme">Theme</string>
     <string name="lightMode">Light theme</string>
