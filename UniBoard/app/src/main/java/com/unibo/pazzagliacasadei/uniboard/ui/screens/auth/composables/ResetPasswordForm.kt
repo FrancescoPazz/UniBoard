@@ -27,14 +27,14 @@ fun ResetPasswordForm(
     onEmailChange: (String) -> Unit,
     otp: String,
     onOtpChange: (String) -> Unit,
-    sendEmail: () -> Unit,
+    onNewForgotPasswordChange: (String) -> Unit,
+    sendEmailResetPassword: () -> Unit,
     sendOtp: () -> Unit,
     isLoading: Boolean,
     onBack: () -> Unit
 ) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var showOTPFields by remember { mutableStateOf(false) }
 
     Column {
         Text(
@@ -55,58 +55,58 @@ fun ResetPasswordForm(
 
         AuthButton(
             text = stringResource(R.string.send_reset_email), onClick = {
-                showOTPFields = true
-                sendEmail()
+                sendEmailResetPassword()
             }, enabled = email.isNotBlank() && !isLoading
         )
 
         Spacer(Modifier.height(8.dp))
 
-        if (showOTPFields) {
-            Text(
-                text = stringResource(R.string.enter_otp_code),
-                style = MaterialTheme.typography.titleMedium
+        Text(
+            text = stringResource(R.string.enter_otp_code),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        TextField(
+            value = otp,
+            onValueChange = onOtpChange,
+            label = { Text(stringResource(R.string.otp_code)) },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number
             )
+        )
 
-            Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
-            TextField(
-                value = otp,
-                onValueChange = onOtpChange,
-                label = { Text(stringResource(R.string.otp_code)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
-                )
-            )
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(stringResource(R.string.new_password)) },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
 
-            Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp))
 
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(stringResource(R.string.new_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
-            )
+        TextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text(stringResource(R.string.confirm_password)) },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(Modifier.height(16.dp))
 
-            Spacer(Modifier.height(8.dp))
-
-            TextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text(stringResource(R.string.confirm_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(16.dp))
-
-            AuthButton(
-                text = stringResource(R.string.send), onClick = {
-                    sendOtp()
-                },
-            )
-        }
+        AuthButton(
+            enabled = otp.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank() && password == confirmPassword,
+            text = stringResource(R.string.send),
+            onClick = {
+                onNewForgotPasswordChange(password)
+                sendOtp()
+            },
+        )
 
         TextButton(onClick = onBack) {
             Text(stringResource(R.string.back_to_login))

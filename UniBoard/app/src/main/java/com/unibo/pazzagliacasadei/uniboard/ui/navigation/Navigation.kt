@@ -49,9 +49,6 @@ sealed interface UniBoardRoute {
     data object Settings : UniBoardRoute
 
     @Serializable
-    data object ForgotPassword : UniBoardRoute
-
-    @Serializable
     data object Publish : UniBoardRoute
 
     @Serializable
@@ -87,7 +84,6 @@ fun UniBoardNavGraph(
             val startRoute = when (authState.value) {
                 is AuthState.Authenticated -> UniBoardRoute.Home
                 is AuthState.AnonymousAuthenticated -> UniBoardRoute.Home
-                is AuthState.ForgotPassword -> UniBoardRoute.ForgotPassword
                 else -> UniBoardRoute.Auth
             }
 
@@ -113,19 +109,16 @@ fun UniBoardNavGraph(
                                     username = username,
                                     tel = tel
                                 )
-                            }, resetPassword = { email ->
+                            },
+                            resetPassword = { email ->
                                 authViewModel.sendPasswordReset(email)
-                            }, loginGoogle = { context ->
+                            },
+                            loginGoogle = { context ->
                                 authViewModel.loginGoogle(context)
                             },
-                            sendOtp = { email, otp ->
-                                authViewModel.sendOTPCode(email, otp)
+                            sendOtp = { email, otp, newPassword ->
+                                authViewModel.sendOTPCode(email, otp, newPassword)
                             },
-                            changeForgottenPassword = { newPassword ->
-                                authViewModel.changeForgottenPassword(
-                                    newPassword = newPassword
-                                )
-                            }
                         )
                     AuthScreen(authParams)
                 }

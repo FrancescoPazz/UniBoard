@@ -22,10 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.unibo.pazzagliacasadei.uniboard.R
 import com.unibo.pazzagliacasadei.uniboard.ui.screens.auth.composables.AuthHeader
@@ -52,6 +50,7 @@ fun AuthScreen(
     var tel by remember { mutableStateOf("") }
 
     var otp by remember { mutableStateOf("") }
+    var newForgotPassword by remember { mutableStateOf("") }
 
     var showDialog by remember { mutableStateOf(false) }
     var dialogId by remember { mutableStateOf("") }
@@ -111,8 +110,9 @@ fun AuthScreen(
                     onEmailChange = { email = it },
                     otp = otp,
                     onOtpChange = { otp = it },
-                    sendEmail = { authParams.resetPassword(email) },
-                    sendOtp = { authParams.sendOtp(email, otp) },
+                    onNewForgotPasswordChange = { newForgotPassword = it },
+                    sendEmailResetPassword = { authParams.resetPassword(email) },
+                    sendOtp = { authParams.sendOtp(email, otp, newForgotPassword) },
                     isLoading = authState == AuthState.Loading,
                     onBack = { isResetMode = false })
             } else if (isLoginMode) {

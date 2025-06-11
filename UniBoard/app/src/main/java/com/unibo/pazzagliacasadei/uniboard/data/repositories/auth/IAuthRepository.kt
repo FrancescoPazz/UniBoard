@@ -31,4 +31,6 @@ interface IAuthRepository {
     suspend fun currentUser(): User?
 
     suspend fun changePassword(oldPassword: String, newPassword: String)
+
+    suspend fun changePassword(email: String, oldPassword: String, newPassword: String)
 }

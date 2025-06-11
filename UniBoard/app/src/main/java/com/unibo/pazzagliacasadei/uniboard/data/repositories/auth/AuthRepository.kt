@@ -16,6 +16,7 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
+import io.github.jan.supabase.auth.providers.builtin.OTP
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.flow.Flow
@@ -172,6 +173,13 @@ class AuthRepository(
     fun sendOtp(email: String, otp: String): Flow<AuthResponse> = flow {
         try {
             supabase.auth.verifyEmailOtp(type = OtpType.Email.EMAIL, email = email, token = otp)
+            if (supabase.auth.currentUserOrNull() == null) {
+                Log.d("test AuthRepository", "No user found, signing in with OTP")
+                supabase.auth.signInWith(OTP) {
+                    this.email = email
+                }
+            }
+            Log.d("test AuthRepository", "User signed in with OTP: ${supabase.auth.currentUserOrNull()?.email}")
             emit(AuthResponse.Success)
         } catch (e: Exception) {
             emit(AuthResponse.Failure(e.message ?: "Send OTP error"))
@@ -192,34 +200,36 @@ class AuthRepository(
         )
     }
 
-    override suspend fun changePassword(oldPassword: String, newPassword: String) {
-        val email = supabase.auth.currentUserOrNull()?.email ?: return
-        Log.d("ProfileViewModel", "Changing password for user: $email")
+    override suspend fun changePassword(email: String, oldPassword: String, newPassword: String) {
         supabase.auth.signInWith(Email) {
             this.email = email
             this.password = oldPassword
         }
+        if (supabase.auth.currentUserOrNull() == null) {
+            throw IllegalStateException("Authentication failed for user: $email")
+        }
+        Log.d("test ProfileViewModel", "User authenticated successfully for email: $email")
         supabase.auth.updateUser {
             password = newPassword
         }
         Log.d("ProfileViewModel", "Password changed successfully for user: $email")
     }
 
-    fun changeForgottenPassword(email: String, newPassword: String) = flow  {
-        try {
-            val user = supabase.from(USERS_TABLE)
-                .select {
-                    filter {
-                        eq("email", email)
-                    }
-                }.decodeSingle<User>()
+    override suspend fun changePassword(oldPassword: String, newPassword: String) {
+        val userEmail = supabase.auth.currentUserOrNull()?.email ?: return
+        changePassword(userEmail, oldPassword, newPassword)
+        Log.d("ProfileViewModel", "Password changed successfully for user: $userEmail")
+    }
 
-            supabase.auth.admin.updateUserById(user.id) {
+    fun changeForgottenPassword(newPassword: String) = flow  {
+        try {
+            supabase.auth.updateUser {
                 password = newPassword
             }
+            Log.d("test changeForgottenPassword", "Password changed successfully for user")
             emit (AuthResponse.Success)
         } catch (e: Exception) {
-            Log.e("AuthRepository", "Error changing password: ${e.message}")
+            Log.e("test changeForgottenPassword", "Error changing password: ${e.message}")
             emit (AuthResponse.Failure(e.message ?: "Error changing password"))
         }
     }

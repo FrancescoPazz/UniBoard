@@ -21,9 +21,7 @@ class AuthViewModel(
         viewModelScope.launch {
             authRepo.authState().collect { state ->
                 Log.d("AuthViewModel", "Auth state changed: $state")
-                if (_authState.value != AuthState.ForgotPassword){
-                    _authState.postValue(state)
-                }
+                _authState.postValue(state)
             }
         }
     }
@@ -121,22 +119,28 @@ class AuthViewModel(
         }
     }
 
-    private val emailForgotPassword = MutableLiveData<String>("")
-    fun sendOTPCode(email: String, otp: String) {
+    private val emailForgotPassword = MutableLiveData("")
+    fun sendOTPCode(email: String, otp: String, newPassword: String) {
         viewModelScope.launch {
             val ok = authRepo.sendOtp(email, otp).single()
             if (ok is AuthResponse.Success) {
                 emailForgotPassword.value = email
-                _authState.value = AuthState.ForgotPassword
+                _authState.value = AuthState.Authenticated
+                changeForgottenPassword(newPassword)
             } else if (ok is AuthResponse.Failure) {
                 _authState.value = AuthState.Error("Impossible to send OTP code")
             }
         }
     }
 
-    fun changeForgottenPassword(newPassword: String) {
+    private fun changeForgottenPassword(newPassword: String) {
         viewModelScope.launch {
-            authRepo.changeForgottenPassword(emailForgotPassword.value!!, newPassword)
+            val ok = authRepo.changeForgottenPassword(newPassword).single()
+            if (ok is AuthResponse.Success) {
+                _authState.value = AuthState.Authenticated
+            } else if (ok is AuthResponse.Failure) {
+                _authState.value = AuthState.Error("Impossible to change password")
+            }
         }
     }
 
