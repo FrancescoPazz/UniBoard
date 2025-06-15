@@ -79,7 +79,6 @@ fun HomeScreen(
                     stringResource(R.string.nearby)
                 ), selectedIndex = selectedTab,
 
-                //TODO Sistemare alcune inconsistenze dovute alla coroutine
                 onTabSelected = { index ->
                     homeVM.showLocationDisabledDialog.value = false
                     selectedTab = index
@@ -88,13 +87,15 @@ fun HomeScreen(
                             try {
                                 val loc = locationService.getCurrentLocation()
                                 homeVM.currentLocation.value = loc
+                                homeVM.filterPosts(index)
                             } catch (e: SecurityException) {
                                 Log.e("TEST", e.toString())
                                 homeVM.showLocationDisabledDialog.value = true
                             }
                         }
+                    } else {
+                        homeVM.filterPosts(index)
                     }
-                    homeVM.filterPosts(index)
                 })
             Spacer(modifier = Modifier.height(16.dp))
             if (homeVM.showLocationDisabledDialog.value) {
