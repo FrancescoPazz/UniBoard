@@ -80,23 +80,37 @@ class AuthRepository(
         tel: String?
     ): Flow<AuthResponse> = flow {
         try {
-            val result = supabase.auth.signUpWith(Email) {
-                this.email = email
-                this.password = password
-            }
-            val userId = result?.id
-                ?: throw IllegalStateException("SignUp succeeded but userId is null")
 
-            val user = User(
-                id = userId,
-                email = email,
-                name = name,
-                surname = surname,
-                username = username,
-                tel = tel,
-            )
-            supabase.from(USERS_TABLE).upsert(user)
-            emit(AuthResponse.Success)
+            val userExists = supabase.from(USERS_TABLE).select {
+                filter { or {
+                    eq("email", email)
+                    eq("username", username)
+                } }
+            }.decodeSingleOrNull<User>() != null
+
+            Log.d("UserExists", "User exists: $userExists")
+
+            if (userExists) {
+                emit(AuthResponse.Failure("User with this email or username already exists"))
+            } else {
+                val result = supabase.auth.signUpWith(Email) {
+                    this.email = email
+                    this.password = password
+                }
+                val userId = result?.id
+                    ?: throw IllegalStateException("SignUp succeeded but userId is null")
+
+                val user = User(
+                    id = userId,
+                    email = email,
+                    name = name,
+                    surname = surname,
+                    username = username,
+                    tel = tel,
+                )
+                supabase.from(USERS_TABLE).upsert(user)
+                emit(AuthResponse.Success)
+            }
         } catch (e: Exception) {
             emit(AuthResponse.Failure(e.message ?: "Sign up error"))
         }

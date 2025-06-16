@@ -46,7 +46,7 @@ class AuthViewModel(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            authRepo.signIn(email, password).collect { resp ->
+            authRepo.signIn(email.trim(), password).collect { resp ->
                 when (resp) {
                     is AuthResponse.Success -> {
                         _authState.value = AuthState.Authenticated
@@ -71,12 +71,12 @@ class AuthViewModel(
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             authRepo.signUp(
-                email = email,
+                email = email.trim(),
                 password = password,
-                name = name,
-                surname = surname,
-                username = username,
-                tel = tel
+                name = name?.trim(),
+                surname = surname?.trim(),
+                username = username.trim(),
+                tel = tel?.trim()
             ).collect { resp ->
                 when (resp) {
                     is AuthResponse.Success -> {
@@ -110,7 +110,7 @@ class AuthViewModel(
 
     fun sendPasswordReset(email: String) {
         viewModelScope.launch {
-            val ok = authRepo.resetPassword(email).single()
+            val ok = authRepo.resetPassword(email.trim()).single()
             if (ok is AuthResponse.Success) {
                 _authState.value = AuthState.Unauthenticated
             } else if (ok is AuthResponse.Failure) {
@@ -122,9 +122,9 @@ class AuthViewModel(
     private val emailForgotPassword = MutableLiveData("")
     fun sendOTPCode(email: String, otp: String, newPassword: String) {
         viewModelScope.launch {
-            val ok = authRepo.sendOtp(email, otp).single()
+            val ok = authRepo.sendOtp(email.trim(), otp).single()
             if (ok is AuthResponse.Success) {
-                emailForgotPassword.value = email
+                emailForgotPassword.value = email.trim()
                 _authState.value = AuthState.Authenticated
                 changeForgottenPassword(newPassword)
             } else if (ok is AuthResponse.Failure) {

@@ -80,21 +80,22 @@ fun HomeScreen(
                 ), selectedIndex = selectedTab,
 
                 onTabSelected = { index ->
-                    homeVM.showLocationDisabledDialog.value = false
-                    selectedTab = index
-                    if (index == 2) {
-                        scope.launch {
-                            try {
-                                val loc = locationService.getCurrentLocation()
-                                homeVM.currentLocation.value = loc
-                                homeVM.filterPosts(index)
-                            } catch (e: SecurityException) {
-                                Log.e("TEST", e.toString())
-                                homeVM.showLocationDisabledDialog.value = true
+                    if (selectedTab != index) {
+                        homeVM.showLocationDisabledDialog.value = false
+                        selectedTab = index
+                        if (index == 2) {
+                            scope.launch {
+                                try {
+                                    val loc = locationService.getCurrentLocation()
+                                    homeVM.currentLocation.value = loc
+                                    homeVM.filterPosts(index)
+                                } catch (e: SecurityException) {
+                                    homeVM.showLocationDisabledDialog.value = true
+                                }
                             }
+                        } else {
+                            homeVM.filterPosts(index)
                         }
-                    } else {
-                        homeVM.filterPosts(index)
                     }
                 })
             Spacer(modifier = Modifier.height(16.dp))
