@@ -137,13 +137,14 @@ class AuthRepository(
             val (fn, ln) = fullName.split(" ", limit = 2).let { it[0] to it.getOrElse(1) { "" } }
             val tel = info.userMetadata?.get("tel")?.toString()?.trim('"')
                 ?: info.userMetadata?.get("phone_number")?.toString()?.trim('"')
+            val username = info.email!!.split('@')[0]
 
             val user = User(
                 id = info.id,
                 email = info.email!!,
                 name = fn,
                 surname = ln,
-                username = fullName,
+                username = username,
                 tel = tel
             )
             supabase.from(USERS_TABLE).upsert(user)
