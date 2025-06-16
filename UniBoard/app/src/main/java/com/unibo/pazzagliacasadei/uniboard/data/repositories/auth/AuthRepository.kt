@@ -28,7 +28,7 @@ import java.security.MessageDigest
 import java.util.UUID
 
 private const val GOOGLE_SERVER_CLIENT_ID =
-    "565030994457-omk63okmp2lqc1pqr5bpc5tqntt9g5ls.apps.googleusercontent.com"
+    "960246085459-a8evvuosmhpp9kggk7bbjulmtttbjc1u.apps.googleusercontent.com"
 
 class AuthRepository(
     private val supabase: SupabaseClient
@@ -113,6 +113,7 @@ class AuthRepository(
         val nonce = createNonce()
         val option = GetGoogleIdOption.Builder()
             .setServerClientId(GOOGLE_SERVER_CLIENT_ID)
+            .setFilterByAuthorizedAccounts(false)
             .setNonce(nonce)
             .build()
         val request = GetCredentialRequest.Builder().addCredentialOption(option).build()

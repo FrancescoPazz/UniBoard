@@ -54,11 +54,13 @@ fun AuthScreen(
 
     var showDialog by remember { mutableStateOf(false) }
     var dialogId by remember { mutableStateOf("") }
+    var dialogError by remember { mutableStateOf("") }
 
     LaunchedEffect(authState) {
         if (authState is AuthState.Error) {
             showDialog = true
             dialogId = (authState as AuthState.Error).message.split(" ")[0]
+            dialogError = (authState as AuthState.Error).message
         }
     }
 
@@ -77,7 +79,7 @@ fun AuthScreen(
                 val titleText = if (resId != 0) {
                     stringResource(resId)
                 } else {
-                    dialogId.replaceFirstChar { it.uppercase() }
+                    dialogError
                 }
                 Text(titleText) },
             confirmButton = {
