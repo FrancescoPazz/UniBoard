@@ -10,7 +10,7 @@
     <string name="confirm_password">Conferma password</string>
     <string name="login">Accedi</string>
     <string name="signup">Registrati</string>
-    <string name="signup_success">Registrazione completata con successo!</string>
+    <string name="signup_success">Registrazione completata con successo! Controlla la tua email per la verifica!</string>
     <string name="back">Indietro</string>
     <string name="logout">Disconnettiti</string>
     <string name="forgot_password">Hai dimenticato la password?</string>

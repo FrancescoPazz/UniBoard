@@ -80,7 +80,7 @@ class AuthViewModel(
             ).collect { resp ->
                 when (resp) {
                     is AuthResponse.Success -> {
-                        _authState.value = AuthState.Unauthenticated
+                        _authState.value = AuthState.Registered
                     }
 
                     is AuthResponse.Failure -> {

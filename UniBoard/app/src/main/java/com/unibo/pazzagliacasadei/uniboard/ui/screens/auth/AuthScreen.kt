@@ -1,6 +1,7 @@
 package com.unibo.pazzagliacasadei.uniboard.ui.screens.auth
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -61,6 +62,12 @@ fun AuthScreen(
             showDialog = true
             dialogId = (authState as AuthState.Error).message.split(" ")[0]
             dialogError = (authState as AuthState.Error).message
+        } else if (authState is AuthState.Registered) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.signup_success),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
