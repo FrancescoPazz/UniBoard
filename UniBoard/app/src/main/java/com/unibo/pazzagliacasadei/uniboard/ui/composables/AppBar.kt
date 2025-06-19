@@ -40,47 +40,59 @@ fun TopBar(navController: NavController) {
 
     CenterAlignedTopAppBar(
         title = {
-        if (currentRoute != null) {
-            val resId = remember(currentRoute) {
-                context.resources.getIdentifier(
-                    currentRoute,
-                    "string",
-                    context.packageName
+            if (currentRoute != null) {
+                val resId = remember(currentRoute) {
+                    context.resources.getIdentifier(
+                        currentRoute,
+                        "string",
+                        context.packageName
+                    )
+                }
+                val titleText = if (resId != 0) {
+                    stringResource(resId)
+                } else {
+                    currentRoute.replaceFirstChar { it.uppercase() }
+                }
+                Text(
+                    titleText
                 )
             }
-            val titleText = if (resId != 0) {
-                stringResource(resId)
-            } else {
-                currentRoute.replaceFirstChar { it.uppercase() }
+        }, navigationIcon = {
+            if (navController.previousBackStackEntry != null) {
+                IconButton(onClick = { navController.navigateUp() }) {
+                    Icon(
+                        Icons.AutoMirrored.Outlined.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
             }
-            Text(
-                titleText
-            )
-        }
-    }, navigationIcon = {
-        if (navController.previousBackStackEntry != null) {
-            IconButton(onClick = { navController.navigateUp() }) {
-                Icon(
-                    Icons.AutoMirrored.Outlined.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
-                )
+        }, actions = {
+            if (currentRoute?.lowercase() != UniBoardRoute.Settings.toString().lowercase()) {
+                IconButton(onClick = {
+                    navController.navigate(UniBoardRoute.Settings)
+                }) {
+                    Icon(
+                        Icons.Filled.Settings,
+                        contentDescription = stringResource(R.string.settings)
+                    )
+                }
             }
-        }
-    }, actions = {
-        IconButton(onClick = { navController.navigate(UniBoardRoute.Settings) }) {
-            Icon(
-                Icons.Filled.Settings, contentDescription = stringResource(R.string.settings)
-            )
-        }
-    })
+        })
 }
 
 data class BottomNavItem(
-    val name: String, val route: UniBoardRoute, val icon: ImageVector, val action : (() -> Unit)? = null
+    val name: String,
+    val route: UniBoardRoute,
+    val icon: ImageVector,
+    val action: (() -> Unit)? = null
 )
 
 @Composable
-fun BottomBar(navController: NavController, isGuest: Boolean = false, logout : (() -> Unit)? = null) {
+fun BottomBar(
+    navController: NavController,
+    isGuest: Boolean = false,
+    logout: (() -> Unit)? = null
+) {
     val bottomNavItems = mutableListOf(
         BottomNavItem(
             name = stringResource(R.string.home),
