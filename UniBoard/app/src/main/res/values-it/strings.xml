@@ -10,6 +10,7 @@
     <string name="confirm_password">Conferma password</string>
     <string name="login">Accedi</string>
     <string name="signup">Registrati</string>
+    <string name="signup_success">Registrazione completata con successo!</string>
     <string name="back">Indietro</string>
     <string name="logout">Disconnettiti</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
@@ -29,7 +30,9 @@
     <string name="auth_error">Errore di autenticazione</string>
     <string name="validation_failed">Errore di validazione</string>
     <string name="invalid_credentials">Credenziali non valide</string>
+    <string name="over_email_send_rate_limit">Stai inviando troppe email in poco tempo. Riprova tra qualche minuto.</string>
     <string name="email_not_confirmed">Email non confermata</string>
+    <string name="weak_password">Password troppo corta \n(La password deve contenere almeno 6 caratteri)</string>
     <string name="otp_code">Codice OTP</string>
     <string name="enter_otp_code">Inserisci il codice OTP</string>
     <string name="authenticate">Autenticati</string>
